@@ -3,9 +3,17 @@
     <div class="container">
       <div class="left-column">
         <div class="left-column-detail">
-          <p>
-            Point Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, perspiciatis.
-          </p>
+          <div class="leaft-column-detail">
+          <input 
+            type="text" 
+            class="search-input" 
+            placeholder="Search" 
+            v-model="searchText"
+          />
+        </div>
+          <!-- <p>
+            Point | details from back
+          </p> -->
         </div>
       </div>
       <div class="right-column" id="map">
@@ -16,17 +24,28 @@
     </div>
   </div>
 </template>
+
 <script>
 import { onMounted } from 'vue'
 import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
+import '@geoman-io/leaflet-geoman-free'
+import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
+
+// edit icon picture
+// const customIcon = L.divIcon({
+//   className: 'leaflet-div-icon', 
+//   html: '<i class="fa fa-map-marker" style="font-size: 24px; color: red;"></i>', 
+//   iconSize: [30, 30],
+//   iconAnchor: [15, 30],
+//   popupAnchor: [0, -30],
+//   });
 
 export default {
-  name: 'App',
+  name: 'TypePoint',
   setup() {
     onMounted(() => {
-      // Initialize Leaflet map
-      const map = L.map("map").setView([13.783278, 100.59288], 10);
+      // สร้างแผนที่
+      const map = L.map("map").setView([13.783278, 100.59288], 10)
 
       const baseMaps = {
         OpenStreetMap: L.tileLayer(
@@ -40,12 +59,11 @@ export default {
           "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
           {
             maxZoom: 20,
-            attribution:
-              "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+            attribution: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
           }
         ),
         Topo: L.tileLayer(
-          "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", 
+          "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
           {
             maxZoom: 20,
             attribution: "© OpenTopoMap contributors",
@@ -55,27 +73,78 @@ export default {
           "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
           {
             maxZoom: 20,
-            attribution:
-              "© Stadia Maps, © OpenMapTiles, © OpenStreetMap contributors",
+            attribution: "© Stadia Maps, © OpenMapTiles, © OpenStreetMap contributors",
           }
         )
-      };
+      }
 
-      // Add the OpenStreetMap layer to the map by default
-      baseMaps["OpenStreetMap"].addTo(map);
+      baseMaps["OpenStreetMap"].addTo(map)
+
+      // Add layer control to map
+      L.control.layers(baseMaps).addTo(map)
+
+      // Geoman toolbar
+      map.pm.addControls({
+        position: "topleft",
+        drawMarker: true,
+        drawCircle: true,
+        drawPolyline: true,
+        drawRectangle: true,
+        drawPolygon: true,
+        editMode: true,
+        dragMode: true,
+        cutPolygon: true,
+        removalMode: true,
+        drawText: true,
+        rotateMode: true,
+        oneBlock: true,
+        drawControls: true,
+        editControls: true,
+        customControls: true,
+      })
+
+      // Control Linear Measurement
+      // differen version
+      // var linearMeasure = map.addControl(new L.Control.LinearMeasurement({
+      // unitSystem: 'metric',
+      // color: '#FF0080',
+      // type: 'line'
+      // }));
+
       
-      // Create layer control and add to map
-      L.control.layers(baseMaps).addTo(map);
-    });
-    
-    return {};
-  },
-}
+    map.pm.addControls({
+    position: 'topleft',
+    drawPolyline: true,
+    drawControls: true
+     }
+    );
 
+    map.on('pm:create', (e) => {
+     if (e.layer instanceof L.Polyline && !(e.layer instanceof L.Polygon)) {
+      const latlngs = e.layer.getLatLngs();
+      let distance = 0;
+
+      for (let i = 0; i < latlngs.length - 1; i++) {
+        distance += latlngs[i].distanceTo(latlngs[i + 1]);
+      }
+
+      distance = distance.toLocaleString(2); 
+
+      e.layer.bindPopup(`ระยะทาง: ${distance} เมตร`).openPopup();
+     }
+    });
+
+
+
+
+    })
+
+  }
+}
 </script>
 
-<style scoped>
 
+<style scoped>
 body {
 margin: 0;
 padding: 0;
@@ -105,5 +174,15 @@ padding: 20px;
 border-radius: 8px;
 overflow: auto;
 }
+
+.search-input {
+  width: 100%;
+  padding: 5px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
 
 </style>
