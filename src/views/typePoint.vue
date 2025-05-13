@@ -125,6 +125,10 @@ export default {
 
           e.layer.bindPopup(`ระยะทาง: ${distance} เมตร`).openPopup();
         }
+
+      if (e.layer instanceof L.Polygon) {
+          e.layer.pm.enable(); 
+  }
       });
 
       const coord = document.getElementById("coordinate-display");
@@ -180,6 +184,31 @@ export default {
       },
       toggle: false
     });
+
+
+    // map.on('pm:edit', (e) => {
+    //   if (e.layer instanceof L.Polygon) {
+    //     const updatedCoords = e.layer.getLatLngs();
+    //     console.log('Edited polygon coordinates:', updatedCoords);
+    //   }
+    // });
+
+    // map.on('pm:create', (e) => {
+    //   if (e.layer instanceof L.Polygon) {
+    //     const polygonLayer = e.layer;
+    //     polygonLayer.bindPopup("Polygon Created").openPopup();
+    //     polygonLayer.pm.enable({ allowSelfIntersection: false });
+    //     polygonLayer.on('pm:edit', (editEvent) => {
+    //       const updatedCoords = editEvent.layer.getLatLngs();
+    //       console.log(" Updated polygon coordinates:", updatedCoords);
+          
+    //       // stringify Object => geoJson
+    //       // const geoJson = editEvent.layer.toGeoJSON();
+    //       });
+    //     }
+    //  });
+
+
 
     });
   }
