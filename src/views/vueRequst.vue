@@ -63,13 +63,15 @@ export default {
 
 <style scoped>
 .request-page {
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh; 
   background-color: #f4f6f8;
-  padding: 20px;
 }
+
 
 .form-container {
   background-color: #fff;

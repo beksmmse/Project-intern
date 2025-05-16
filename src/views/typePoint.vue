@@ -10,10 +10,23 @@
             placeholder="Search" 
             v-model="searchText"
           />
+         
+          <div v-for="(point, index) in pointsData" :key="index" style="margin-top: 1em;">
+      <p><strong>ชื่อ:</strong> {{ point.name }}</p>
+      <p><strong>คำอธิบาย:</strong> {{ point.description }}</p>
+      <p><strong>ที่อยู่:</strong> {{ point.address }}</p>
+      <hr />
+    </div>
+
         </div>
-          <!-- <p>
-            Point | details from back
-          </p> -->
+          <!-- <div v-if="selectedFeature">
+            <p><strong>ชื่อ:</strong> {{ selectedFeature.name }}</p>
+            <p><strong>คำอธิบาย:</strong> {{ selectedFeature.description }}</p>
+            <p><strong>ที่อยู่:</strong> {{ selectedFeature.address }}</p>
+          </div>
+            <div v-else>
+              <p>ยังไม่เลือก</p>
+            </div> -->
         </div>
       </div>
       <div class="right-column" id="map">
@@ -25,7 +38,7 @@
 
 
 <script>
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import html2canvas from 'html2canvas'
 import L from 'leaflet'
 import '@geoman-io/leaflet-geoman-free'
@@ -35,9 +48,23 @@ import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
 export default {
   name: 'TypePoint',
   setup() {
-    onMounted(() => {
+    const drawnItems = ref(L.featureGroup());
 
-      const map = L.map("map").setView([13.783278, 100.59288], 10)
+    function createPopup(content = "Name") {
+      return `
+        <div class="popup-edit">
+          <span class="popup-text">${content}</span>
+          <button class="edit-btn" style="margin-left: 10px;">เเก้ไข</button>
+        </div>
+      `;
+    }
+
+    const geojsonData = ref(null)
+    const selectedFeature = ref(null)
+
+
+    onMounted(() => {
+      const map = L.map("map").setView([13.783278, 100.59288], 10);
 
       const baseMaps = {
         OpenStreetMap: L.tileLayer(
@@ -68,22 +95,88 @@ export default {
             attribution: "© Stadia Maps, © OpenMapTiles, © OpenStreetMap contributors",
           }
         )
-      }
+      };
 
-      baseMaps["OpenStreetMap"].addTo(map)
+      baseMaps["OpenStreetMap"].addTo(map);
 
-      // Add layer control to map
-      L.control.layers(baseMaps).addTo(map)
+      L.control.layers(baseMaps).addTo(map);
 
-      // Custom Icon using L.icon
-      const customIcon = L.icon({
-        iconUrl: require('@/assets/my-icon.png'),
-        iconSize: [30, 30],
-        iconAnchor: [15, 30],
-        popupAnchor: [0, -30],
+    //fetch 
+    function loadGeoJSONFromServer(map) {
+    fetch('/locations.geojson')  
+    .then(res => res.json())
+    .then(data => {
+      geojsonData.value = data;
+      const geoLayer = L.geoJSON(data, {
+        pointToLayer: (feature, latlng) => {
+          return L.marker(latlng, { icon: customIcon });
+        },
+onEachFeature: (feature, layer) => {
+  layer.on('click', () => {
+    selectedFeature.value = {
+      name: feature.properties.name || 'ไม่มีชื่อ',
+      description: feature.properties.description || '-',
+      address: feature.properties.address || '-'
+    };
+
+    console.log("selectedFeature updated:", selectedFeature.value);
+  });
+
+  layer.bindPopup(feature.properties.name || "ไม่มีชื่อ");
+}
+
       });
 
-      // Geoman toolbar
+      geoLayer.addTo(map);
+      drawnItems.value.addLayer(geoLayer);
+      map.fitBounds(geoLayer.getBounds());
+    })
+    .catch(err => {
+      console.error("Failed to load GeoJSON:", err);
+    });
+}
+
+    loadGeoJSONFromServer(map);
+
+  
+
+    //  bind popup  handle for edit
+    function bindEditablePopup(marker, initialText = "Name") {
+      marker.bindPopup(createPopup(initialText));
+
+      marker.on("popupopen", () => {
+        const container = marker.getPopup().getElement();
+        const span = container.querySelector(".popup-text");
+        const btn = container.querySelector(".edit-btn");
+
+        btn.addEventListener("click", () => {
+          const input = document.createElement("input");
+          input.type = "text";
+          input.value = span.textContent;
+          input.style.width = "120px";
+
+          span.replaceWith(input);
+          input.focus();
+
+          function save() {
+            const newText = input.value || "Name";
+            bindEditablePopup(marker, newText);
+            marker.openPopup();
+          }
+
+          input.addEventListener("blur", save);
+          input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") save();
+          });
+        });
+      });
+    }
+
+    function addEditButton(layer) {
+      // Dummy edit button logic add popup UI 
+      console.log("Edit button logic here for layer", layer);
+    }
+
       map.pm.addControls({
         position: "topleft",
         drawMarker: true,
@@ -95,7 +188,7 @@ export default {
         dragMode: true,
         cutPolygon: true,
         removalMode: true,
-        drawText: true,
+        drawText: false,
         rotateMode: true,
         oneBlock: true,
         drawControls: true,
@@ -104,13 +197,24 @@ export default {
         measurementMode: true,
       });
 
+      const customIcon = L.icon({
+        iconUrl: require('@/assets/my-icon.png'),
+        iconSize: [30, 30],
+        iconAnchor: [15, 30],
+        popupAnchor: [0, -30],
+      });
+
+      drawnItems.value.addTo(map);
+
       map.on('pm:create', (e) => {
         if (e.layer instanceof L.Marker) {
           const latlng = e.layer.getLatLng();
           map.removeLayer(e.layer);
 
           const marker = L.marker(latlng, { icon: customIcon }).addTo(map);
-          marker.bindPopup("*ID*").openPopup();
+          bindEditablePopup(marker);
+          marker.openPopup();
+          drawnItems.value.addLayer(marker);
         }
 
         if (e.layer instanceof L.Polyline && !(e.layer instanceof L.Polygon)) {
@@ -124,11 +228,13 @@ export default {
           distance = distance.toLocaleString(2);
 
           e.layer.bindPopup(`ระยะทาง: ${distance} เมตร`).openPopup();
+          drawnItems.value.addLayer(e.layer);
         }
 
-      if (e.layer instanceof L.Polygon) {
-          e.layer.pm.enable(); 
-  }
+        if (e.layer instanceof L.Polygon) {
+          e.layer.pm.enable();
+          drawnItems.value.addLayer(e.layer);
+        }
       });
 
       const coord = document.getElementById("coordinate-display");
@@ -139,74 +245,233 @@ export default {
         coord.innerHTML = `Lat: ${lat}, Lng: ${lng}`;
       });
 
-      // Add a custom geolocation button to the toolbar //fix
+      // find locatiom
       map.pm.Toolbar.createCustomControl({
-      name: "get-location",
-      block: "custom",
-      title: "Find My Location", 
-      className: "custom-geolocation-btn", 
-      onClick: () => {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const lat = position.coords.latitude;
-              const lng = position.coords.longitude;
+        name: "get-location",
+        block: "custom",
+        title: "Find My Location",
+        className: "custom-geolocation-btn",
+        onClick: () => {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
 
-              const marker = L.marker([lat, lng], { icon: customIcon }).addTo(map);
-              marker.bindPopup("You are here").openPopup();
+                const marker = L.marker([lat, lng], { icon: customIcon }).addTo(map);
+                marker.bindPopup("You are here").openPopup();
 
-              map.setView([lat, lng], 13);
-            },
-            (error) => {
-              alert("Unable to retrieve location: " + error.message);
+                map.setView([lat, lng], 13);
+              },
+              (error) => {
+                alert("Unable to retrieve location: " + error.message);
+              }
+            );
+          } else {
+            alert("Geolocation is not supported by your browser.");
+          }
+        },
+        toggle: false
+      });
+
+      // add Screenshot
+      map.pm.Toolbar.createCustomControl({
+        name: "screenshot",
+        block: "custom",
+        title: "Screenshot",
+        className: "screenshot-btn",
+        onClick: () => {
+          const mapElement = document.getElementById("map");
+          html2canvas(mapElement).then((canvas) => {
+            const link = document.createElement("a");
+            link.download = "map-screenshot.png";
+            link.href = canvas.toDataURL();
+            link.click();
+          });
+        },
+        toggle: false
+      });
+
+      // edit text 
+      map.pm.Toolbar.createCustomControl({
+        name: "add-text",
+        block: "custom",
+        title: "Add Text",
+        className: "add-text-btn",
+        onClick: () => {
+          map.once("click", (e) => {
+            const { latlng } = e;
+            const container = map.getContainer();
+            const point = map.latLngToContainerPoint(latlng);
+            const input = document.createElement("input");
+            input.type = "text";
+            input.placeholder = "เพิ่มชื่อสถานที่";
+            input.style.position = "absolute";
+            input.style.left = `${point.x}px`;
+            input.style.top = `${point.y}px`;
+            input.style.zIndex = 1000;
+            // input.style.width = "160px"; // 
+            // input.style.boxSizing = "border-box"; //
+            input.style.fontSize = "14px";
+            input.style.padding = "2px 6px";
+            input.style.border = "1px solid #ccc";
+            input.style.borderRadius = "4px";
+            input.style.backgroundColor = "#fff";
+            container.appendChild(input);
+            input.focus();
+
+            let committed = false;
+
+            function commitText() {
+              if (committed) return;
+              committed = true;
+
+              const text = input.value;
+              if (text) {
+                const textIcon = L.divIcon({
+                  html: `<div style="font-size: 14px; color: white; white-space: nowrap;">${text}</div>`,
+                  className: "custom-text-label",
+                });
+
+                const marker = L.marker(latlng, { icon: textIcon }).addTo(map);
+                drawnItems.value.addLayer(marker);
+              }
+
+              if (input.parentNode) {
+                input.parentNode.removeChild(input);
+              }
             }
-          );
-        } else {
-          alert("Geolocation is not supported by your browser.");
-        }
-      },
-      toggle: false 
-    }); 
-    
-    map.pm.Toolbar.createCustomControl({
-    name: "screenshot",
-    block: "custom",
-    title: "#",
-    className: "screenshot-btn",
-    onClick: () => {
-      const mapElement = document.getElementById("map");
-      html2canvas(mapElement).then((canvas) => {
-        const link = document.createElement("a");
-        link.download = "map-screenshot.png";
-        link.href = canvas.toDataURL();
-        link.click();
-        });
-      },
-      toggle: false
-    });
+
+            input.addEventListener("keydown", (event) => {
+              if (event.key === "Enter") {
+                commitText();
+              }
+            });
+
+            input.addEventListener("blur", () => {
+              commitText();
+            });
+          });
+        },
+        toggle: false
+      });
 
 
-    // map.on('pm:edit', (e) => {
-    //   if (e.layer instanceof L.Polygon) {
-    //     const updatedCoords = e.layer.getLatLngs();
-    //     console.log('Edited polygon coordinates:', updatedCoords);
-    //   }
+      // upload GeoJSON
+  map.pm.Toolbar.createCustomControl({
+  name: "load-data",
+  block: "custom",
+  title: "Load map data",
+  className: "load-data-btn",
+  onClick: () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json,application/json';
+
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+          try {
+            drawnItems.value.clearLayers();
+            const geoJson = JSON.parse(event.target.result);
+
+            map.whenReady(() => {
+              const layers = L.geoJSON(geoJson, {
+                pointToLayer: function (feature, latlng) {
+                  return L.marker(latlng, { icon: customIcon });
+                },
+                onEachFeature: function (feature, layer) {
+                  if (feature.properties && feature.properties.popupContent) {
+                    layer.bindPopup(feature.properties.popupContent);
+                    addEditButton(layer);
+                  }
+                }
+              });
+
+              layers.eachLayer(function (layer) {
+                drawnItems.value.addLayer(layer);
+              });
+
+              if (layers.getLayers().length > 0) {
+                map.fitBounds(layers.getBounds());
+              }
+            });
+
+            alert('Data loaded successfully');
+          } catch (error) {
+            alert('Error loading file: ' + error.message);
+          }
+        };
+
+        reader.readAsText(file);
+      }
+    };
+
+    input.click();
+  },
+  toggle: false
+      });
+
+
+
+    // Add a custom "Save Data" button to the Leaflet-Geoman toolbar 
+    // map.pm.Toolbar.createCustomControl({
+    //   name: "save-map-as-png",
+    //   block: "custom",
+    //   title: "Save map as PNG",
+    //   className: "save-map-btn",
+    //   onClick: () => {
+    //     const mapContainer = document.querySelector('.leaflet-container');
+    //     if (!mapContainer) {
+    //       alert('Map container not found');
+    //       return;
+    //     }
+
+    //     html2canvas(mapContainer).then(canvas => {
+    //       const imgData = canvas.toDataURL('image/png');
+    //       const link = document.createElement('a');
+    //       link.href = imgData;
+    //       link.download = 'leaflet-map.png';
+    //       link.click();
+    //     }).catch(err => {
+    //       console.error('Error generating PNG:', err);
+    //       alert('Failed to save PNG');
+    //     });
+    //   },
+    //   toggle: false
     // });
 
-    // map.on('pm:create', (e) => {
-    //   if (e.layer instanceof L.Polygon) {
-    //     const polygonLayer = e.layer;
-    //     polygonLayer.bindPopup("Polygon Created").openPopup();
-    //     polygonLayer.pm.enable({ allowSelfIntersection: false });
-    //     polygonLayer.on('pm:edit', (editEvent) => {
-    //       const updatedCoords = editEvent.layer.getLatLngs();
-    //       console.log(" Updated polygon coordinates:", updatedCoords);
-          
-    //       // stringify Object => geoJson
-    //       // const geoJson = editEvent.layer.toGeoJSON();
-    //       });
-    //     }
-    //  });
+
+
+    const searchQuery = ref('')
+    const features = ref([])              
+    const matchedFeatures = computed(() => {
+      if (!searchQuery.value.trim()) return features.value
+      const q = searchQuery.value.toLowerCase()
+      return features.value.filter(f =>
+        f.properties.name?.toLowerCase().includes(q)
+      )
+    })
+    function addFeatureToList(geojsonFeature) {
+      features.value.push(geojsonFeature)
+    }
+    function zoomToFeature(feature) {
+      const layer = getLayerByFeature(feature)
+      if (layer) map.fitBounds(layer.getBounds())
+    }
+    function getLayerByFeature(feature) {
+      let found = null
+      drawnItems.eachLayer(l => {
+        if (l.feature?.properties?.id === feature.properties.id) {
+          found = l
+        }
+      })
+      return found
+    }
+
 
 
 
@@ -219,12 +484,21 @@ export default {
 
 
 <style scoped>
-body {
+/* body {
 margin: 0;
 padding: 0;
 height: 100vh;
 font-family: sans-serif;
+} */
+
+html, body, #app {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  font-family: sans-serif;
 }
+
 .container {
 display: flex;
 gap: 10px;
@@ -261,7 +535,7 @@ overflow: auto;
 .coordinate-display {
   position: absolute;
   bottom: 10px;
-  right: 10px;
+  left: 10px;
   background-color: rgba(255,255,255,0.95);
   padding: 4px 8px;
   border-radius: 4px;
@@ -271,6 +545,42 @@ overflow: auto;
   pointer-events: none;
   box-shadow: 0 0 4px rgba(0,0,0,0.2); 
 }
+
+::v-deep(.custom-geolocation-btn) {
+  background-image: url('/src/assets/icons8-my-location-100.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+::v-deep(.screenshot-btn) {
+  background-image: url('/src/assets/icons8-screenshot-100.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+::v-deep(.load-data-btn) {
+  background-image: url('/src/assets/icons8-upload-100.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+::v-deep(.add-text-btn) {
+  background-image: url('/src/assets/text.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* ::v-deep(.save-data-btn) {
+  background-image: url('/src/assets/icons8-save-100.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+} */
+
 
 
 </style>

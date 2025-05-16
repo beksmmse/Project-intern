@@ -42,7 +42,7 @@ const goToLogin = () => {
 }
 </script>
 
-<style scoped>
+<!-- <style scoped>
 .register-page {
   max-width: 400px;
   margin: 50px auto;
@@ -64,5 +64,5 @@ button {
 .actions {
   margin-top: 16px;
 }
-</style>
+</style> -->
 

@@ -10,16 +10,18 @@
   "dependencies": {
     "@contagt/leaflet-geoman-free": "^2.14.2",
     "@fortawesome/fontawesome-free": "^6.7.2",
+    "@geoman-io/leaflet-geoman-free": "^2.18.3",
     "axios": "^1.8.4",
     "core-js": "^3.8.3",
     "html2canvas": "^1.4.1",
+    "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
     "leaflet-image": "^0.4.0",
-    "leaflet-measure": "^3.1.0",
     "leaflet.fullscreen": "^4.0.0",
     "primevue": "^4.3.3",
     "vue": "^3.2.13",
     "vue-router": "4",
+    "vue3-google-login": "^2.0.33",
     "vuedraggable": "^2.24.3"
   },
   "devDependencies": {

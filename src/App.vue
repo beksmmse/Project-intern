@@ -34,7 +34,32 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'vueHome',
+  data() {
+    return {
+      currentType: null,
+    };
+  },
+  methods: {
+    setType(type) {
+      this.currentType = type;
+    },
+  },
+};
+</script>
+
 <style scoped>
+
+html, #app {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+
 body {
   font-family: sans-serif;
   height: 100vh;
@@ -44,6 +69,8 @@ body {
   background-color: #f4f6f8;
   color: #333;
   height: 100%;
+  overscroll-behavior: none;
+  position: fixed;
 }
 
 .container {
@@ -283,9 +310,3 @@ nav ul li a:hover {
   }
 }
 </style>
-
-<script>
-export default {
-  name: 'vueHome'
-}
-</script>

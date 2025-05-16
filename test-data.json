@@ -1,0 +1,307 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "จุดที่ 1 - BTS สยาม" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.534, 13.746]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "จุดที่ 2 - เซ็นทรัลเวิลด์" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.539, 13.747]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "จุดที่ 3 - อนุสาวรีย์ชัยฯ" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.538, 13.765]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "จุดที่ 4 - BTS อารีย์" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.544, 13.78]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "จุดที่ 5 - จตุจักร" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.553, 13.803]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "จุดที่ 6 - ปากคลองตลาด" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.498, 13.742]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "จุดที่ 7 - วัดอรุณ" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.488, 13.743]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "จุดที่ 8 - เอเชียทีค" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.510, 13.705]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "จุดที่ 9 - สุขุมวิท 24" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.564, 13.726]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "จุดที่ 10 - รามคำแหง" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.614, 13.759]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "จุดที่ 11 - BTS เอกมัย" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.584, 13.722]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "จุดที่ 12 - ทองหล่อ" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.572, 13.730]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "จุดที่ 13 - เกษตรศาสตร์" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.571, 13.847]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "จุดที่ 14 - เมกาบางนา" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.662, 13.647]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "จุดที่ 15 - ไอคอนสยาม" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.510, 13.726]
+      }
+    },
+
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "เส้นทาง 1 - BTS จากสยามไปสนามกีฬา" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [100.534, 13.746],
+          [100.530, 13.740]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "เส้นทาง 2 - อารีย์ ↔ สะพานควาย" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [100.544, 13.78],
+          [100.543, 13.792]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "เส้นทาง 3 - ทองหล่อ ↔ เอกมัย" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [100.572, 13.730],
+          [100.584, 13.722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "เส้นทาง 4 - รัชดา ↔ พระราม 9" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [100.567, 13.759],
+          [100.571, 13.755]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "เส้นทาง 5 - พระโขนง ↔ บางนา" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [100.601, 13.696],
+          [100.607, 13.672]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "เส้นทาง 6 - สวนจตุจักร ↔ ลาดพร้าว" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [100.553, 13.803],
+          [100.566, 13.818]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "เส้นทาง 7 - วัดพระแก้ว ↔ สนามหลวง" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [100.491, 13.752],
+          [100.493, 13.756]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "เส้นทาง 8 - สยาม ↔ ราชประสงค์" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [100.534, 13.746],
+          [100.539, 13.747]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "เส้นทาง 9 - ราชดำเนิน ↔ เสาชิงช้า" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [100.499, 13.753],
+          [100.501, 13.750]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "เส้นทาง 10 - สาทร ↔ สีลม" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [100.531, 13.721],
+          [100.528, 13.726]
+        ]
+      }
+    },
+
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "เขต 1 - พื้นที่สวนลุม" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [100.540, 13.730],
+          [100.542, 13.730],
+          [100.542, 13.728],
+          [100.540, 13.728],
+          [100.540, 13.730]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "เขต 2 - พื้นที่สวนจตุจักร" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [100.550, 13.803],
+          [100.554, 13.803],
+          [100.554, 13.800],
+          [100.550, 13.800],
+          [100.550, 13.803]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "เขต 3 - พื้นที่พระราชวังดุสิต" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [100.505, 13.768],
+          [100.509, 13.768],
+          [100.509, 13.765],
+          [100.505, 13.765],
+          [100.505, 13.768]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "เขต 4 - พื้นที่สวนเบญจกิติ" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [100.560, 13.725],
+          [100.564, 13.725],
+          [100.564, 13.722],
+          [100.560, 13.722],
+          [100.560, 13.725]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "popupContent": "เขต 5 - ลานพระบรมรูปทรงม้า" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [100.514, 13.764],
+          [100.516, 13.764],
+          [100.516, 13.762],
+          [100.514, 13.762],
+          [100.514, 13.764]
+        ]]
+      }
+    }
+  ]
+}
