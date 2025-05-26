@@ -1,0 +1,1605 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00001",
+        "name": "วัดพระแก้ว",
+        "description": "วัดศักดิ์สิทธิ์ในพระบรมมหาราชวัง",
+        "address": "ถนนหน้าพระลาน เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.471849,
+          13.747776
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00002",
+        "name": "วัดอรุณราชวราราม",
+        "description": "วัดริมแม่น้ำเจ้าพระยา",
+        "address": "ถนนวังเดิม เขตบางกอกใหญ่"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.522799,
+          13.763305
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00003",
+        "name": "ศาลหลักเมือง",
+        "description": "สถานที่ศักดิ์สิทธิ์ของกรุงเทพฯ",
+        "address": "ถนนหลักเมือง เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.488047,
+          13.752352
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00004",
+        "name": "เยาวราช",
+        "description": "แหล่งของกินยามค่ำคืน",
+        "address": "ถนนเยาวราช เขตสัมพันธวงศ์"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.479714,
+          13.731492
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00005",
+        "name": "เซ็นทรัลเวิลด์",
+        "description": "ห้างสรรพสินค้าขนาดใหญ่",
+        "address": "ถนนราชดำริ เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.537988,
+          13.788165
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00006",
+        "name": "จามจุรีสแควร์",
+        "description": "แหล่งรวมร้านค้าและสำนักงาน",
+        "address": "ถนนพญาไท เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.520554,
+          13.787495
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00007",
+        "name": "ตลาดนัดจตุจักร",
+        "description": "ตลาดนัดที่ใหญ่ที่สุดในประเทศไทย",
+        "address": "ถนนกำแพงเพชร เขตจตุจักร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.544953,
+          13.740234
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00008",
+        "name": "สถานีหัวลำโพง",
+        "description": "สถานีรถไฟหลักของกรุงเทพฯ",
+        "address": "ถนนรองเมือง เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.523629,
+          13.741195
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00009",
+        "name": "อาร์ซีเอ",
+        "description": "แหล่งบันเทิงกลางคืนยอดนิยม",
+        "address": "ถนนพระราม 9 เขตห้วยขวาง"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.476368,
+          13.704831
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00010",
+        "name": "วัดเบญจมบพิตร",
+        "description": "วัดหินอ่อนงดงาม",
+        "address": "ถนนศรีอยุธยา เขตดุสิต"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.461096,
+          13.748349
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00011",
+        "name": "วัดพระแก้ว",
+        "description": "วัดศักดิ์สิทธิ์ในพระบรมมหาราชวัง",
+        "address": "ถนนหน้าพระลาน เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.526197,
+          13.788513
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00012",
+        "name": "วัดอรุณราชวราราม",
+        "description": "วัดริมแม่น้ำเจ้าพระยา",
+        "address": "ถนนวังเดิม เขตบางกอกใหญ่"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.47349,
+          13.73143
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00013",
+        "name": "ศาลหลักเมือง",
+        "description": "สถานที่ศักดิ์สิทธิ์ของกรุงเทพฯ",
+        "address": "ถนนหลักเมือง เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.521976,
+          13.702339
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00014",
+        "name": "เยาวราช",
+        "description": "แหล่งของกินยามค่ำคืน",
+        "address": "ถนนเยาวราช เขตสัมพันธวงศ์"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.45972,
+          13.729848
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00015",
+        "name": "เซ็นทรัลเวิลด์",
+        "description": "ห้างสรรพสินค้าขนาดใหญ่",
+        "address": "ถนนราชดำริ เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.546672,
+          13.757295
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00016",
+        "name": "จามจุรีสแควร์",
+        "description": "แหล่งรวมร้านค้าและสำนักงาน",
+        "address": "ถนนพญาไท เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.519544,
+          13.776524
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00017",
+        "name": "ตลาดนัดจตุจักร",
+        "description": "ตลาดนัดที่ใหญ่ที่สุดในประเทศไทย",
+        "address": "ถนนกำแพงเพชร เขตจตุจักร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.463769,
+          13.721533
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00018",
+        "name": "สถานีหัวลำโพง",
+        "description": "สถานีรถไฟหลักของกรุงเทพฯ",
+        "address": "ถนนรองเมือง เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.482435,
+          13.776234
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00019",
+        "name": "อาร์ซีเอ",
+        "description": "แหล่งบันเทิงกลางคืนยอดนิยม",
+        "address": "ถนนพระราม 9 เขตห้วยขวาง"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.486338,
+          13.700364
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00020",
+        "name": "วัดเบญจมบพิตร",
+        "description": "วัดหินอ่อนงดงาม",
+        "address": "ถนนศรีอยุธยา เขตดุสิต"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.49415,
+          13.750248
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00021",
+        "name": "วัดพระแก้ว",
+        "description": "วัดศักดิ์สิทธิ์ในพระบรมมหาราชวัง",
+        "address": "ถนนหน้าพระลาน เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.49018,
+          13.766934
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00022",
+        "name": "วัดอรุณราชวราราม",
+        "description": "วัดริมแม่น้ำเจ้าพระยา",
+        "address": "ถนนวังเดิม เขตบางกอกใหญ่"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.545617,
+          13.768841
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00023",
+        "name": "ศาลหลักเมือง",
+        "description": "สถานที่ศักดิ์สิทธิ์ของกรุงเทพฯ",
+        "address": "ถนนหลักเมือง เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.450156,
+          13.711936
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00024",
+        "name": "เยาวราช",
+        "description": "แหล่งของกินยามค่ำคืน",
+        "address": "ถนนเยาวราช เขตสัมพันธวงศ์"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.522846,
+          13.771625
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00025",
+        "name": "เซ็นทรัลเวิลด์",
+        "description": "ห้างสรรพสินค้าขนาดใหญ่",
+        "address": "ถนนราชดำริ เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.527641,
+          13.798881
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00026",
+        "name": "จามจุรีสแควร์",
+        "description": "แหล่งรวมร้านค้าและสำนักงาน",
+        "address": "ถนนพญาไท เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.499191,
+          13.72058
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00027",
+        "name": "ตลาดนัดจตุจักร",
+        "description": "ตลาดนัดที่ใหญ่ที่สุดในประเทศไทย",
+        "address": "ถนนกำแพงเพชร เขตจตุจักร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.504975,
+          13.796514
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00028",
+        "name": "สถานีหัวลำโพง",
+        "description": "สถานีรถไฟหลักของกรุงเทพฯ",
+        "address": "ถนนรองเมือง เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.459164,
+          13.718377
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00029",
+        "name": "อาร์ซีเอ",
+        "description": "แหล่งบันเทิงกลางคืนยอดนิยม",
+        "address": "ถนนพระราม 9 เขตห้วยขวาง"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.485925,
+          13.751352
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00030",
+        "name": "วัดเบญจมบพิตร",
+        "description": "วัดหินอ่อนงดงาม",
+        "address": "ถนนศรีอยุธยา เขตดุสิต"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.468377,
+          13.704375
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00031",
+        "name": "วัดพระแก้ว",
+        "description": "วัดศักดิ์สิทธิ์ในพระบรมมหาราชวัง",
+        "address": "ถนนหน้าพระลาน เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.549206,
+          13.730097
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00032",
+        "name": "วัดอรุณราชวราราม",
+        "description": "วัดริมแม่น้ำเจ้าพระยา",
+        "address": "ถนนวังเดิม เขตบางกอกใหญ่"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.509428,
+          13.778461
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00033",
+        "name": "ศาลหลักเมือง",
+        "description": "สถานที่ศักดิ์สิทธิ์ของกรุงเทพฯ",
+        "address": "ถนนหลักเมือง เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.485335,
+          13.730306
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00034",
+        "name": "เยาวราช",
+        "description": "แหล่งของกินยามค่ำคืน",
+        "address": "ถนนเยาวราช เขตสัมพันธวงศ์"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.498808,
+          13.749542
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00035",
+        "name": "เซ็นทรัลเวิลด์",
+        "description": "ห้างสรรพสินค้าขนาดใหญ่",
+        "address": "ถนนราชดำริ เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.54668,
+          13.795676
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00036",
+        "name": "จามจุรีสแควร์",
+        "description": "แหล่งรวมร้านค้าและสำนักงาน",
+        "address": "ถนนพญาไท เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.508882,
+          13.770775
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00037",
+        "name": "ตลาดนัดจตุจักร",
+        "description": "ตลาดนัดที่ใหญ่ที่สุดในประเทศไทย",
+        "address": "ถนนกำแพงเพชร เขตจตุจักร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.547294,
+          13.762569
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00038",
+        "name": "สถานีหัวลำโพง",
+        "description": "สถานีรถไฟหลักของกรุงเทพฯ",
+        "address": "ถนนรองเมือง เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.545046,
+          13.723056
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00039",
+        "name": "อาร์ซีเอ",
+        "description": "แหล่งบันเทิงกลางคืนยอดนิยม",
+        "address": "ถนนพระราม 9 เขตห้วยขวาง"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.480176,
+          13.76705
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00040",
+        "name": "วัดเบญจมบพิตร",
+        "description": "วัดหินอ่อนงดงาม",
+        "address": "ถนนศรีอยุธยา เขตดุสิต"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.472677,
+          13.786026
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00041",
+        "name": "วัดพระแก้ว",
+        "description": "วัดศักดิ์สิทธิ์ในพระบรมมหาราชวัง",
+        "address": "ถนนหน้าพระลาน เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.497662,
+          13.746046
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00042",
+        "name": "วัดอรุณราชวราราม",
+        "description": "วัดริมแม่น้ำเจ้าพระยา",
+        "address": "ถนนวังเดิม เขตบางกอกใหญ่"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.493206,
+          13.739575
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00043",
+        "name": "ศาลหลักเมือง",
+        "description": "สถานที่ศักดิ์สิทธิ์ของกรุงเทพฯ",
+        "address": "ถนนหลักเมือง เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.46608,
+          13.760176
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00044",
+        "name": "เยาวราช",
+        "description": "แหล่งของกินยามค่ำคืน",
+        "address": "ถนนเยาวราช เขตสัมพันธวงศ์"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.48522,
+          13.767339
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00045",
+        "name": "เซ็นทรัลเวิลด์",
+        "description": "ห้างสรรพสินค้าขนาดใหญ่",
+        "address": "ถนนราชดำริ เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.484939,
+          13.743454
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00046",
+        "name": "จามจุรีสแควร์",
+        "description": "แหล่งรวมร้านค้าและสำนักงาน",
+        "address": "ถนนพญาไท เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.545575,
+          13.749017
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00047",
+        "name": "ตลาดนัดจตุจักร",
+        "description": "ตลาดนัดที่ใหญ่ที่สุดในประเทศไทย",
+        "address": "ถนนกำแพงเพชร เขตจตุจักร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.474675,
+          13.738023
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00048",
+        "name": "สถานีหัวลำโพง",
+        "description": "สถานีรถไฟหลักของกรุงเทพฯ",
+        "address": "ถนนรองเมือง เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.50888,
+          13.743575
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00049",
+        "name": "อาร์ซีเอ",
+        "description": "แหล่งบันเทิงกลางคืนยอดนิยม",
+        "address": "ถนนพระราม 9 เขตห้วยขวาง"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.471668,
+          13.769905
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00050",
+        "name": "วัดเบญจมบพิตร",
+        "description": "วัดหินอ่อนงดงาม",
+        "address": "ถนนศรีอยุธยา เขตดุสิต"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.497398,
+          13.751277
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00051",
+        "name": "วัดพระแก้ว",
+        "description": "วัดศักดิ์สิทธิ์ในพระบรมมหาราชวัง",
+        "address": "ถนนหน้าพระลาน เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.452347,
+          13.780044
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00052",
+        "name": "วัดอรุณราชวราราม",
+        "description": "วัดริมแม่น้ำเจ้าพระยา",
+        "address": "ถนนวังเดิม เขตบางกอกใหญ่"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.490488,
+          13.702495
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00053",
+        "name": "ศาลหลักเมือง",
+        "description": "สถานที่ศักดิ์สิทธิ์ของกรุงเทพฯ",
+        "address": "ถนนหลักเมือง เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.527111,
+          13.793247
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00054",
+        "name": "เยาวราช",
+        "description": "แหล่งของกินยามค่ำคืน",
+        "address": "ถนนเยาวราช เขตสัมพันธวงศ์"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.520665,
+          13.731516
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00055",
+        "name": "เซ็นทรัลเวิลด์",
+        "description": "ห้างสรรพสินค้าขนาดใหญ่",
+        "address": "ถนนราชดำริ เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.485035,
+          13.709961
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00056",
+        "name": "จามจุรีสแควร์",
+        "description": "แหล่งรวมร้านค้าและสำนักงาน",
+        "address": "ถนนพญาไท เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.509236,
+          13.786434
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00057",
+        "name": "ตลาดนัดจตุจักร",
+        "description": "ตลาดนัดที่ใหญ่ที่สุดในประเทศไทย",
+        "address": "ถนนกำแพงเพชร เขตจตุจักร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.535693,
+          13.702364
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00058",
+        "name": "สถานีหัวลำโพง",
+        "description": "สถานีรถไฟหลักของกรุงเทพฯ",
+        "address": "ถนนรองเมือง เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.518627,
+          13.780035
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00059",
+        "name": "อาร์ซีเอ",
+        "description": "แหล่งบันเทิงกลางคืนยอดนิยม",
+        "address": "ถนนพระราม 9 เขตห้วยขวาง"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.451663,
+          13.799177
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00060",
+        "name": "วัดเบญจมบพิตร",
+        "description": "วัดหินอ่อนงดงาม",
+        "address": "ถนนศรีอยุธยา เขตดุสิต"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.480668,
+          13.701048
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00061",
+        "name": "วัดพระแก้ว",
+        "description": "วัดศักดิ์สิทธิ์ในพระบรมมหาราชวัง",
+        "address": "ถนนหน้าพระลาน เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.507909,
+          13.71135
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00062",
+        "name": "วัดอรุณราชวราราม",
+        "description": "วัดริมแม่น้ำเจ้าพระยา",
+        "address": "ถนนวังเดิม เขตบางกอกใหญ่"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.514308,
+          13.708916
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00063",
+        "name": "ศาลหลักเมือง",
+        "description": "สถานที่ศักดิ์สิทธิ์ของกรุงเทพฯ",
+        "address": "ถนนหลักเมือง เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.500425,
+          13.713349
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00064",
+        "name": "เยาวราช",
+        "description": "แหล่งของกินยามค่ำคืน",
+        "address": "ถนนเยาวราช เขตสัมพันธวงศ์"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.518898,
+          13.786155
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00065",
+        "name": "เซ็นทรัลเวิลด์",
+        "description": "ห้างสรรพสินค้าขนาดใหญ่",
+        "address": "ถนนราชดำริ เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.495936,
+          13.73332
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00066",
+        "name": "จามจุรีสแควร์",
+        "description": "แหล่งรวมร้านค้าและสำนักงาน",
+        "address": "ถนนพญาไท เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.4543,
+          13.709358
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00067",
+        "name": "ตลาดนัดจตุจักร",
+        "description": "ตลาดนัดที่ใหญ่ที่สุดในประเทศไทย",
+        "address": "ถนนกำแพงเพชร เขตจตุจักร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.515298,
+          13.752531
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00068",
+        "name": "สถานีหัวลำโพง",
+        "description": "สถานีรถไฟหลักของกรุงเทพฯ",
+        "address": "ถนนรองเมือง เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.54999,
+          13.748556
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00069",
+        "name": "อาร์ซีเอ",
+        "description": "แหล่งบันเทิงกลางคืนยอดนิยม",
+        "address": "ถนนพระราม 9 เขตห้วยขวาง"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.535983,
+          13.740257
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00070",
+        "name": "วัดเบญจมบพิตร",
+        "description": "วัดหินอ่อนงดงาม",
+        "address": "ถนนศรีอยุธยา เขตดุสิต"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.504084,
+          13.775978
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00071",
+        "name": "วัดพระแก้ว",
+        "description": "วัดศักดิ์สิทธิ์ในพระบรมมหาราชวัง",
+        "address": "ถนนหน้าพระลาน เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.522581,
+          13.733968
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00072",
+        "name": "วัดอรุณราชวราราม",
+        "description": "วัดริมแม่น้ำเจ้าพระยา",
+        "address": "ถนนวังเดิม เขตบางกอกใหญ่"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.481725,
+          13.783757
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00073",
+        "name": "ศาลหลักเมือง",
+        "description": "สถานที่ศักดิ์สิทธิ์ของกรุงเทพฯ",
+        "address": "ถนนหลักเมือง เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.509136,
+          13.761767
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00074",
+        "name": "เยาวราช",
+        "description": "แหล่งของกินยามค่ำคืน",
+        "address": "ถนนเยาวราช เขตสัมพันธวงศ์"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.486247,
+          13.78464
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00075",
+        "name": "เซ็นทรัลเวิลด์",
+        "description": "ห้างสรรพสินค้าขนาดใหญ่",
+        "address": "ถนนราชดำริ เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.530477,
+          13.725088
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00076",
+        "name": "จามจุรีสแควร์",
+        "description": "แหล่งรวมร้านค้าและสำนักงาน",
+        "address": "ถนนพญาไท เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.486642,
+          13.717291
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00077",
+        "name": "ตลาดนัดจตุจักร",
+        "description": "ตลาดนัดที่ใหญ่ที่สุดในประเทศไทย",
+        "address": "ถนนกำแพงเพชร เขตจตุจักร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.493944,
+          13.776491
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00078",
+        "name": "สถานีหัวลำโพง",
+        "description": "สถานีรถไฟหลักของกรุงเทพฯ",
+        "address": "ถนนรองเมือง เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.487972,
+          13.713452
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00079",
+        "name": "อาร์ซีเอ",
+        "description": "แหล่งบันเทิงกลางคืนยอดนิยม",
+        "address": "ถนนพระราม 9 เขตห้วยขวาง"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.517113,
+          13.723635
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00080",
+        "name": "วัดเบญจมบพิตร",
+        "description": "วัดหินอ่อนงดงาม",
+        "address": "ถนนศรีอยุธยา เขตดุสิต"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.45228,
+          13.722812
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00081",
+        "name": "วัดพระแก้ว",
+        "description": "วัดศักดิ์สิทธิ์ในพระบรมมหาราชวัง",
+        "address": "ถนนหน้าพระลาน เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.484797,
+          13.712796
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00082",
+        "name": "วัดอรุณราชวราราม",
+        "description": "วัดริมแม่น้ำเจ้าพระยา",
+        "address": "ถนนวังเดิม เขตบางกอกใหญ่"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.496532,
+          13.760024
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00083",
+        "name": "ศาลหลักเมือง",
+        "description": "สถานที่ศักดิ์สิทธิ์ของกรุงเทพฯ",
+        "address": "ถนนหลักเมือง เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.512868,
+          13.732117
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00084",
+        "name": "เยาวราช",
+        "description": "แหล่งของกินยามค่ำคืน",
+        "address": "ถนนเยาวราช เขตสัมพันธวงศ์"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.461752,
+          13.711103
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00085",
+        "name": "เซ็นทรัลเวิลด์",
+        "description": "ห้างสรรพสินค้าขนาดใหญ่",
+        "address": "ถนนราชดำริ เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.477817,
+          13.706554
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00086",
+        "name": "จามจุรีสแควร์",
+        "description": "แหล่งรวมร้านค้าและสำนักงาน",
+        "address": "ถนนพญาไท เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.470413,
+          13.791397
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00087",
+        "name": "ตลาดนัดจตุจักร",
+        "description": "ตลาดนัดที่ใหญ่ที่สุดในประเทศไทย",
+        "address": "ถนนกำแพงเพชร เขตจตุจักร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.479127,
+          13.701144
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00088",
+        "name": "สถานีหัวลำโพง",
+        "description": "สถานีรถไฟหลักของกรุงเทพฯ",
+        "address": "ถนนรองเมือง เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.500578,
+          13.798839
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00089",
+        "name": "อาร์ซีเอ",
+        "description": "แหล่งบันเทิงกลางคืนยอดนิยม",
+        "address": "ถนนพระราม 9 เขตห้วยขวาง"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.494136,
+          13.741083
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00090",
+        "name": "วัดเบญจมบพิตร",
+        "description": "วัดหินอ่อนงดงาม",
+        "address": "ถนนศรีอยุธยา เขตดุสิต"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.520037,
+          13.796623
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00091",
+        "name": "วัดพระแก้ว",
+        "description": "วัดศักดิ์สิทธิ์ในพระบรมมหาราชวัง",
+        "address": "ถนนหน้าพระลาน เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.544399,
+          13.763262
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00092",
+        "name": "วัดอรุณราชวราราม",
+        "description": "วัดริมแม่น้ำเจ้าพระยา",
+        "address": "ถนนวังเดิม เขตบางกอกใหญ่"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.502335,
+          13.78378
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00093",
+        "name": "ศาลหลักเมือง",
+        "description": "สถานที่ศักดิ์สิทธิ์ของกรุงเทพฯ",
+        "address": "ถนนหลักเมือง เขตพระนคร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.473595,
+          13.753389
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00094",
+        "name": "เยาวราช",
+        "description": "แหล่งของกินยามค่ำคืน",
+        "address": "ถนนเยาวราช เขตสัมพันธวงศ์"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.488161,
+          13.7321
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00095",
+        "name": "เซ็นทรัลเวิลด์",
+        "description": "ห้างสรรพสินค้าขนาดใหญ่",
+        "address": "ถนนราชดำริ เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.533555,
+          13.796342
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00096",
+        "name": "จามจุรีสแควร์",
+        "description": "แหล่งรวมร้านค้าและสำนักงาน",
+        "address": "ถนนพญาไท เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.503372,
+          13.735991
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00097",
+        "name": "ตลาดนัดจตุจักร",
+        "description": "ตลาดนัดที่ใหญ่ที่สุดในประเทศไทย",
+        "address": "ถนนกำแพงเพชร เขตจตุจักร"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.511372,
+          13.74379
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00098",
+        "name": "สถานีหัวลำโพง",
+        "description": "สถานีรถไฟหลักของกรุงเทพฯ",
+        "address": "ถนนรองเมือง เขตปทุมวัน"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.511258,
+          13.73128
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00099",
+        "name": "อาร์ซีเอ",
+        "description": "แหล่งบันเทิงกลางคืนยอดนิยม",
+        "address": "ถนนพระราม 9 เขตห้วยขวาง"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.513584,
+          13.716059
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "00100",
+        "name": "วัดเบญจมบพิตร",
+        "description": "วัดหินอ่อนงดงาม",
+        "address": "ถนนศรีอยุธยา เขตดุสิต"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.544531,
+          13.766781
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,905 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00001",
+          "name": "วัดพระแก้ว",
+          "description": "วัดศักดิ์สิทธิ์ในพระบรมมหาราชวัง",
+          "category": "Point",
+          "inventoryStatus": "ACTIVE",
+          "address": "Na Phra Lan Rd, Phra Nakhon, Bangkok 10200"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.492758, 13.751841]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00002",
+          "name": "วัดอรุณราชวราราม",
+          "description": "วัดริมแม่น้ำเจ้าพระยา",
+          "category": "Point",
+          "inventoryStatus": "INACTIVE",
+          "address": "158 Wang Doem Rd, Wat Arun, Bangkok Yai, Bangkok 10600"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.488076, 13.743626]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00003",
+          "name": "ศาลหลักเมือง",
+          "description": "สถานที่ศักดิ์สิทธิ์ของกรุงเทพฯ",
+          "category": "Point",
+          "inventoryStatus": "PENDING",
+          "address": "2 Ratchadamnoen Nai Rd, Phra Nakhon, Bangkok 10200"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.494468, 13.752796]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00004",
+          "name": "วัดโพธิ์",
+          "description": "วัดพระเชตุพนวิมลมังคลาราม",
+          "category": "Point",
+          "inventoryStatus": "APPROVED",
+          "address": "2 Sanam Chai Rd, Phra Nakhon, Bangkok 10200"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.493024, 13.746495]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00005",
+          "name": "เสาชิงช้า",
+          "description": "แลนด์มาร์คใจกลางเมือง",
+          "category": "Point",
+          "inventoryStatus": "ACTIVE",
+          "address": "239 Dinso Rd, Sao Chingcha, Phra Nakhon, Bangkok 10200"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.499237, 13.752984]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00006",
+          "name": "สนามหลวง",
+          "description": "สนามกลางเมืองสำหรับกิจกรรมสำคัญ",
+          "category": "Point",
+          "inventoryStatus": "INACTIVE",
+          "address": "Na Phra That Rd, Phra Nakhon, Bangkok 10200"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.492078, 13.753143]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00007",
+          "name": "ถนนข้าวสาร",
+          "description": "ถนนท่องเที่ยวยามค่ำ",
+          "category": "Point",
+          "inventoryStatus": "PENDING",
+          "address": "Khao San Rd, Talat Yot, Phra Nakhon, Bangkok 10200"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.497720, 13.759820]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00008",
+          "name": "เยาวราช",
+          "description": "ถนนสายอาหารและวัฒนธรรมจีน",
+          "category": "Point",
+          "inventoryStatus": "APPROVED",
+          "address": "Yaowarat Rd, Samphanthawong, Bangkok 10100"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.510828, 13.739278]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00009",
+          "name": "เซ็นทรัลเวิลด์",
+          "description": "ศูนย์การค้าใจกลางกรุงเทพฯ",
+          "category": "Point",
+          "inventoryStatus": "ACTIVE",
+          "address": "999/9 Rama 1 Rd, Pathum Wan, Bangkok 10330"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.539267, 13.746131]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00010",
+          "name": "วัดสระเกศ (ภูเขาทอง)",
+          "description": "วัดบนเนินเขาใจกลางเมือง",
+          "category": "Point",
+          "inventoryStatus": "INACTIVE",
+          "address": "344 Chakkraphatdi Phong Rd, Pom Prap Sattru Phai, Bangkok 10100"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.506149, 13.754029]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00011",
+          "name": "สวนลุมพินี",
+          "description": "สวนสาธารณะขนาดใหญ่ในกลางกรุง",
+          "category": "Point",
+          "inventoryStatus": "PENDING",
+          "address": "Rama IV Rd, Lumphini, Pathum Wan, Bangkok 10330"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.541467, 13.730061]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00012",
+          "name": "ตลาดนัดจตุจักร",
+          "description": "ตลาดนัดจตุจักร กรุงเทพฯ",
+          "category": "Point",
+          "inventoryStatus": "APPROVED",
+          "address": "Kamphaeng Phet 2 Rd, Chatuchak, Bangkok 10900"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.553029, 13.799596]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00013",
+          "name": "สยามพารากอน",
+          "description": "ศูนย์การค้าและไลฟ์สไตล์",
+          "category": "Point",
+          "inventoryStatus": "ACTIVE",
+          "address": "991 Rama 1 Rd, Pathum Wan, Bangkok 10330"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.534363, 13.746574]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00014",
+          "name": "เอเชียทีค",
+          "description": "ตลาดนัดริมน้ำเจ้าพระยา",
+          "category": "Point",
+          "inventoryStatus": "INACTIVE",
+          "address": "2194 Charoen Krung Rd, Wat Phraya Krai, Bang Kho Laem, Bangkok 10120"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.503346, 13.705853]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00015",
+          "name": "บ้านศิลปินคลองบางหลวง",
+          "description": "ศิลปะร่วมสมัยใจกลางชุมชน",
+          "category": "Point",
+          "inventoryStatus": "PENDING",
+          "address": "315 Soi Wat Thong Sala Ngam, Phasi Charoen, Bangkok 10160"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.468517, 13.718586]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00016",
+          "name": "สวนสัตว์ดุสิต",
+          "description": "สวนสัตว์กลางกรุง",
+          "category": "Point",
+          "inventoryStatus": "APPROVED",
+          "address": "71 Rama V Rd, Dusit, Bangkok 10300"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.514632, 13.770340]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00017",
+          "name": "พระที่นั่งอนันตสมาคม",
+          "description": "อาคารโดมสไตล์ยุโรป",
+          "category": "Point",
+          "inventoryStatus": "ACTIVE",
+          "address": "Uthong Nai Rd, Dusit, Bangkok 10300"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.513669, 13.774938]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00018",
+          "name": "ตลาดน้ำขวัญเรียม",
+          "description": "ตลาดน้ำกรุงเทพฯฝั่งตะวันออก",
+          "category": "Point",
+          "inventoryStatus": "INACTIVE",
+          "address": "Soi Ramkhamhaeng 185, Min Buri, Bangkok 10510"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.684067, 13.789283]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00019",
+          "name": "วัดเบญจมบพิตร",
+          "description": "วัดหินอ่อนกรุงเทพฯ",
+          "category": "Point",
+          "inventoryStatus": "PENDING",
+          "address": "69 Rama V Rd, Dusit, Bangkok 10300"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.514071, 13.778693]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00020",
+          "name": "หอศิลปวัฒนธรรมแห่งกรุงเทพมหานคร",
+          "description": "แหล่งศิลปะใจกลางเมือง",
+          "category": "Point",
+          "inventoryStatus": "APPROVED",
+          "address": "939 Rama I Rd, Wang Mai, Pathum Wan, Bangkok 10330"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.530614, 13.746438]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00021",
+          "name": "วัดราชนัดดา",
+          "description": "โลหะปราสาทหนึ่งเดียวในโลก",
+          "category": "Point",
+          "inventoryStatus": "ACTIVE",
+          "address": "Mahachai Rd, Wat Thepsirin, Pom Prap Sattru Phai, Bangkok 10100"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.504845, 13.754200]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00022",
+          "name": "ชุมชนตลาดพลู",
+          "description": "แหล่งอาหารและขนมชื่อดัง",
+          "category": "Point",
+          "inventoryStatus": "INACTIVE",
+          "address": "Bangkok Yai, Bangkok 10600"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.473016, 13.715564]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00023",
+          "name": "วัดบวรนิเวศ",
+          "description": "วัดสำคัญย่านบางลำพู",
+          "category": "Point",
+          "inventoryStatus": "PENDING",
+          "address": "248 Phra Sumen Rd, Wat Bowon Niwet, Phra Nakhon, Bangkok 10200"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.497297, 13.759389]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00024",
+          "name": "ภูเขาทอง (วัดสระเกศ)",
+          "description": "จุดชมวิวกรุงเทพฯ",
+          "category": "Point",
+          "inventoryStatus": "APPROVED",
+          "address": "344 Chakkraphatdi Phong Rd, Pom Prap Sattru Phai, Bangkok 10100"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.506149, 13.754029]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00025",
+          "name": "ตลาดนัดรถไฟรัชดา",
+          "description": "ตลาดกลางคืนยอดนิยม",
+          "category": "Point",
+          "inventoryStatus": "ACTIVE",
+          "address": "Ratchadaphisek Rd, Din Daeng, Bangkok 10400"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.561661, 13.767243]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00026",
+          "name": "สวนจตุจักร",
+          "description": "สวนสาธารณะกลางกรุง",
+          "category": "Point",
+          "inventoryStatus": "INACTIVE",
+          "address": "Kamphaeng Phet 2 Rd, Chatuchak, Bangkok 10900"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.551667, 13.803251]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00027",
+          "name": "วัดราชบพิธ",
+          "description": "วัดหลวงราชวงศ์",
+          "category": "Point",
+          "inventoryStatus": "PENDING",
+          "address": "2 Fuang Nakhon Rd, Phra Nakhon, Bangkok 10200"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.497646, 13.748636]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00028",
+          "name": "บ้านตุ๊กตาไทย",
+          "description": "พิพิธภัณฑ์ตุ๊กตา",
+          "category": "Point",
+          "inventoryStatus": "APPROVED",
+          "address": "85 Soi Ram Inthra 67, Ram Inthra, Khan Na Yao, Bangkok 10230"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.515700, 13.731660]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00029",
+          "name": "ท่ามหาราช",
+          "description": "คอมมูนิตี้ริมแม่น้ำเจ้าพระยา",
+          "category": "Point",
+          "inventoryStatus": "ACTIVE",
+          "address": "1/11 Trok Mahathat, Maharaj Rd, Phra Nakhon, Bangkok 10200"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.489956, 13.751194]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00030",
+          "name": "ไอคอนสยาม",
+          "description": "ศูนย์การค้าริมเจ้าพระยา",
+          "category": "Point",
+          "inventoryStatus": "INACTIVE",
+          "address": "299 Charoen Nakhon Rd, Khlong Ton Sai, Khlong San, Bangkok 10600"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.509700, 13.726672]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00031",
+          "name": "สะพานพระพุทธยอดฟ้า",
+          "description": "จุดชมวิวสะพานเก่า",
+          "category": "Point",
+          "inventoryStatus": "PENDING",
+          "address": "Phra Pok Klao Bridge, Phra Nakhon, Bangkok 10200"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.495253, 13.744457]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00032",
+          "name": "สามย่านมิตรทาวน์",
+          "description": "ศูนย์การค้าและไลฟ์สไตล์ใจกลางกรุง",
+          "category": "Point",
+          "inventoryStatus": "APPROVED",
+          "address": "944 Rama IV Rd, Wang Mai, Pathum Wan, Bangkok 10330"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.528915, 13.732081]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00033",
+          "name": "ตลาดคลองสาน",
+          "description": "ตลาดเก่าริมน้ำ",
+          "category": "Point",
+          "inventoryStatus": "ACTIVE",
+          "address": "Soi Charoen Nakhon 37, Khlong San, Bangkok 10600"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.508515, 13.732606]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00034",
+          "name": "สวนเบญจกิติ",
+          "description": "สวนป่าและสวนน้ำในเมือง",
+          "category": "Point",
+          "inventoryStatus": "INACTIVE",
+          "address": "Ratchadaphisek Rd, Khlong Toei, Bangkok 10110"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.556259, 13.722880]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00035",
+          "name": "ตลาดอมรพันธ์",
+          "description": "ตลาดสดใกล้มหาวิทยาลัย",
+          "category": "Point",
+          "inventoryStatus": "PENDING",
+          "address": "Amornthep Market, Lat Yao, Chatuchak, Bangkok 10900"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.573191, 13.829133]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00036",
+          "name": "ตลาดน้ำวัดศาลเจ้า",
+          "description": "ตลาดน้ำย่านปทุมธานี",
+          "category": "Point",
+          "inventoryStatus": "APPROVED",
+          "address": "Wat Saljao Floating Market, Pak Kret, Nonthaburi 11120"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.539967, 13.993010]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00037",
+          "name": "วัดไตรมิตร",
+          "description": "พระพุทธรูปทองคำใหญ่",
+          "category": "Point",
+          "inventoryStatus": "ACTIVE",
+          "address": "661 Charoen Krung Rd, Talat Noi, Samphanthawong, Bangkok 10100"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.516939, 13.736105]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00038",
+          "name": "เซ็นทรัลลาดพร้าว",
+          "description": "ศูนย์การค้าขนาดใหญ่",
+          "category": "Point",
+          "inventoryStatus": "INACTIVE",
+          "address": "1693 Phaholyothin Rd, Chatuchak, Bangkok 10900"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.561425, 13.816008]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00039",
+          "name": "บึงหนองบอน",
+          "description": "สวนสาธารณะใหญ่ฝั่งตะวันออก",
+          "category": "Point",
+          "inventoryStatus": "PENDING",
+          "address": "Nong Bon, Prawet, Bangkok 10250"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.656151, 13.687856]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00040",
+          "name": "ตลาดนัดรัชโยธิน",
+          "description": "ตลาดนัดกลางคืนขึ้นชื่อ",
+          "category": "Point",
+          "inventoryStatus": "APPROVED",
+          "address": "Ratchayothin Night Market, Chatuchak, Bangkok 10900"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.562451, 13.819183]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00041",
+          "name": "วัดมหาธาตุยุวราชรังสฤษฎิ์",
+          "description": "วัดใหญ่ริมสนามหลวง",
+          "category": "Point",
+          "inventoryStatus": "ACTIVE",
+          "address": "3 Maharat Rd, Phra Borom Maha Ratchawang, Phra Nakhon, Bangkok 10200"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.492621, 13.753457]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00042",
+          "name": "ตลาดน้ำบางน้ำผึ้ง",
+          "description": "ตลาดน้ำสมุทรปราการ",
+          "category": "Point",
+          "inventoryStatus": "INACTIVE",
+          "address": "Bang Nam Phueng, Phra Pradaeng, Samut Prakan 10130"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.574532, 13.669162]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00043",
+          "name": "ท่าเตียน",
+          "description": "ท่าเรือเก่าแก่",
+          "category": "Point",
+          "inventoryStatus": "PENDING",
+          "address": "Tha Tian, Phra Nakhon, Bangkok 10200"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.492196, 13.744804]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00044",
+          "name": "บางกระเจ้า",
+          "description": "ปอดของกรุงเทพฯ",
+          "category": "Point",
+          "inventoryStatus": "APPROVED",
+          "address": "Bang Krachao, Phra Pradaeng, Samut Prakan 10130"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.582678, 13.660032]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00045",
+          "name": "เซ็นทรัลพระราม 9",
+          "description": "ศูนย์การค้าย่านพระราม 9",
+          "category": "Point",
+          "inventoryStatus": "ACTIVE",
+          "address": "9/9 Rama 9 Rd, Huai Khwang, Bangkok 10310"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.565853, 13.757822]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00046",
+          "name": "พระพิฆเนศหน้าตึกอิตัลไทย",
+          "description": "สิ่งศักดิ์สิทธิ์กลางเมือง",
+          "category": "Point",
+          "inventoryStatus": "INACTIVE",
+          "address": "Italthai Building, New Petchburi Rd, Huai Khwang, Bangkok 10310"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.567530, 13.739170]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00047",
+          "name": "วัดปทุมวนาราม",
+          "description": "วัดใจกลางสยาม",
+          "category": "Point",
+          "inventoryStatus": "PENDING",
+          "address": "969 Rama I Rd, Pathumwan, Bangkok 10330"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.533877, 13.745932]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00048",
+          "name": "ศูนย์วัฒนธรรมแห่งประเทศไทย",
+          "description": "แหล่งวัฒนธรรมสำหรับชมการแสดง",
+          "category": "Point",
+          "inventoryStatus": "APPROVED",
+          "address": "14 Thiam Ruam Mit Rd, Din Daeng, Bangkok 10310"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.569386, 13.766718]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00049",
+          "name": "วัดปากน้ำ",
+          "description": "วัดมหาธาตุย่านฝั่งธน",
+          "category": "Point",
+          "inventoryStatus": "ACTIVE",
+          "address": "300 Ratchasima Rd, Pak Khlong Phasi Charoen, Phasi Charoen, Bangkok 10160"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.501763, 13.712302]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00050",
+          "name": "เมืองโบราณสมุทรปราการ",
+          "description": "แหล่งท่องเที่ยวประวัติศาสตร์",
+          "category": "Point",
+          "inventoryStatus": "INACTIVE",
+          "address": "296/1 Sukhumvit Rd, Samut Prakan 10280"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.597899, 13.543805]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00051",
+          "name": "พารากอน ซีนีเพล็กซ์",
+          "description": "โรงภาพยนตร์ไฮโซกลางสยาม",
+          "category": "Point",
+          "inventoryStatus": "PENDING",
+          "address": "991 Rama 1 Rd, Pathum Wan, Bangkok 10330"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.534363, 13.746574]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00052",
+          "name": "ฟาร์มจระเข้สมุทรปราการ",
+          "description": "แหล่งเรียนรู้สัตว์เลื้อยคลาน",
+          "category": "Point",
+          "inventoryStatus": "APPROVED",
+          "address": "หมู่ 13 ถนนสุขุมวิท อำเภอเมืองสมุทรปราการ Samut Prakan 10270"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.607618, 13.596671]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00053",
+          "name": "สวนสนุกดรีมเวิลด์",
+          "description": "แหล่งท่องเที่ยวครอบครัว",
+          "category": "Point",
+          "inventoryStatus": "ACTIVE",
+          "address": "62 Moo1, Rangsit-Ongkarak Rd, Thanyaburi, Pathum Thani 12130"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.674774, 13.989002]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00054",
+          "name": "ตลาดประชานิเวศน์",
+          "description": "ตลาดสดใหญ่ย่านประชาชื่น",
+          "category": "Point",
+          "inventoryStatus": "INACTIVE",
+          "address": "2, Prachaniwet 1 Rd, Chatuchak, Bangkok 10900"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.523975, 13.821881]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00055",
+          "name": "สถานีรถไฟหัวลำโพง",
+          "description": "อาคารสถานีรถไฟประวัติศาสตร์",
+          "category": "Point",
+          "inventoryStatus": "PENDING",
+          "address": "Rama IV Rd, Rong Muang, Pathum Wan, Bangkok 10330"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.516842, 13.739417]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00056",
+          "name": "คลองโอ่งอ่าง",
+          "description": "จุดพักผ่อนเดินเล่นใจกลางกรุง",
+          "category": "Point",
+          "inventoryStatus": "APPROVED",
+          "address": "Khwaeng Chakkrawat, Samphanthawong, Bangkok 10100"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.504586, 13.748641]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00057",
+          "name": "โรงพยาบาลศิริราช",
+          "description": "ศูนย์การแพทย์ชื่อดัง",
+          "category": "Point",
+          "inventoryStatus": "ACTIVE",
+          "address": "2 Wang Lang Road, Siriraj, Bangkok Noi, Bangkok 10700"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.486765, 13.756336]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00058",
+          "name": "เซ็นทรัลบางนา",
+          "description": "ศูนย์การค้าย่านฝั่งตะวันออก",
+          "category": "Point",
+          "inventoryStatus": "INACTIVE",
+          "address": "585 Bangna-Trad Rd, Bang Na, Bangkok 10260"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.634545, 13.668965]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00059",
+          "name": "วัดสุทัศน์",
+          "description": "พระอุโบสถขนาดใหญ่กลางกรุง",
+          "category": "Point",
+          "inventoryStatus": "PENDING",
+          "address": "146 Bamrung Mueang Rd, Wat Ratchabophit, Phra Nakhon, Bangkok 10200"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.499982, 13.751655]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "00060",
+          "name": "ตลาดวังหลัง",
+          "description": "แหล่งอาหารหลังศิริราช",
+          "category": "Point",
+          "inventoryStatus": "APPROVED",
+          "address": "Wang Lang Market, Siriraj, Bangkok Noi, Bangkok 10700"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [100.483393, 13.755410]
+        }
+      }
+    ]
+  }
