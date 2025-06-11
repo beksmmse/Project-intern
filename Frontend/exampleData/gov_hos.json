@@ -1,0 +1,612 @@
+{
+    "type": "FeatureCollection",
+    "totalFeatures": 30,
+    "features": [
+        {
+            "type": "Feature",
+            "id": "gov_hos.1",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    674848.51217293,
+                    1538263.3487741086
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลภูมิพลอดุลยเดช",
+                "dcode": "1042",
+                "address": "171 ถ.พหลโยธิน แขวงคลองถนน เขตสายไหม  กทม.10220",
+                "tel": "0 - 2534-7000",
+                "num_bed": 700,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.2",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    665118.2413753425,
+                    1522693.716469218
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลและสถาบันประสาทวิทยา",
+                "dcode": "1037",
+                "address": "312 ถ. ราชวิถี แขวงทุ่งพญาไท เขตราชเทวี กทม.",
+                "tel": "0 - 2246 - 9254",
+                "num_bed": 350,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.3",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    665923.930607614,
+                    1522581.2985347474
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลพระมงกุฏเกล้า",
+                "dcode": "1037",
+                "address": "315 ถ.ราชวิถี ทุ่งพญาไท เขตราชเทวี กทม.10400",
+                "tel": "0 - 2246 - 1400-28",
+                "num_bed": 1236,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.4",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    666145.017328599,
+                    1522185.0821818118
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลราชวิถี",
+                "dcode": "1037",
+                "address": "2 ถ.พญาไท แขวงทุ่งพญาไท เขตราชเทวี กทม.10400",
+                "tel": "0 - 2248 - 3213-4",
+                "num_bed": 1235,
+                "type": "1"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.5",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    665042.9414849208,
+                    1521929.1997806744
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลสงฆ์",
+                "dcode": "1037",
+                "address": "445 ถ.ศรีอยุธยา แขวงทุ่งพญาไท เขตราชเทวี กทม.10400",
+                "tel": "0 - 2247 - 1655",
+                "num_bed": 428,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.6",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    643881.4000640227,
+                    1521906.7995746166
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "สถาบันกัลยาณ์ราชนครินทร(นิติจิตเวช)",
+                "dcode": "1048",
+                "address": "23 ม. 8 ถนนพุทธมณฑล สาย 4 แขวงทวีวัฒนา เขตทวีวัฒนา กทม. 10170",
+                "tel": "0 - 2889 - 9066-7",
+                "num_bed": 230,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.7",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    668071.0392196134,
+                    1521875.7413070272
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลราชานุกูล",
+                "dcode": "1026",
+                "address": "4737 ถ. ดินแดง แขวงดินแดง เขตดินแดง กทม. 10320",
+                "tel": "0 - 2245 - 4601-4",
+                "num_bed": 450,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.8",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    667761.4563257912,
+                    1520840.729499081
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลบุรฉัตรไชยากร (รถไฟ)",
+                "dcode": "1037",
+                "address": "700 ถ. มักกะสัน แขวงมักกะสัน เขตราชเทวี กทม. 10400",
+                "tel": "0-2245-2480",
+                "num_bed": 120,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.9",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    666431.1184201931,
+                    1519920.1092075743
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลตำรวจ",
+                "dcode": "1007",
+                "address": "492/1 ถ.พระราม 1 แขวงปทุมวัน เขตปทุมวัน กทม. 10330",
+                "tel": "0-2252-8111",
+                "num_bed": 721,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.10",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    666035.708009734,
+                    1518496.7217372465
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลจุฬาลงกรณ์",
+                "dcode": "1007",
+                "address": "1873 ถ.พระราม 4 แขวงปทุมวัน เขตปทุมวัน กทม. 10330",
+                "tel": "0 -- 2252 - 8131-9",
+                "num_bed": 1492,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.11",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    662732.2483347347,
+                    1518464.5491111446
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลสมเด็จเจ้าพระยา",
+                "dcode": "1018",
+                "address": "94 ถ. สมเด็จเจ้าพระยา แขวงคลองสาน เขตคลองสาน กทม. 10600",
+                "tel": "0 - 2437 - 0200-08",
+                "num_bed": 500,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.12",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    664088.4315953364,
+                    1517504.069408305
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลเลิดสิน",
+                "dcode": "1004",
+                "address": "190 ถ. ศรีเวียง แขวงสีลม เขตบางรัก กทม.10500",
+                "tel": "0 - 2353-9799",
+                "num_bed": 485,
+                "type": "1"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.13",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    668030.8147796148,
+                    1517835.7812165867
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลโรงงานยาสูบ",
+                "dcode": "1033",
+                "address": "184 ถนนพระราม 4 แขวงคลองเตย  เขตคลองเตย กทม.",
+                "tel": "0-2656-4500",
+                "num_bed": 120,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.14",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    682453.459827835,
+                    1528120.0714497613
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลนพรัตน์ราชธานี",
+                "dcode": "1043",
+                "address": "109 ถ.รามอินทรา (กม.ที่ 10) แขวงคันนายาว เขตบึงกุ่ม กทม.10240",
+                "tel": "0 - 2517 - 4270-9",
+                "num_bed": 510,
+                "type": "1"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.15",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    660408.8119256827,
+                    1521336.7800311272
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลศิริราช",
+                "dcode": "1020",
+                "address": "2 ถ.พรานนก แขวงศิริราช เขตบางกอกน้อย กทม.10700",
+                "tel": "0 - 2411 - 4230-44",
+                "num_bed": 2324,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.16",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    660723.2752771708,
+                    1516197.5577578791
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลสมเด็จพระปิ่นเกล้า",
+                "dcode": "1015",
+                "address": "1028 ถ.ตากสิน แขวงบุคคโล เขตธนบุรี กทม.10600",
+                "tel": "0 - 2468 - 0116-20",
+                "num_bed": 450,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.17",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    665103.6888281892,
+                    1522410.9137599564
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลรามาธิบดี",
+                "dcode": "1037",
+                "address": "270 ถ.พระราม 6 แขวงทุ่งพญาไท เขตราชเทวี กทม. 10400",
+                "tel": "0 - 2588 - 3101-3",
+                "num_bed": 951,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.18",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    667746.3151331324,
+                    1523043.8368707849
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลทหารผ่านศึก",
+                "dcode": "1014",
+                "address": "123 ถ.วิภาวดีรังสิต แขวงสามเสนใน เขตพญาไท กทม.",
+                "tel": "0-2245-0661",
+                "num_bed": 201,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.19",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    666034.7786456237,
+                    1522338.8721211662
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "สถาบันโรคผิวหนัง",
+                "dcode": "1037",
+                "address": "420/7 ถ. ราชวิถี แขวงทุ่งพญาไท เขตราชเทวี กทม. 10400",
+                "tel": "0 - 2246 - 1462",
+                "num_bed": 43,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.20",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    667111.9859628938,
+                    1524465.932470007
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลโรคปอดกรุงเทพ",
+                "dcode": "1014",
+                "address": "1281 ถ.พหลโยธิน แขวงสามเสนใน เขตพญาไท",
+                "tel": "0-2278-0463",
+                "num_bed": 22,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.21",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    660681.6510818187,
+                    1520401.510678486
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลทหารเรือกรุงเทพ",
+                "dcode": "1020",
+                "address": "2 ถ.อรุณอมรินทร์ แขวงศิริราช เขตบางกอกน้อย กทม. 10700",
+                "tel": "0-2411-2191",
+                "num_bed": 230,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.22",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    665142.3180882143,
+                    1522528.8621858787
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "สถาบันมะเร็งแห่งชาติ",
+                "dcode": "1037",
+                "address": "268/1 ถ. พระราม 6 แขวงทุ่งพญาไท เขตราชเทวี กทม. 10400",
+                "tel": "0 - 2246 - 1463",
+                "num_bed": 264,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.23",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    665984.0427906591,
+                    1522368.0648870796
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "สถาบันสุขภาพเด็กแห่งชาติมหาราชินี",
+                "dcode": "1037",
+                "address": "420/8 ถ.ราชวิถี แขวงทุ่งพญาไท เขตราชเทวี กทม.10400",
+                "tel": "0 - 2245 - 7198",
+                "num_bed": 453,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.24",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    665865.4642212461,
+                    1522406.8331868139
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลเวฃศาสตร์เขตร้อน",
+                "dcode": "1037",
+                "address": "420/6 ถ. ราชวิถี เขตราชเทวี กทม. 10400",
+                "tel": "0-2246-1273",
+                "num_bed": 250,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.25",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    669363.2576724953,
+                    1516754.0036843445
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "กองการแพทย์การท่าเรือแห่งประเทศไทย",
+                "dcode": "1033",
+                "address": "444 ถ.ท่าเรือ แขวงคลองเตย เขตคลองเตย",
+                "tel": "0-22693000",
+                "num_bed": 0,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.26",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    672529.0505184644,
+                    1534148.4478355069
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลแม่และเด็ก",
+                "dcode": "1005",
+                "address": "24/29 หมู่ 3 อนุสาวรีย์",
+                "tel": "0-25213064",
+                "num_bed": 30,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.27",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    665968.2705622176,
+                    1519863.7638111939
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลคณะทันตแพทย์ศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย",
+                "dcode": "1007",
+                "address": "34 ถ.อังรีดูนังต์ ซ.64 แขวงวังใหม่ ปทุมวัน",
+                "tel": "0-22188705",
+                "num_bed": 40,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.28",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    667094.6615162584,
+                    1524426.5143017978
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลนวุติสมเด็จย่า",
+                "dcode": "1014",
+                "address": "1279 อาคาร รพ.นวุติสมเด็จย่า ถ.พหลโยธิน แขวงสามเสน",
+                "tel": "0-22798250-9",
+                "num_bed": 0,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.29",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    671612.9560628702,
+                    1512347.318885074
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "โรงพยาบาลกรมสรรพวุธทหารเรือ",
+                "dcode": "1047",
+                "address": "120 ถ.สรรพาวุธ แขวงบางนา เขตบางนา",
+                "tel": "0-23935392",
+                "num_bed": 80,
+                "type": "2"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "gov_hos.30",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    663636.9676698011,
+                    1515248.1346624251
+                ]
+            },
+            "geometry_name": "the_geom",
+            "properties": {
+                "name": "กองวัณโรค กรมควบคุมโรคติดต่อ กระทรวงสาธารณสุข",
+                "dcode": "1031",
+                "address": "3331/116 ถ.สุดประเสริฐ แขวงบางโคล่ เขตบางคอแหลม",
+                "tel": "0-22112224,0-2212227",
+                "num_bed": 0,
+                "type": ""
+            }
+        }
+    ],
+    "crs": {
+        "type": "name",
+        "properties": {
+            "name": "urn:ogc:def:crs:EPSG::32647"
+        }
+    }
+}
