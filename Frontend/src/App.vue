@@ -27,11 +27,13 @@
       <li><router-link to="/request">Request</router-link></li>
       <li><router-link to="/report">Report</router-link></li>
       <li><router-link to="/contact">Contact</router-link></li>
+      <li><router-link to="/add">AddData</router-link></li>
     </ul>
   </nav>
         <div class="buttons">
           <template v-if="!isLoggedIn">
-            <router-link to="/login" class="auth-link">Login</router-link>
+            <router-link to="/login" class="auth-link">Login</router-link> 
+            <!-- <router-link to="/register" class="auth-link">Register</router-link> -->
           </template>
           <template v-else>
             <div class="user-section">
@@ -54,7 +56,7 @@
 </template>
 
 <script>
-export default {
+ export default {
   name: 'vueHome',
   data() {
     return {
@@ -63,21 +65,20 @@ export default {
   },
   computed: {
     isLoggedIn() {
-      return localStorage.getItem('isLoggedIn') === 'true';
+      return localStorage.getItem('user') !== null;
     },
     username() {
-      return localStorage.getItem('username') || '';
+      const user = localStorage.getItem('user');
+      return user ? JSON.parse(user).username : '';
     },
-    // บอก role ของ user ที่เข้าใช้ไงในขณะนั้น
-    // userRole() {
-    //   return localStorage.getItem('role') || ''; 
-    // }
+    userRole() {
+      const user = localStorage.getItem('user');
+      return user ? JSON.parse(user).role : '';
+    }
   },
   methods: {
     logout() {
-      localStorage.removeItem('isLoggedIn');
-      localStorage.removeItem('username');
-      localStorage.setItem('userRole', this.userRole);
+      localStorage.removeItem('user');
       this.$router.push('/login');
       window.location.reload();
     },

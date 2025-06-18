@@ -10,6 +10,7 @@ import TypePointPage from '../views/typePoint.vue'
 import TypeLinePage from '../views/typeLine.vue'
 import TypePolygonPage from '../views/typePolygon.vue'
 import infoPage from '../views/vueinfoGeomerty.vue'
+import AddPage from '../views/vueAddData.vue'
 
 
 
@@ -45,16 +46,10 @@ const routes = [
   { path: '/dashboard',
     name: 'dashboard',
     component: DashbordPage },
-    
-  // { path: '/adddata',
-  //   name: 'add',
-  //   component:  
-  //   },
 
   { path: '/info',
     name: 'info',
-    component: infoPage 
-    },
+    component: infoPage },
 
   { path: '/type/point',
     name: 'TypePoint',
@@ -66,7 +61,14 @@ const routes = [
 
   { path: '/type/polygon',
     name: 'TypePolygon',
-    component: TypePolygonPage }
+    component: TypePolygonPage },
+
+  { path: '/add',
+    name: 'add',
+    component: AddPage }
+
+  
+
 
   
 ]

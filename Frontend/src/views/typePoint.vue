@@ -19,22 +19,38 @@
             scrollable
             @row-click="onRowClick"
             style="cursor: pointer;"
-          >
+            tableStyle="min-width: 50rem"
+        >
+            <!-- <DataTable :value="filteredFeatures" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem">
+              <Column field="properties.id" header="ID" style="width: 25%"></Column>
+              <Column field="properties.name" header="Name" style="width: 25%"></Column>
+              <Column ffield="properties.description" header="Description" style="width: 25%"></Column>
+              <Column field="properties.address" header="Address" style="width: 25%"></Column>
+              <Column header="Actions" style="min-width: 5rem"> 
+                <template #body="slotProps">
+                  <Button @click="showInfo(slotProps.data)" severity="info">Info</Button>
+                </template>
+              </Column> -->
+
             <Column field="properties.id" header="ID" sortable style="min-width: 5rem" />
             <Column field="properties.name" header="Name" sortable style="min-width: 10rem" />
             <Column field="properties.description" header="Description" sortable style="min-width: 10rem" />
             <Column field="properties.address" header="Address" sortable style="min-width: 12rem" />
-            <Column header="" 5rem>
-              <template #body="slotProps">
-                <Button @click="showInfo(slotProps.data)" severity="info"> info </button>
-              </template>
+            <Column header="Actions" style="min-width: 5rem"> 
+                <template #body="slotProps">
+                    <Button @click="showInfo(slotProps.data)" severity="info">Info</Button>
+                    <!-- <Button label="Open in New Tab" @click="NewTabTest">Newtab</Button> -->
+                </template>
             </Column>
-          </DataTable>
+        </DataTable>
         </div>
 
 
         <div v-else class="info-box" style="margin-top: 1rem; border: 1px solid #ccc; padding: 1rem; border-radius: 6px;">
-          <Button  @click="selectedFeature = null" class="btn-back" >Back</Button>
+          <div class="button-container">
+            <Button @click="selectedFeature = null" class="btn-back">Back</Button>
+            <Button class="btn-exten" @click="toggleFullscreen">Extend</Button>
+          </div>
 
           <h3>รายละเอียด</h3>
           <p><strong>ID:</strong> {{ selectedFeature.properties.id }}</p>
@@ -44,8 +60,6 @@
           <p><strong>create_at:</strong> {{ selectedFeature.properties.created_at }}</p>
           <p><strong>type:</strong> {{ selectedFeature.properties.type }}</p>
           <p><strong>coordinates:</strong> {{ selectedFeature.properties.coordinates }}</p>
-
-          
         </div>
       </div>
 
@@ -62,16 +76,11 @@ import html2canvas from 'html2canvas'
 import L from 'leaflet'
 import '@geoman-io/leaflet-geoman-free'
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
-// import DataTable from 'primevue/datatable';
-// import Column from 'primevue/column';
 import axios from 'axios';
-
 
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import ColumnGroup from 'primevue/columngroup';   // optional
-import Row from 'primevue/row';                   // optional
-
+import Button from 'primevue/button';
 
 
 const drawnItems = L.featureGroup();
@@ -92,6 +101,8 @@ const filteredFeatures = computed(() => {
     f.properties.address?.toLowerCase().includes(q)
   );
 });
+
+
 
 
 function createPopup(content = "Name") {
@@ -147,6 +158,18 @@ if (map && rowData.geometry?.coordinates) {
   }
   }
 
+
+// function toggleFullscreen() {
+// const infoBox = document.querySelector('.info-box');
+
+//     if (infoBox.classList.contains('fullscreen-overlay')) {
+//       // ปิด overlay
+//       infoBox.classList.remove('fullscreen-overlay');
+//     } else {
+//       // เปิด overlay
+//       infoBox.classList.add('fullscreen-overlay');
+//     }
+//   }
 
 //กลับมาเเก้ต่อ 
 // function AddGeometry () {
@@ -560,6 +583,7 @@ gap: 10px;
 padding: 10px;
 height: calc(100vh - 60px); 
 box-sizing: border-box;
+position: relative; 
 
 }
 
@@ -636,6 +660,41 @@ overflow: auto;
   background-repeat: no-repeat;
   background-position: center;
 } */
+
+.custom-datatable :deep(.p-datatable-thead > tr > th) {
+    padding: 1rem 0.75rem;
+}
+
+.custom-datatable :deep(.p-datatable-tbody > tr > td) {
+    padding: 0.75rem;
+}
+
+/* .info-box.fullscreen-overlay {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  z-index: 999;
+  padding: 2rem;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+} */
+
+.info-box {
+  position: relative;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
 
 
 

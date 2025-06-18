@@ -27,13 +27,12 @@ export default {
         return;
       }
       try {
-        const res = await axios.post('http://localhost:3000/login', {
+        const res = await axios.post('http://localhost:3000/api/login', {
           username: this.username,
           password: this.password,
         })
         if (res.data && res.data.success) {
-          localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem('username', this.username);
+          localStorage.setItem('user', JSON.stringify(res.data.user));
           this.errorMessage = '';
           this.$router.push('/dashboard').then(() => window.location.reload());
         } else {
@@ -46,6 +45,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 
 
