@@ -488,13 +488,6 @@ onMounted(() => {
 
 
 <style scoped>
-/* body {
-margin: 0;
-padding: 0;
-height: 100vh;
-font-family: sans-serif;
-} */
-
 html, body, #app {
   margin: 0;
   padding: 0;

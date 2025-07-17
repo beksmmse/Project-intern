@@ -362,6 +362,248 @@ app.get('/api/admin/users', authenticateToken, authorizeRole(['admin']), async (
   }
 });
 
+// POST /api/geometries
+app.post('/api/geometries', async (req, res) => {
+  try {
+    const {
+      organization_id,
+      name,
+      description,
+      geometry_type,
+      srid = 4326,
+      properties_schema,
+      created_by_user_id,
+      address,
+      geometry
+    } = req.body;
+
+    const query = `
+      INSERT INTO layers (
+        organization_id, name, description, geometry_type, 
+        srid, properties_schema, created_by_user_id, address, geometry
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, ST_GeomFromGeoJSON($9))
+      RETURNING id, created_at
+    `;
+
+    const values = [
+      organization_id,
+      name,
+      description,
+      geometry_type,
+      srid,
+      JSON.stringify(properties_schema),
+      created_by_user_id,
+      address,
+      JSON.stringify(geometry)
+    ];
+
+    const result = await pool.query(query, values);
+    
+    res.json({
+      success: true,
+      id: result.rows[0].id,
+      created_at: result.rows[0].created_at
+    });
+
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล' 
+    });
+  }
+});
+
+// GET /api/geometries
+app.get('/api/geometries', async (req, res) => {
+  try {
+    const query = `
+      SELECT 
+        id, organization_id, name, description, geometry_type,
+        srid, properties_schema, created_by_user_id, created_at,
+        updated_at, address, ST_AsGeoJSON(geometry) as geometry
+      FROM layers
+      ORDER BY created_at DESC
+    `;
+
+    const result = await pool.query(query);
+    
+    const features = result.rows.map(row => ({
+      ...row,
+      geometry: JSON.parse(row.geometry)
+    }));
+
+    res.json(features);
+
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'เกิดข้อผิดพลาดในการดึงข้อมูล' 
+    });
+  }
+});
+
+// GET /api/geometries/:id - ดึงข้อมูลตาม ID
+app.get('/api/geometries/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const query = `
+      SELECT 
+        id, organization_id, name, description, geometry_type,
+        srid, properties_schema, created_by_user_id, created_at,
+        updated_at, address, ST_AsGeoJSON(geometry) as geometry
+      FROM layers
+      WHERE id = $1
+    `;
+
+    const result = await pool.query(query, [id]);
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'ไม่พบข้อมูล'
+      });
+    }
+
+    const feature = {
+      ...result.rows[0],
+      geometry: JSON.parse(result.rows[0].geometry),
+      properties_schema: typeof result.rows[0].properties_schema === 'string' 
+        ? JSON.parse(result.rows[0].properties_schema) 
+        : result.rows[0].properties_schema
+    };
+
+    res.json(feature);
+
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'เกิดข้อผิดพลาดในการดึงข้อมูล',
+      error: error.message 
+    });
+  }
+});
+
+app.delete('/api/geometries/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const checkQuery = 'SELECT id, name FROM layers WHERE id = $1';
+    const checkResult = await pool.query(checkQuery, [id]);
+
+    if (checkResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'ไม่พบข้อมูลที่ต้องการลบ'
+      });
+    }
+
+    const dataToDelete = checkResult.rows[0];
+
+    const deleteQuery = 'DELETE FROM layers WHERE id = $1 RETURNING id';
+    const deleteResult = await pool.query(deleteQuery, [id]);
+
+    console.log('ลบข้อมูลสำเร็จ:', dataToDelete);
+
+    res.json({
+      success: true,
+      message: 'ลบข้อมูลสำเร็จ',
+      deleteId: parseInt(id),
+      deleteName: dataToDelete.name
+    });
+
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'เกิดข้อผิดพลาดในการลบข้อมูล',
+      error: error.message
+    });
+  }
+});
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    message: 'API is running'
+  });
+});
+
+app.put('/api/geometries/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const allowedFields = [
+      'name',
+      'description',
+      'geometry_type',
+      'srid',
+      'properties_schema',
+      'address',
+      'geometry',
+      'updated_at'
+    ];
+
+    const fields = [];
+    const values = [];
+    let idx = 1;
+
+    //  track การแก้ไขล่าสุด
+    req.body.updated_at = new Date().toISOString();
+
+    for (const key of allowedFields) {
+      if (req.body[key] !== undefined) {
+        fields.push(`${key} = $${idx++}`);
+        values.push(req.body[key]);
+      }
+    }
+
+    if (fields.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'ไม่มีข้อมูลที่จะแก้ไข'
+      });
+    }
+
+    // ตรวจสอบว่ามี row นี้ไหม
+    const checkQuery = 'SELECT id FROM layers WHERE id = $1';
+    const checkResult = await pool.query(checkQuery, [id]);
+    if (checkResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'ไม่พบข้อมูลที่ต้องการแก้ไข'
+      });
+    }
+
+    const updateQuery = `
+      UPDATE layers
+      SET ${fields.join(', ')}
+      WHERE id = $${idx}
+      RETURNING *
+    `;
+    values.push(id);
+
+    const updateResult = await pool.query(updateQuery, values);
+
+    res.json({
+      success: true,
+      message: 'แก้ไขข้อมูลสำเร็จ',
+      updated: updateResult.rows[0]
+    });
+
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'เกิดข้อผิดพลาดในการแก้ไขข้อมูล',
+      error: error.message
+    });
+  }
+});
 
 
 

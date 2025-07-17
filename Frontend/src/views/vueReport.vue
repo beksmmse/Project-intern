@@ -35,6 +35,7 @@
   box-sizing: border-box;
 }
 
+
 .report-page {
   font-family: inherit;
   display: flex;
@@ -42,6 +43,8 @@
   align-items: center;
   /* max-height: 100vh; */
   background-color: #f4f7fa;
+  height:100vh;
+  
   padding: 20px;
 }
 

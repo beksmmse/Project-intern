@@ -33,6 +33,7 @@ export default {
   flex-direction: column;
   color: white;
   text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+  padding: 0px;
 }
 
 .content {

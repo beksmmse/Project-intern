@@ -2,47 +2,37 @@
   <div id="app">
     <header>
       <div class="container">
-        <img src="@/assets/TDM_LOGO-01.jpg" alt="TDM Logo" class="logo" />
+        <img src="@/assets/TDM  LOGO-01-strok.png" alt="TDM Logo" class="logo" />
         <nav>
-    <ul>
-      <li><router-link to="/">Home</router-link></li>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" @click.prevent>
-          {{ currentType }}
-          <i class="arrow-down"></i>
-        </a>
-        <ul class="dropdown-menu">
-          <li>
-            <router-link to="/type/point" @click="setType('Point')">Point</router-link>
-          </li>
-          <li>
-            <router-link to="/type/line" @click="setType('Line')">Line</router-link>
-          </li>
-          <li>
-            <router-link to="/type/polygon" @click="setType('Polygon')">Polygon</router-link>
-          </li>
-        </ul>
-      </li>
-      <li><router-link to="/dashboard">Dashboard</router-link></li>
-      <li><router-link to="/request">Request</router-link></li>
-      <li><router-link to="/report">Report</router-link></li>
-      <li><router-link to="/contact">Contact</router-link></li>
-      <li><router-link to="/add">AddData</router-link></li>
-    </ul>
-  </nav>
+          <ul>
+            <li><router-link to="/">Home</router-link></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" @click.prevent>
+                {{ currentType }}
+                <i class="arrow-down"></i>
+              </a>
+              <ul class="dropdown-menu">
+                <li><router-link to="/type/point" @click="setType('Point')">Point</router-link></li>
+                <li><router-link to="/type/line" @click="setType('Line')">Line</router-link></li>
+                <li><router-link to="/type/polygon" @click="setType('Polygon')">Polygon</router-link></li>
+              </ul>
+            </li>
+            <li><router-link to="/dashboard">Dashboard</router-link></li>
+            <li><router-link to="/request">Request</router-link></li>
+            <li><router-link to="/report">Report</router-link></li>
+            <li><router-link to="/contact">Contact</router-link></li>
+          </ul>
+        </nav>
         <div class="buttons">
           <template v-if="!isLoggedIn">
-            <router-link to="/login" class="auth-link">Login</router-link> 
-            <!-- <router-link to="/register" class="auth-link">Register</router-link> -->
+            <router-link to="/login" class="auth-link">Login</router-link>
           </template>
           <template v-else>
             <div class="user-section">
-              <!-- <span class="avatar" url="#"> piture</span> -->
               <div class="user-info">
                 <span class="username">{{ username }}</span>
-                <!-- <span class="user-role">{{ role }}</span> -->
               </div>
-              <button @click="logout" class="logout-btn ">Logout</button>
+              <button @click="logout" class="logout-btn">Logout</button>
             </div>
           </template>
         </div>
@@ -56,7 +46,7 @@
 </template>
 
 <script>
- export default {
+export default {
   name: 'vueHome',
   data() {
     return {
@@ -85,18 +75,17 @@
     setType(type) {
       this.currentType = type;
     }
-  },
+  }
 }
 </script>
 
-
 <style scoped>
-
 html, #app {
   margin: 0;
   padding: 0;
   height: 100vh;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 body {
@@ -105,20 +94,18 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.6;
-  color: #333;
-  height: 100%;
-  overscroll-behavior: none;
+  color: #000000;
   position: fixed;
 }
 
 .container {
   max-width: 100%;
   margin: 0;
-  padding: 0 0 0 20px;
+  padding: 0;
 }
 
 header {
-  background-color: #fff;
+  background-color: #389af9;
   padding: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -132,11 +119,15 @@ header .container {
 .logo {
   height: 70px;
   width: auto;
+  background-color: transparent;
+  display: block;
+  margin-left: 20px;   
+  padding: 4px;        
+  box-sizing: border-box;
 }
 
 nav {
   display: flex;
-  justify-content: row; 
 }
 
 nav ul {
@@ -148,12 +139,11 @@ nav ul {
 
 nav ul li {
   margin-left: 20px;
-  pad: 0px;
 }
 
 nav ul li a {
   text-decoration: none;
-  color: #555;
+  color: #ffffff;
   transition: color 0.3s ease;
 }
 
@@ -164,23 +154,6 @@ nav ul li a:hover {
 .dropdown {
   position: relative;
   z-index: 1;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-.dropdown {
-  position: relative;
 }
 
 .dropdown-menu {
@@ -218,14 +191,6 @@ nav ul li a:hover {
   vertical-align: middle;
 }
 
-.buttons a {
-  text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  margin-left: 10px;
-}
-
 .buttons {
   display: flex;
   align-items: center;
@@ -236,17 +201,15 @@ nav ul li a:hover {
 
 .auth-link, .logout-btn {
   text-decoration: none;
-  color: #3498db;
+  color: #ffffff;
   font-weight: bold;
-  transition: color 0.3s ease;
-  padding: 10px 20px;
-  border-radius: 5px;
-  margin-left: 10px;
   background: none;
   border: none;
   cursor: pointer;
-  font-family: inherit; 
+  font-family: inherit;
   font-size: inherit;
+  padding: 10px 20px;
+  border-radius: 5px;
 }
 
 .auth-link:hover, .logout-btn:hover {
@@ -254,78 +217,11 @@ nav ul li a:hover {
   background: #f2f2f2;
 }
 
-.separator {
-  color: #999;
-  font-weight: normal;
-}
-
-.register:hover {
-  background-color: #2980b9;
-}
-
-.hero {
-  padding: 80px 0;
-  background-color: #fff;
-}
-
-.hero .container {
-  display: flex;
-  align-items: center;
-}
-
-.hero-left {
-  flex: 1;
-  padding-right: 40px;
-}
-
-.hero-left h1 {
-  font-size: 48px;
-  line-height: 1.2;
-  margin-bottom: 20px;
-  color: #2c3e50;
-}
-
-.hero-left p {
-  font-size: 16px;
-  color: #777;
-  margin-bottom: 30px;
-}
-
-.hero-left a {
-  color: #3498db;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.hero-left a:hover {
-  text-decoration: underline;
-}
-
-.hero-right {
-  flex: 1;
-  text-align: center;
-}
-
-.hero-right img {
-  max-width: 100%;
-  height: auto;
-}
-
-.logout-btn {
-  text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  margin-left: 10px;
-  color: #3498db;
-  font-weight: bold;
-}
-
 .user-section {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-
 
 @media (max-width: 768px) {
   .container {
@@ -342,7 +238,7 @@ nav ul li a:hover {
   }
 
   nav ul {
-    flex-direction: row;
+    flex-direction: column;
     padding: 5px;
   }
 
@@ -354,20 +250,6 @@ nav ul li a:hover {
   .buttons {
     margin-top: 15px;
     padding-right: 15px;
-  }
-
-  .hero .container {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .hero-left {
-    padding-right: 0;
-    margin-bottom: 30px;
-  }
-
-  .hero-left h1 {
-    font-size: 36px;
   }
 }
 </style>
