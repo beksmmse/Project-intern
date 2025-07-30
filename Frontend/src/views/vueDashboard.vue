@@ -1,6 +1,6 @@
 <template>
     <div class="dashboard-container">
-      <h1 class="dashboard-title"></h1>
+      <!-- <h1 class="dashboard-title"></h1> -->
       <!-- Filters Section -->
       <div class="filters-section">
         <div class="filter-controls">
@@ -37,16 +37,19 @@
               <option value="other">อื่นๆ</option>
             </select>
           </div>
-          
+            <!-- <div v-if="filteredFeatures.length === 0" class="no-data">ไม่พบข้อมูลที่ตรงกับเงื่อนไข</div>
+            <div class="filter-result-count">
+              แสดงผลลัพธ์ทั้งหมด {{ filteredFeatures.length }} รายการ
+            </div> -->
           <div class="filter-buttons">
-            <Button @click="applyFilters" severity="primary" size="small">
-              <i class="pi pi-filter"></i> ยืนยัน
+            <Button @click="applyFilters" severity="primary" size="small" class="btn-apply">
+              <!-- <i class="pi pi-filter"></i>  --> ยืนยัน
             </Button>
-            <Button @click="resetFilters" severity="secondary" size="small">
-              <i class="pi pi-refresh"></i> รีเช็ต
+            <Button @click="resetFilters" severity="secondary" size="small" class="btn-reset">
+              <!-- <i class="pi pi-refresh"></i>  --> รีเช็ต
             </Button>
-            <Button @click="exportData" severity="success" size="small">
-              <i class="pi pi-download"></i> ส่งออก
+            <Button @click="exportData" severity="success" size="small" class="btn-export">
+              <!-- <i class="pi pi-download"></i>  --> ดาวน์โหลด
             </Button>
           </div>
         </div>
@@ -57,40 +60,39 @@
         <div class="card">
           <div class="card-header">
             <h3>ข้อมูลทั้งหมด</h3>
-            <i class="pi pi-map"></i>
+            <!-- <i class="pi pi-map"></i> -->
           </div>
           <div class="card-value">{{ totalFeatures }}</div>
-          <div class="card-trend" :class="{ positive: totalTrend > 0, negative: totalTrend < 0 }">
-            <i :class="totalTrend > 0 ? 'pi pi-arrow-up' : 'pi pi-arrow-down'"></i>
-            {{ Math.abs(totalTrend) }}%
-          </div>
+            <div class="card-percentage">
+              {{ totalGeometryPercentage }} %
+            </div>
         </div>
         
         <div class="card">
           <div class="card-header">
             <h3>จุด</h3>
-            <i class="pi pi-map-marker"></i>
+            <!-- <i class="pi pi-map-marker"></i> -->
           </div>
           <div class="card-value">{{ geometryStats.Point || 0 }}</div>
-          <div class="card-percentage">{{ getPercentage('Point') }}%</div>
+          <div class="card-percentage">{{ getPercentage('Point') }} %</div>
         </div>
         
         <div class="card">
           <div class="card-header">
             <h3>เส้น</h3>
-            <i class="pi pi-minus"></i>
+            <!-- <i class="pi pi-minus"></i> -->
           </div>
           <div class="card-value">{{ geometryStats.LineString || 0 }}</div>
-          <div class="card-percentage">{{ getPercentage('LineString') }}%</div>
+          <div class="card-percentage">{{ getPercentage('LineString') }} %</div>
         </div>
         
         <div class="card">
           <div class="card-header">
             <h3>โพลีกอน</h3>
-            <i class="pi pi-stop"></i>
+            <!-- <i class="pi pi-stop"></i> -->
           </div>
           <div class="card-value">{{ geometryStats.Polygon || 0 }}</div>
-          <div class="card-percentage">{{ getPercentage('Polygon') }}%</div>
+          <div class="card-percentage">{{ getPercentage('Polygon') }} %</div>
         </div>
       </div>
   
@@ -108,10 +110,10 @@
             <Chart type="pie" :data="geometryChartData" :options="chartOptions" class="chart" />
           </div>
           <div class="chart-legend">
-            <div v-for="(value, key) in geometryStats" :key="key" class="legend-item">
+            <!-- <div v-for="(value, key) in geometryStats" :key="key" class="legend-item">
               <span class="legend-color" :style="{ backgroundColor: getGeometryColor(key) }"></span>
               <span>{{ key }}: {{ value }}</span>
-            </div>
+            </div> -->
           </div>
         </div>
         
@@ -127,35 +129,35 @@
             <Chart type="doughnut" :data="typeChartData" :options="chartOptions" class="chart" />
           </div>
           <div class="chart-legend">
-            <div v-for="(value, key) in typeStats" :key="key" class="legend-item">
+            <!-- <div v-for="(value, key) in typeStats" :key="key" class="legend-item">
               <span class="legend-color" :style="{ backgroundColor: getTypeColor(key) }"></span>
               <span>{{ key }}: {{ value }}</span>
-            </div>
+            </div> -->
           </div>
         </div>
         
         <!-- Quick Statistics -->
         <div class="chart-card">
           <div class="chart-header">
-            <h3>สถิติประเภทข้อมูล</h3>
+            <h3>สรุปสถิติข้อมูลล่าสุด</h3>
           </div>
           <div class="stats-grid">
             <div class="stat-item">
-              <span class="stat-label">ค่าเฉลี่ยนต่อเดือน</span>
+              <span class="stat-label"> จำนวนข้อมูลใหม่เฉลี่ยต่อเดือน</span>
               <span class="stat-value">{{ avgPerMonth }}</span>
             </div>
             <div class="stat-item">
-              <span class="stat-label">ชนิดของข้อมูลที่มากที่สุด</span>
+              <span class="stat-label">ประเภทข้อมูลที่พบบ่อยที่สุด</span>
               <span class="stat-value">{{ mostCommonType }}</span>
             </div>
             <div class="stat-item">
-              <span class="stat-label">สร้างล่าสุด</span>
+              <span class="stat-label"> ข้อมูลถูกสร้างล่าสุดเมื่อ</span>
               <span class="stat-value">{{ latestAddition }}</span>
             </div>
-            <div class="stat-item">
-              <span class="stat-label">ครอบคลุ่มพื้นที่ของโลพีกอน</span>
-              <span class="stat-value">{{ totalCoverage }}</span>
-            </div>
+              <div class="stat-item">
+                <span class="stat-label">แก้ไขล่าสุด</span>
+                <span class="stat-value">{{ latestUpdate }}</span>
+              </div>
           </div>
         </div>
       </div>
@@ -179,6 +181,7 @@
       </div>
     </div>
   </template>
+  
   <script setup>
   import { ref, onMounted, computed, watch } from "vue";
   import Chart from 'primevue/chart';
@@ -217,6 +220,14 @@
     });
     return stats;
   });
+
+  const totalGeometryPercentage = computed(() => {
+  const total = totalFeatures.value;
+  const sum = (geometryStats.value.Point || 0)
+            + (geometryStats.value.LineString || 0)
+            + (geometryStats.value.Polygon || 0);
+  return total > 0 ? Math.round((sum / total) * 100) : 0;
+});
   
   const typeStats = computed(() => {
     const stats = {};
@@ -278,7 +289,6 @@
     return `${filteredFeatures.value.length * 1.2}km²`;
   });
   
-  // Helper functions สำหรับแปลง labels
   function getGeometryLabel(key) {
     const labelMap = {
       'Point': 'จุด',
@@ -428,7 +438,6 @@
     };
   };
   
-  // Color functions
   function getGeometryColor(type, hover = false) {
     const colors = {
       'Point': hover ? '#06b6d4' : '#0891b2',
@@ -607,6 +616,15 @@
     selectedFeatureType.value = '';
     updateCharts();
   }
+
+  const latestUpdate = computed(() => {
+    if (filteredFeatures.value.length === 0) return 'ไม่มีข้อมูล';
+    const latest = filteredFeatures.value.reduce((a, b) =>
+      new Date(a.properties.updated_at || a.properties.created_at) > new Date(b.properties.updated_at || b.properties.created_at) ? a : b
+    );
+    const date = latest.properties.updated_at || latest.properties.created_at;
+    return formatTimeAgo(date);
+  });
   
   function refreshChart(type) {
     updateCharts();
@@ -651,15 +669,16 @@
   });
   </script>
   
-  <style scoped>
-  .dashboard-container {
-    padding: 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: var(--p-surface-ground);
-    height: 100vh;
-    overflow-y: auto;
-  }
+<style scoped>
+.dashboard-container {
+  padding: 0.5rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  background-color: var(--p-surface-ground);
+  height: calc(100vh - 60px);
+  box-sizing: border-box;
+}
   
   .dashboard-title {
     text-align: center;
@@ -669,14 +688,14 @@
     font-weight: 300;
   }
   
-  .filters-section {
-    background: var(--p-surface-card);
-    border: 1px solid var(--p-surface-border);
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+ .filters-section {
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem ;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
   
   .filter-controls {
     display: flex;
@@ -688,7 +707,7 @@
   .filter-group {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.3rem;
   }
   
   .filter-group label {
@@ -726,14 +745,38 @@
     display: flex;
     gap: 0.5rem;
     margin-left: auto;
+   
   }
+
+.btn-apply,
+.btn-reset,
+.btn-export {
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  background-color: #389af9;
+  color: white;
+}
+
+.btn-apply:hover,
+.btn-reset:hover,
+.btn-export:hover {
+  background-color: #5ebafc; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+  
   
   /* Summary Cards - Compact */
   .summary-cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 5px;
+    padding: 0.5rem;
   }
   
   .card {
@@ -794,15 +837,18 @@
   .card-percentage {
     font-size: 0.75rem;
     color: var(--p-text-color-secondary);
+    font-family: sans-serif;
   }
   
   /* Charts Section - 3 Columns */
   .charts-section {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-bottom: 1rem;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem;
+    border-radius: 5px;
   }
+
   
   .chart-card {
     background: var(--p-surface-card);
@@ -848,12 +894,14 @@
   }
   
   .chart-container {
-    height: 200px;
+    height: auto;
+    min-height: 20px;
     position: relative;
   }
   
   .chart-full-width .chart-container {
-    height: 250px;
+    height: auto;
+    min-height: 200px;
   }
   
   .chart {
@@ -913,69 +961,77 @@
     font-weight: 600;
     color: var(--p-primary-color);
   }
-  
-  /* Responsive Design */
-  @media (max-width: 1024px) {
-    .charts-section {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .summary-cards {
-      grid-template-columns: repeat(2, 1fr);
-    }
+
+  .no-data,
+  .filter-result-count{
+    font-size: 0.8rem;
+    color: var(--p-text-color-secondary);
+    margin-top: 0.5rem;
   }
   
-  @media (max-width: 768px) {
-    .dashboard-container {
-      padding: 0.5rem;
-    }
-    
-    .dashboard-title {
-      font-size: 1.5rem;
-    }
-    
-    .filter-controls {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    
-    .filter-group {
-      width: 100%;
-      justify-content: space-between;
-    }
-    
-    .filter-buttons {
-      margin-left: 0;
-      width: 100%;
-      justify-content: center;
-    }
-    
-    .charts-section {
-      grid-template-columns: 1fr;
-    }
-    
-    .summary-cards {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .stats-grid {
-      grid-template-columns: 1fr;
-    }
+/* Responsive Desivgn */
+@media (max-width: 1024px) {
+  .charts-section {
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  @media (max-width: 480px) {
-    .summary-cards {
-      grid-template-columns: 1fr;
-    }
-    
-    .date-range {
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-    
-    .filter-group input,
-    .filter-group select {
-      min-width: 100px;
-    }
+
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
   }
-  </style>
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 0.5rem;
+  }
+
+  .dashboard-title {
+    font-size: 1.5rem;
+  }
+
+  .filter-controls {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .filter-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .filter-buttons {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .charts-section {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .date-range {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .filter-group input,
+  .filter-group select {
+    min-width: 100px;
+  }
+}
+
+</style> 

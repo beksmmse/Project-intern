@@ -11,6 +11,7 @@ import Button from 'primevue/button'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import '@geoman-io/leaflet-geoman-free'
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
+import './assets/main.css'
 
 const app = createApp(App)
 

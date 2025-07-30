@@ -2,7 +2,7 @@
   <div id="app">
     <header>
       <div class="container">
-        <img src="@/assets/TDM  LOGO-01-strok.png" alt="TDM Logo" class="logo" />
+        <img src="@/assets/TDM-LOGO-03.png" alt="TDM Logo" class="logo" />
         <nav>
           <ul>
             <li><router-link to="/">Home</router-link></li>
@@ -148,7 +148,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-  color: #3498db;
+  color: #273fa6;
 }
 
 .dropdown {
@@ -168,10 +168,12 @@ nav ul li a:hover {
   left: 0;
   z-index: 1000;
   min-width: 150px;
+  color:#273fa6;
 }
 
 .dropdown-menu li {
   padding: 5px 15px;
+  color: #389af9;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -187,9 +189,21 @@ nav ul li a:hover {
   margin-left: 5px;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid #555;
+  border-top: 5px solid #ffffff;
   vertical-align: middle;
 }
+
+.dropdown-menu li a {
+  color: #389af9 !important; 
+  font-weight: 500;
+}
+
+.dropdown-menu li a:hover {
+  color: #90cdff!important; 
+  background-color: #e8f5e9;   
+}
+
+
 
 .buttons {
   display: flex;
@@ -201,9 +215,9 @@ nav ul li a:hover {
 
 .auth-link, .logout-btn {
   text-decoration: none;
-  color: #ffffff;
+  color: #389af9;
   font-weight: bold;
-  background: none;
+  background: #ffffff;
   border: none;
   cursor: pointer;
   font-family: inherit;
@@ -221,6 +235,11 @@ nav ul li a:hover {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.user-info{
+  color: #ffffff;
+  font-weight: bold;
 }
 
 @media (max-width: 768px) {
@@ -252,4 +271,6 @@ nav ul li a:hover {
     padding-right: 15px;
   }
 }
+
+
 </style>
