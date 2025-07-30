@@ -11,8 +11,8 @@
               v-model="searchText"
               style="flex: 1;"
             />
-            <Button @click="refreshData" severity="info" :loading="isLoading">
-              <i class="pi pi-refresh"></i> refresh
+            <Button @click="refreshData" severity="info" :loading="isLoading" class="refresh-btn" >
+              <i class="fas fa-sync-alt"></i> 
             </Button>
           </div>
 
@@ -26,39 +26,53 @@
             style="cursor: pointer;"
             tableStyle="min-width: 50rem"
           >
-            <Column field="properties.id" header="ID" sortable style="min-width: 5rem" />
+            <Column field="properties.id" header="ID" sortable style="min-width: 2rem" />
             <Column field="properties.name" header="Name" sortable style="min-width: 10rem" />
             <Column field="properties.description" header="Description" sortable style="min-width: 10rem" />
             <Column field="properties.address" header="Address" sortable style="min-width: 12rem" />
-            <Column header="Actions" style="min-width: 10rem"> 
-              <template #body="slotProps">
-                <Button @click="showInfo(slotProps.data)" severity="info" size="small">
-                  <i class="pi pi-info-circle"></i> Info
-                </Button>
-                <Button @click="showEdit(slotProps.data)" severity="warning" size="small">
-                  <i class="pi pi-pencil"></i> Edit
-                </Button>
-                <Button 
-                  @click="deleteFeature(slotProps.data.properties.id, slotProps.data.properties.name)" 
-                  severity="danger" 
-                  size="small"
-                  style="margin-left: 5px;"
-                >
-                  <i class="pi pi-trash"></i> delete
-                </Button>
-              </template>
+            <Column header="" style="min-width: 10rem"> 
+                <template #body="slotProps">
+                <div style="display: flex; gap: 5px; align-items: center; justify-content: center;" class="action-buttons">
+                    <Button
+                    @click="showInfo(slotProps.data)"
+                    severity="info"
+                    size="small"
+                    >
+                    ลายละเอียด
+                    </Button>
+
+                    <Button
+                    @click="showEdit(slotProps.data)"
+                    severity="warning"
+                    size="small"
+                    >
+                    <i class="pi pi-pencil action-edit" style="margin-top: 3px;"></i>
+                    </Button>
+
+                    <Button
+                    @click="deleteFeature(slotProps.data.properties.id, slotProps.data.properties.name)"
+                    severity="danger"
+                    size="small"
+                    >
+                    <i class="pi pi-trash action-delete" style="color: red; margin-top: 3px;"></i>
+                    </Button>
+                </div>
+                </template>
+
             </Column>
           </DataTable>
         </div>
 
         <div v-else class="info-box" style="margin-top: 1rem; border: 1px solid #ccc; padding: 1rem; border-radius: 6px;">
           <div class="button-container">
-            <Button @click="selectedFeature = null" class="btn-back">Back</Button>
-            <Button class="btn-exten" @click="toggleFullscreen">Extend</Button>
-            <Button @click="deleteCurrentFeature" severity="danger">
+            <Button @click="exitFullscreenAndBack" class="btn-back">Back</Button>
+            <Button class="btn-exten" @click="toggleFullscreen">
+             {{ isLeftFullscreen ? 'Exit Fullscreen' : 'Extend' }}
+            </Button>
+            <!-- <Button @click="deleteCurrentFeature" severity="danger">
               <i class="pi pi-trash"></i> Delete
             </Button>
-            <Button @click="showEdit(selectedFeature)" class="btn-edit">Edit</Button>
+            <Button @click="showEdit(selectedFeature)" class="btn-edit">Edit</Button> -->
           </div>
 
           <h3>รายละเอียด</h3>
@@ -67,8 +81,10 @@
           <p><strong>Description:</strong> {{ selectedFeature.properties.description }}</p>
           <p><strong>Address:</strong> {{ selectedFeature.properties.address }}</p>
           <p><strong>create_at:</strong> {{ selectedFeature.properties.created_at }}</p>
+          <p><strong>update_at:</strong> {{ selectedFeature.properties.update_at }}</p>
           <p><strong>type:</strong> {{ selectedFeature.properties.type }}</p>
           <p><strong>coordinates:</strong> {{ selectedFeature.properties.coordinates }}</p>
+          <p><strong>SRID:</strong> {{ selectedFeature.properties.srid }}</p>
         </div>
       </div>
 
@@ -111,18 +127,20 @@
             />
           </div>
           
-          <div class="form-group">
-            <label>คำอธิบาย:</label>
+        <div class="form-group">
+            <label>คำอธิบาย: <span class="required">*</span></label>
             <textarea 
               v-model="formData.description" 
+              required
               placeholder="กรุณากรอกคำอธิบาย"
               rows="3"
             ></textarea>
           </div>
           
           <div class="form-group">
-            <label>ประเภท:</label>
-            <select v-model="formData.type">
+            <label>ประเภท: <span class="required">*</span></label>
+            <select v-model="formData.type" required>
+              <option value="" disabled>เลือกประเภท</option>
               <option value="landmark">สถานที่สำคัญ</option>
               <option value="route">เส้นทาง</option>
               <option value="area">พื้นที่</option>
@@ -135,16 +153,17 @@
           </div>
           
           <div class="form-group">
-            <label>ที่อยู่:</label>
+            <label>ที่อยู่: <span class="required">*</span></label>
             <input 
               type="text" 
               v-model="formData.address" 
+              required
               placeholder="กรุณากรอกที่อยู่"
             />
           </div>
           
           <div class="form-info">
-            <p><strong> ประเภทของข้อมูล : </strong> {{ formData.geometryType }}</p>
+            <p><strong> ประเภทของข้อมูล : <span class="required">*</span> </strong> {{ formData.geometryType }}</p>
           </div>
           
           <div class="form-buttons">
@@ -159,7 +178,7 @@
       </div>
     </div>
 
-    <!-- ฟอร์มแก้ไขข้อมูล (Edit data) -->
+    <!-- ฟอร์มแก้ไขข้อมูล  -->
     <div v-if="showEditDialog" class="form-overlay">
       <div class="form-container">
         <h3>แก้ไขข้อมูล</h3>
@@ -230,6 +249,7 @@ import axios from 'axios';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
+import 'primeicons/primeicons.css';
 
 const drawnItems = L.featureGroup();
 const geojsonData = ref(null);
@@ -238,7 +258,7 @@ const allFeatures = ref([]);
 const searchText = ref('');
 const layerMap = new Map();
 const isLoading = ref(false);
-
+const isLeftFullscreen = ref(false);
 const showConfirmDialog = ref(false);
 const showDataForm = ref(false);
 const currentDrawingLayer = ref(null);
@@ -271,6 +291,7 @@ const filteredFeatures = computed(() => {
   if (!searchText.value.trim()) return allFeatures.value;
   const q = searchText.value.toLowerCase();
   return allFeatures.value.filter(f =>
+    f.id?.toString().includes(q) ||
     f.properties.name?.toLowerCase().includes(q) ||
     f.properties.description?.toLowerCase().includes(q) ||
     f.properties.address?.toLowerCase().includes(q)
@@ -468,27 +489,28 @@ async function loadExistingData() {
   try {
     // console.log('กำลังโหลดข้อมูลจาก API');
     
-    const response = await axios.get('http://localhost:3000/api/geometries');
+    const response = await axios.get('http://localhost:3000/api/point');
     const data = response.data;
-    
-    // console.log('ข้อมูลจาก API:', data);
+    console.log('ข้อมูลจาก API:', data);
     
     // แปลงข้อมูลจาก API เป็น GeoJSON features
-    allFeatures.value = data.map(item => ({
-      type: 'Feature',
-      geometry: item.geometry,
-      properties: {
-        id: item.id,
-        name: item.name,
-        description: item.description,
-        type: item.properties_schema?.type || '',
-        address: item.address,
-        created_at: item.created_at,
-        coordinates: JSON.stringify(item.geometry.coordinates)
-      }
+    allFeatures.value = data.features.map(item => ({
+    type: 'Feature',
+    geometry: item.geometry,
+    properties: {
+        id: item.properties.id,
+        name: item.properties.name,
+        description: item.properties.description,
+        type: item.properties.type || '',
+        address: item.properties.address,
+        created_at: item.properties.created_at,
+        update_at: item.properties.update_at,
+        coordinates: JSON.stringify(item.geometry.coordinates),
+        srid: item.properties.srid || 4326 // ใช้ค่า default ถ้าไม่มี
+    }
     }));
     
-    console.log(' API to geojson', allFeatures.value);
+    // console.log(' API to geojson', allFeatures.value);
     
     // เพิ่ม layers ลงในแผนที่
     allFeatures.value.forEach(feature => {
@@ -519,19 +541,20 @@ async function loadExistingData() {
       layerMap.set(feature.properties.id, layer);
     });
     
-    console.log(`โหลดข้อมูลสำเร็จ: ${allFeatures.value.length} รายการ`);
+    // console.log(`โหลดข้อมูลสำเร็จ: ${allFeatures.value.length} รายการ`);
     
   } catch (error) {
     console.error('เกิดข้อผิดพลาดในการโหลดข้อมูล:', error);
     // ไม่แสดง alert เพราะอาจจะยังไม่มีข้อมูล
   }
+
 }
 
 // รีเฟรชข้อมูล
 async function refreshData() {
   isLoading.value = true;
   try {
-    console.log('กำลังรีเฟรชข้อมูล');
+    // console.log('กำลังรีเฟรชข้อมูล');
     
     // เคลียร์ layers เก่าออกจากแผนที่
     allFeatures.value.forEach(feature => {
@@ -543,8 +566,8 @@ async function refreshData() {
     
     layerMap.clear();
     await loadExistingData();
-    
-    console.log('รีเฟรชข้อมูลสำเร็จ');
+    // เอาไว้เช็คว่าโหลดเสร๋จมั้ย
+    // console.log('รีเฟรชข้อมูลสำเร็จ');
     
   } catch (error) {
     console.error('เกิดข้อผิดพลาดในการรีเฟรชข้อมูล:', error);
@@ -737,9 +760,38 @@ async function submitEdit() {
 }
 
 function toggleFullscreen() {
-  // ฟังก์ชันสำหรับ fullscreen - ใช้ตามต้องการ
-  console.log('Toggle fullscreen');
+  const leftCol = document.querySelector(".left-column");
+  const rightCol = document.querySelector(".right-column");
+  const container = document.querySelector(".container");
+
+  if (!isLeftFullscreen.value) {
+    leftCol.classList.add("fullscreen-left");
+    container.classList.add("fullscreen-mode");
+    rightCol.classList.add("hide-map");
+  } else {
+    leftCol.classList.remove("fullscreen-left");
+    container.classList.remove("fullscreen-mode");
+    rightCol.classList.remove("hide-map");
+  }
+
+  isLeftFullscreen.value = !isLeftFullscreen.value;
 }
+
+function exitFullscreenAndBack() {
+  const leftCol = document.querySelector(".left-column");
+  const rightCol = document.querySelector(".right-column");
+  const container = document.querySelector(".container");
+
+  leftCol?.classList.remove("fullscreen-left");
+  container?.classList.remove("fullscreen-mode");
+  rightCol?.classList.remove("hide-map");
+
+  isLeftFullscreen.value = false; 
+  selectedFeature.value = null;
+}
+
+
+
 
 function onRowClick(event) {
   const feature = event.data;
@@ -827,6 +879,9 @@ function initMap() {
     popupAnchor: [0, -30],
   });
 
+  L.Marker.prototype.options.icon = customIcon
+
+
   axios.get('http://localhost:3000/api/Point')
 
   drawnItems.addTo(map);
@@ -846,11 +901,7 @@ function initMap() {
 
           layer.bindPopup(feature.properties.name || 'ไม่มีชื่อ')
           layer.on('click', () => {
-            selectedFeature.value = {
-              name: feature.properties.name || 'ไม่มีชื่อ',
-              description: feature.properties.description || '-',
-              address: feature.properties.address || '-'
-            }
+            selectedFeature.value = feature;
           })
         }
       })
@@ -1185,6 +1236,19 @@ overflow: auto;
   margin-bottom: 5px;
 }
 
+.refresh-btn {
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  background-color: #fff;
+}
+
+.refresh-btn:hover {
+  background-color: #e0dfdf;
+}
+
 .coordinate-display {
   position: absolute;
   bottom: 10px;
@@ -1229,7 +1293,9 @@ overflow: auto;
 
 .info-box {
   position: relative;
+  box-sizing: border-box;
 }
+
 
 .button-container {
   display: flex;
@@ -1449,4 +1515,37 @@ overflow: auto;
   background: #007bff;
   color: white;
 }
+
+.fullscreen-mode {
+  display: block !important;
+}
+
+
+.fullscreen-left {
+  position: fixed !important;
+  top: 70px; 
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 70px); 
+  z-index: 9999;
+  background: white;
+  overflow: auto;
+padding: 1rem 2rem;
+}
+
+.hide-map {
+  display: none !important;
+}
+
+.container.fullscreen-mode {
+  display: block !important; /* ปิด flex */
+}
+
+
+
+
+
+
 </style>
+
+
