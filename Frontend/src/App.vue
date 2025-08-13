@@ -5,34 +5,39 @@
         <img src="@/assets/TDM-LOGO-03.png" alt="TDM Logo" class="logo" />
         <nav>
           <ul>
-            <li><router-link to="/">Home</router-link></li>
+            <li><router-link to="/" ><i class="fa-solid fa-house"></i> หน้าหลัก</router-link></li>
+            <li><router-link to="/dashboard"><i class="fa-solid fa-chart-simple"></i> แดชบอร์ด</router-link></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" @click.prevent>
+                <i class="fa-solid fa-map"></i>
                 {{ currentType }}
                 <i class="arrow-down"></i>
-              </a>
+              </a> 
               <ul class="dropdown-menu">
-                <li><router-link to="/type/point" @click="setType('Point')">Point</router-link></li>
-                <li><router-link to="/type/line" @click="setType('Line')">Line</router-link></li>
-                <li><router-link to="/type/polygon" @click="setType('Polygon')">Polygon</router-link></li>
+                <li><router-link to="/type/point" @click="setType('ตำแหน่ง')">ตำแหน่ง</router-link></li>
+                <li><router-link to="/type/line" @click="setType('เส้นทาง')">เส้นทาง</router-link></li>
+                <li><router-link to="/type/polygon" @click="setType('ขอบเขต')">ขอบเขต</router-link></li>
               </ul>
             </li>
-            <li><router-link to="/dashboard">Dashboard</router-link></li>
-            <li><router-link to="/request">Request</router-link></li>
-            <li><router-link to="/report">Report</router-link></li>
-            <li><router-link to="/contact">Contact</router-link></li>
+            <!-- <li><router-link to="/request">Request</router-link></li> -->
+            <li><router-link to="/report"><i class="fa-solid fa-flag"></i> รายงาน</router-link></li>
+            <li><router-link to="/contact"><i class="fa-solid fa-address-book"></i> ติดต่อ</router-link></li>
+            <li><router-link to="/help"><i class="fa-solid fa-circle-question"></i> คู่มือ</router-link></li>
+            <!-- <li><router-link to="/about">Test</router-link></li>   -->
+            <li v-if="userRole === 'admin'"><router-link to="/register"><i class="fa-solid fa-user-gear"></i> สร้างบัญชีผู้ใช้</router-link></li>
           </ul>
         </nav>
         <div class="buttons">
           <template v-if="!isLoggedIn">
-            <router-link to="/login" class="auth-link">Login</router-link>
+            <router-link to="/login" class="auth-link">เข้าสู่ระบบ</router-link>
           </template>
           <template v-else>
             <div class="user-section">
               <div class="user-info">
                 <span class="username">{{ username }}</span>
+                <span class="user-role" :class="userRole.toLowerCase()">{{ userRole }}</span>
               </div>
-              <button @click="logout" class="logout-btn">Logout</button>
+              <button @click="logout" class="logout-btn"> ออกจากระบบ</button>
             </div>
           </template>
         </div>
@@ -50,7 +55,7 @@ export default {
   name: 'vueHome',
   data() {
     return {
-      currentType: 'Type',
+      currentType: 'โครงสร้างพื้นฐาน',
     };
   },
   computed: {
@@ -68,12 +73,34 @@ export default {
   },
   methods: {
     logout() {
+      // ล้างข้อมูล user และ token
       localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      
+      // Reset currentType
+      this.currentType = 'Type';
+      
+      // Redirect to login
       this.$router.push('/login');
+      
+      // Reload เพื่อให้แน่ใจว่า state ถูกรีเซ็ต
       window.location.reload();
     },
     setType(type) {
       this.currentType = type;
+    },
+    
+    // เพิ่มฟังก์ชันตรวจสอบสิทธิ์
+    checkAdminAccess() {
+      const userStr = localStorage.getItem('user');
+      if (!userStr) return false;
+      
+      try {
+        const user = JSON.parse(userStr);
+        return user.role === 'admin';
+      } catch (e) {
+        return false;
+      }
     }
   }
 }
@@ -89,7 +116,7 @@ html, #app {
 }
 
 body {
-  font-family: sans-serif;
+  font-family: 'Sarabun', sans-serif;
   height: 100vh;
   margin: 0;
   padding: 0;
@@ -105,7 +132,7 @@ body {
 }
 
 header {
-  background-color: #389af9;
+  background-color: #237dee;
   padding: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -128,6 +155,7 @@ header .container {
 
 nav {
   display: flex;
+  font-family: "Tahoma", "Segoe UI", Verdana, "Helvetica Neue", Arial, sans-serif;
 }
 
 nav ul {
@@ -240,7 +268,38 @@ nav ul li a:hover {
 .user-info{
   color: #ffffff;
   font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
 }
+
+.user-role {
+  font-size: 0.8em;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-weight: normal;
+}
+
+/* .user-role.admin {
+  background-color: #ff4757;
+  color: white;
+}
+
+.user-role.editor {
+  background-color: #ffa502;
+  color: white;
+}
+
+.user-role.viewer {
+  background-color: #3742fa;
+  color: white;
+}
+
+.user-role.guest {
+  background-color: #747d8c;
+  color: white;
+} */
 
 @media (max-width: 768px) {
   .container {

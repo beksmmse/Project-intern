@@ -11,12 +11,19 @@ import Button from 'primevue/button'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import '@geoman-io/leaflet-geoman-free'
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
+import 'primeicons/primeicons.css'
 import './assets/main.css'
+import Lara from '@primevue/themes/lara'
 
 const app = createApp(App)
 
 app.use(PrimeVue, {
-    unstyled: true
+  theme: {
+    preset: Lara, 
+    options: {
+
+    }
+  }
 })
 
 app.component('DataTable', DataTable)

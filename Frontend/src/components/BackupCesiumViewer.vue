@@ -605,7 +605,7 @@ function featureToEntity(feature) {
 // --- Data CRUD ---
 async function loadExistingData() {
   try {
-    console.log('Loading existing data...');
+    // console.log('Loading existing data...');
     const response = await axios.get('http://localhost:3000/api/Point');
     const data = response.data;
     
@@ -919,7 +919,7 @@ function setupDrawingTools() {
 // --- Cesium Initialization ---
 // --- Cesium Initialization ---
 onMounted(async () => {
-  console.log('เริ่มต้น Cesium initialization...');
+  // console.log('เริ่มต้น Cesium initialization...');
   
   try {
     if (!cesiumContainer.value) {
@@ -927,10 +927,10 @@ onMounted(async () => {
       return;
     }
     
-    console.log('ขนาด Container:', {
-      width: cesiumContainer.value.clientWidth,
-      height: cesiumContainer.value.clientHeight
-    });
+    // console.log('ขนาด Container:', {
+    //   width: cesiumContainer.value.clientWidth,
+    //   height: cesiumContainer.value.clientHeight
+    // });
 
     // ตรวจสอบว่า Cesium โหลดเสร็จแล้วหรือยัง
     if (typeof Cesium === 'undefined') {
@@ -939,14 +939,14 @@ onMounted(async () => {
       return;
     }
 
-    console.log('Cesium version:', Cesium.VERSION);
+    // console.log('Cesium version:', Cesium.VERSION);
     
     if (!viewer) {
       // Set Cesium Ion token
       Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhMzVjNmZjNi1mMWJiLTQ5YjYtYTczMS0zY2FlNTVmMDdkZjIiLCJpZCI6MzIxOTE4LCJpYXQiOjE3NTI2NDgzMzd9.1soJyjBQ2bYa_-tFvHdXQG5amC6QTpjBa0XFJfHy8MY';
       
-      console.log('Ion token ตั้งค่าเสร็จ');
-      console.log('กำลังสร้าง Cesium viewer...');
+      // console.log('Ion token ตั้งค่าเสร็จ');
+      // console.log('กำลังสร้าง Cesium viewer...');
       
       // สร้าง viewer ด้วยการตั้งค่าที่สมบูรณ์
       viewer = new Cesium.Viewer(cesiumContainer.value, {
@@ -976,7 +976,7 @@ onMounted(async () => {
         maximumRenderTimeChange: undefined
       });
 
-      console.log('Cesium viewer สร้างสำเร็จ');
+      // console.log('Cesium viewer สร้างสำเร็จ');
       console.log('Scene mode:', viewer.scene.mode);
       console.log('WebGL context:', !!viewer.scene.context._gl);
       console.log('Available imagery providers:', viewer.baseLayerPicker ? 'BaseLayerPicker enabled' : 'BaseLayerPicker disabled');
@@ -1028,7 +1028,7 @@ onMounted(async () => {
         }, 5000);
       });
 
-      console.log('Globe tiles โหลดเสร็จ');
+      // console.log('Globe tiles โหลดเสร็จ');
 
       // เพิ่มการตั้งค่าเพื่อให้แน่ใจว่าทุกอย่างทำงานถูกต้อง
       viewer.scene.globe.show = true;
@@ -1050,18 +1050,18 @@ onMounted(async () => {
       viewer.scene.requestRender();
 
       // ตรวจสอบว่า viewer ทำงานได้ถูกต้อง
-      console.log('Cesium viewer ตรวจสอบ:');
+      // console.log('Cesium viewer ตรวจสอบ:');
       console.log('- Canvas size:', viewer.canvas.width, 'x', viewer.canvas.height);
       console.log('- Imagery layers ready:', viewer.imageryLayers.length > 0);
       console.log('- Globe visible:', viewer.scene.globe.show);
       console.log('- Camera position:', viewer.camera.position);
 
-      console.log('Cesium viewer initialized สำเร็จ');
+      // console.log('Cesium viewer initialized สำเร็จ');
       
       // โหลดข้อมูลหลังจาก viewer พร้อมแล้ว
       setTimeout(async () => {
         try {
-          console.log('เริ่มโหลดข้อมูล...');
+          // console.log('เริ่มโหลดข้อมูล');
           await loadExistingData();
         } catch (error) {
           console.error('Error loading initial data:', error);

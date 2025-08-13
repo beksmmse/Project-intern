@@ -18,47 +18,29 @@
 
           <DataTable 
             :value="filteredFeatures" 
-            class="striped-table"
+            class="striped-table uniform-table"
             dataKey="properties.id"
             :rows="10"
             scrollable
             @row-click="onRowClick"
-            style="cursor: pointer;"
-            tableStyle="min-width: 50rem"
+            tableStyle="min-width:50rem;table-layout:fixed;"
           >
-            <Column field="properties.id" header="ID" sortable style="min-width: 2rem" />
-            <Column field="properties.name" header="Name" sortable style="min-width: 10rem" />
-            <Column field="properties.description" header="Description" sortable style="min-width: 10rem" />
-            <Column field="properties.address" header="Address" sortable style="min-width: 12rem" />
-            <Column header="" style="min-width: 10rem"> 
-                <template #body="slotProps">
-                <div style="display: flex; gap: 5px; align-items: center; justify-content: center;" class="action-buttons">
-                    <Button
-                    @click="showInfo(slotProps.data)"
-                    severity="info"
-                    size="small"
-                    >
-                    ลายละเอียด
-                    </Button>
-
-                    <Button
-                    @click="showEdit(slotProps.data)"
-                    severity="warning"
-                    size="small"
-                    >
-                    <i class="pi pi-pencil action-edit" style="margin-top: 3px;"></i>
-                    </Button>
-
-                    <Button
-                    @click="deleteFeature(slotProps.data.properties.id, slotProps.data.properties.name)"
-                    severity="danger"
-                    size="small"
-                    >
-                    <i class="pi pi-trash action-delete" style="color: red; margin-top: 3px;"></i>
-                    </Button>
+            <Column field="properties.id" header="ลำดับ" sortable style="width:4rem" />
+            <Column field="properties.name" header="ชื่อ" sortable style="width:12rem" />
+            <Column field="properties.description" header="คำอธิบาย" sortable style="width:16rem" />
+            <Column field="properties.address" header="ที่ตั้ง" sortable style="width:14rem" />
+            <Column header="" style="width:12rem"> 
+              <template #body="slotProps">
+                <div class="action-buttons-row compact">
+                  <Button @click="showInfo(slotProps.data)" severity="info" size="small">รายละเอียด</Button>
+                  <Button v-if="userRole === 'editor' || userRole === 'admin'" @click="showEdit(slotProps.data)" severity="warning" size="small">
+                    <i class="pi pi-pencil action-edit" style="margin-top:2px;"></i>
+                  </Button>
+                  <Button v-if="userRole === 'editor' || userRole === 'admin'" @click="deleteFeature(slotProps.data.properties.id, slotProps.data.properties.name)" severity="danger" size="small">
+                    <i class="pi pi-trash action-delete" style="margin-top:2px;"></i>
+                  </Button>
                 </div>
-                </template>
-
+              </template>
             </Column>
           </DataTable>
         </div>
@@ -67,24 +49,18 @@
           <div class="button-container">
             <Button @click="exitFullscreenAndBack" class="btn-back">Back</Button>
             <Button class="btn-exten" @click="toggleFullscreen">
-             {{ isLeftFullscreen ? 'Exit Fullscreen' : 'Extend' }}
+              {{ isLeftFullscreen ? 'Exit Fullscreen' : 'Extend' }}
             </Button>
-            <!-- <Button @click="deleteCurrentFeature" severity="danger">
-              <i class="pi pi-trash"></i> Delete
-            </Button>
-            <Button @click="showEdit(selectedFeature)" class="btn-edit">Edit</Button> -->
           </div>
-
           <h3>รายละเอียด</h3>
           <p><strong>ID:</strong> {{ selectedFeature.properties.id }}</p>
-          <p><strong>Name:</strong> {{ selectedFeature.properties.name }}</p>
-          <p><strong>Description:</strong> {{ selectedFeature.properties.description }}</p>
-          <p><strong>Address:</strong> {{ selectedFeature.properties.address }}</p>
-          <p><strong>create_at:</strong> {{ selectedFeature.properties.created_at }}</p>
-          <p><strong>update_at:</strong> {{ selectedFeature.properties.update_at }}</p>
-          <p><strong>type:</strong> {{ selectedFeature.properties.type }}</p>
-          <p><strong>coordinates:</strong> {{ selectedFeature.properties.coordinates }}</p>
-          <p><strong>SRID:</strong> {{ selectedFeature.properties.srid }}</p>
+          <p><strong>ชื่อ:</strong> {{ selectedFeature.properties.name }}</p>
+          <p><strong>คำอธิบาย:</strong> {{ selectedFeature.properties.description }}</p>
+          <p><strong>ที่ตั้ง:</strong> {{ selectedFeature.properties.address }}</p>
+          <p><strong>สร้างเมื่อ:</strong> {{ selectedFeature.properties.created_at }}</p>
+          <p><strong>แก้ไขเมื่อ:</strong> {{ selectedFeature.properties.update_at }}</p>
+          <p><strong>ประเภท:</strong> {{ selectedFeature.properties.type }}</p>
+          <p><strong>lat lng:</strong> {{ selectedFeature.properties.coordinates }}</p>
         </div>
       </div>
 
@@ -126,8 +102,7 @@
               placeholder="กรุณากรอกชื่อ"
             />
           </div>
-          
-        <div class="form-group">
+          <div class="form-group">
             <label>คำอธิบาย: <span class="required">*</span></label>
             <textarea 
               v-model="formData.description" 
@@ -136,7 +111,6 @@
               rows="3"
             ></textarea>
           </div>
-          
           <div class="form-group">
             <label>ประเภท: <span class="required">*</span></label>
             <select v-model="formData.type" required>
@@ -151,7 +125,6 @@
               <option value="other">อื่นๆ</option>
             </select>
           </div>
-          
           <div class="form-group">
             <label>ที่อยู่: <span class="required">*</span></label>
             <input 
@@ -161,11 +134,9 @@
               placeholder="กรุณากรอกที่อยู่"
             />
           </div>
-          
           <div class="form-info">
             <p><strong> ประเภทของข้อมูล : <span class="required">*</span> </strong> {{ formData.geometryType }}</p>
           </div>
-          
           <div class="form-buttons">
             <Button type="submit" severity="success">
               <i class="pi pi-save"></i> บันทึก
@@ -196,6 +167,7 @@
             <label>คำอธิบาย:</label>
             <textarea 
               v-model="editFormData.description"
+              required
               placeholder="กรุณากรอกคำอธิบาย"
               rows="3"
             ></textarea>
@@ -205,12 +177,13 @@
             <input 
               type="text"
               v-model="editFormData.address"
+              required
               placeholder="กรุณากรอกที่อยู่"
             />
           </div>
           <div class="form-group">
             <label>ประเภท:</label>
-            <select v-model="editFormData.type">
+            <select v-model="editFormData.type" required>
               <option value="landmark">สถานที่สำคัญ</option>
               <option value="route">เส้นทาง</option>
               <option value="area">พื้นที่</option>
@@ -251,6 +224,7 @@ import Column from 'primevue/column';
 import Button from 'primevue/button';
 import 'primeicons/primeicons.css';
 
+
 const drawnItems = L.featureGroup();
 const geojsonData = ref(null);
 const selectedFeature = ref(null);
@@ -280,6 +254,22 @@ const editFormData = ref({
   address: '',
   type: ''
 })
+let layersControl; // Leaflet Layers Control
+const typeLayerGroups = {}; // เก็บ LayerGroup ต่อประเภท
+const activeTypes = ref([]); // ประเภทที่เปิดอยู่บนแผนที่ (overlay add)
+
+
+// ตรวจสอบสถานะการ login และ role ของผู้ใช้
+const userRole = computed(() => {
+  const userStr = localStorage.getItem('user');
+  if (!userStr) return 'guest'; 
+  try {
+    const user = JSON.parse(userStr);
+    return user.role || 'guest';
+  } catch (e) {
+    return 'guest';
+  }
+});
 
 
 //เก็บ layers ที่ยังไม่มีข้อมูล (สำหรับ double click)
@@ -288,15 +278,23 @@ const pendingLayers = new Map();
 let map;
 
 const filteredFeatures = computed(() => {
-  if (!searchText.value.trim()) return allFeatures.value;
-  const q = searchText.value.toLowerCase();
-  return allFeatures.value.filter(f =>
-    f.id?.toString().includes(q) ||
-    f.properties.name?.toLowerCase().includes(q) ||
-    f.properties.description?.toLowerCase().includes(q) ||
-    f.properties.address?.toLowerCase().includes(q)
-  );
+  // กรองตามข้อความก่อน
+  let list = !searchText.value.trim() ? allFeatures.value : allFeatures.value.filter(f => {
+    const q = searchText.value.toLowerCase();
+    return (
+      f.id?.toString().includes(q) ||
+      f.properties.name?.toLowerCase().includes(q) ||
+      f.properties.description?.toLowerCase().includes(q) ||
+      f.properties.address?.toLowerCase().includes(q)
+    );
+  });
+  // ถ้ามี activeTypes (อย่างน้อย 1) ให้กรองซ้ำตามประเภท
+  if (activeTypes.value.length > 0) {
+    list = list.filter(f => activeTypes.value.includes(f.properties.type || 'อื่นๆ'));
+  }
+  return list;
 });
+
 
 function showConfirmation(layer, geometryType) {
   currentDrawingLayer.value = layer;
@@ -393,24 +391,22 @@ async function saveDrawingData() {
   if (!currentDrawingLayer.value) return;
   
   try {
-    // สร้าง GeoJSON จาก layer ที่วาด
     const geoJsonData = currentDrawingLayer.value.toGeoJSON();
-    
     // เตรียมข้อมูลสำหรับส่งไป API ตามโครงสร้าง table layers
     const layerData = {
       organization_id: 1, 
       name: formData.value.name,
       description: formData.value.description,
-      geometry_type: geoJsonData.geometry.type, // Point, LineString, Polygon, etc.
-      srid: 4326, // EPSG:4326 (WGS84)
+      geometry_type: geoJsonData.geometry.type, 
+      srid: 4326, 
       properties_schema: {
         type: formData.value.type,
         address: formData.value.address,
         created_at: new Date().toISOString()
       },
-      created_by_user_id: 1, // ปรับตาม user ที่ login
+      created_by_user_id: 1, 
       address: formData.value.address,
-      geometry: geoJsonData.geometry // GeoJSON geometry object
+      geometry: geoJsonData.geometry 
     };
     
     console.log('prepare DB', layerData);
@@ -489,15 +485,15 @@ async function loadExistingData() {
   try {
     // console.log('กำลังโหลดข้อมูลจาก API');
     
-    const response = await axios.get('http://localhost:3000/api/point');
+    const response = await axios.get('http://localhost:3000/api/Point');
     const data = response.data;
-    console.log('ข้อมูลจาก API:', data);
+    // console.log('ข้อมูลจาก API:', data);
     
     // แปลงข้อมูลจาก API เป็น GeoJSON features
     allFeatures.value = data.features.map(item => ({
-    type: 'Feature',
-    geometry: item.geometry,
-    properties: {
+      type: 'Feature',
+      geometry: item.geometry,
+      properties: {
         id: item.properties.id,
         name: item.properties.name,
         description: item.properties.description,
@@ -506,17 +502,19 @@ async function loadExistingData() {
         created_at: item.properties.created_at,
         update_at: item.properties.update_at,
         coordinates: JSON.stringify(item.geometry.coordinates),
-        srid: item.properties.srid || 4326 // ใช้ค่า default ถ้าไม่มี
-    }
+        srid: item.properties.srid || 4326
+      }
     }));
     
     // console.log(' API to geojson', allFeatures.value);
     
+    drawnItems.clearLayers();
+    layerMap.clear();
+
     // เพิ่ม layers ลงในแผนที่
     allFeatures.value.forEach(feature => {
       const layer = L.geoJSON(feature, {
         onEachFeature: function(feature, layer) {
-          // เพิ่ม popup
           layer.bindPopup(`
             <div>
               <h4>${feature.properties.name}</h4>
@@ -527,47 +525,43 @@ async function loadExistingData() {
               <p><strong>วันที่สร้าง:</strong> ${new Date(feature.properties.created_at).toLocaleDateString('th-TH')}</p>
             </div>
           `);
-          
-          // เพิ่ม click event สำหรับแสดงข้อมูลใน info box
-          layer.on('click', () => {
-            selectedFeature.value = feature;
-            console.log('คลิกที่ layer เก่า:', feature);
-          });
+          layer.on('click', () => { selectedFeature.value = feature; });
         }
       });
-      
-      // เพิ่มเข้าไปใน drawnItems และ layerMap
+
       drawnItems.addLayer(layer);
       layerMap.set(feature.properties.id, layer);
+
+      // จัดกลุ่มตามประเภท
+      const t = feature.properties.type || 'อื่นๆ';
+      if (!typeLayerGroups[t]) {
+        typeLayerGroups[t] = L.layerGroup();
+        if (layersControl) {
+          layersControl.addOverlay(typeLayerGroups[t], `ประเภท: ${t}`);
+        }
+        // เปิดใช้งานค่าเริ่มต้น และเพิ่มใน activeTypes ถ้ายังไม่มี
+        if (!activeTypes.value.includes(t)) activeTypes.value.push(t);
+        typeLayerGroups[t].addTo(map);
+      }
+      typeLayerGroups[t].addLayer(layer);
     });
-    
-    // console.log(`โหลดข้อมูลสำเร็จ: ${allFeatures.value.length} รายการ`);
-    
   } catch (error) {
     console.error('เกิดข้อผิดพลาดในการโหลดข้อมูล:', error);
-    // ไม่แสดง alert เพราะอาจจะยังไม่มีข้อมูล
   }
-
 }
 
 // รีเฟรชข้อมูล
 async function refreshData() {
   isLoading.value = true;
   try {
-    // console.log('กำลังรีเฟรชข้อมูล');
+    console.log('กำลังรีเฟรชข้อมูล');
     
     // เคลียร์ layers เก่าออกจากแผนที่
-    allFeatures.value.forEach(feature => {
-      const layer = layerMap.get(feature.properties.id);
-      if (layer) {
-        drawnItems.removeLayer(layer);
-      }
-    });
-    
+    drawnItems.clearLayers();
     layerMap.clear();
     await loadExistingData();
-    // เอาไว้เช็คว่าโหลดเสร๋จมั้ย
-    // console.log('รีเฟรชข้อมูลสำเร็จ');
+    
+    console.log('รีเฟรชข้อมูลสำเร็จ');
     
   } catch (error) {
     console.error('เกิดข้อผิดพลาดในการรีเฟรชข้อมูล:', error);
@@ -671,7 +665,7 @@ async function deleteCurrentFeature() {
 
 onMounted(async () => {  
   initMap();
-  await loadExistingData(); // โหลดข้อมูลที่มีอยู่แล้ว
+  await loadExistingData(); 
 });
 
 function createPopup(content = "Name") {
@@ -816,61 +810,41 @@ function initMap() {
   map = L.map("map").setView([13.783278, 100.59288], 10);
 
   const baseMaps = {
-    OpenStreetMap: L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 20,
-      attribution: "© OpenStreetMap",
-    }),
-    Satellite: L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
-      maxZoom: 20,
-      attribution: "Esri",
-    }),
-    Topo: L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
-      maxZoom: 20,
-      attribution: "© OpenTopoMap",
-    }),
-    "Dark Mode": L.tileLayer("https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png", {
-      maxZoom: 20,
-      attribution: "© Stadia Maps, © OpenMapTiles, © OpenStreetMap contributors",
-    })
+    OpenStreetMap: L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 20, attribution: "© OpenStreetMap" }),
+    Satellite: L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", { maxZoom: 20, attribution: "Esri" }),
+    Topo: L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", { maxZoom: 20, attribution: "© OpenTopoMap" }),
+    "Dark Mode": L.tileLayer("https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png", { maxZoom: 20, attribution: "© Stadia Maps, © OpenMapTiles, © OpenStreetMap contributors" })
   };
 
-  //Load Bounder from geoserver
-  const wmsProvice = L.tileLayer.wms('http://localhost:8080/geoserver/ows?', {
-  layers: 'ne:BKK_pro',
-  format: 'image/png',
-  transparent: true,
-  version: '1.1.1',
-  attribution: 'GeoServer',
-  opacity: 0.6
-  })
+  const wmsProvice = L.tileLayer.wms('http://localhost:8080/geoserver/ows?', { layers: 'ne:BKK_pro', format: 'image/png', transparent: true, version: '1.1.1', attribution: 'GeoServer', opacity: 0.6 });
+  const wmsLayer = L.tileLayer.wms('http://localhost:8080/geoserver/ows?', { layers: 'ne:bangkok_district', format: 'image/png', transparent: true, version: '1.1.1', attribution: 'GeoServer', opacity: 0.6 });
+  const wmsSubdis = L.tileLayer.wms('http://localhost:8080/geoserver/ows?', { layers: 'ne:BKK_subdist', format: 'image/png', transparent: true, version: '1.1.1', attribution: 'GeoServer', opacity: 0.5 });
 
-  const wmsLayer = L.tileLayer.wms('http://localhost:8080/geoserver/ows?', {
-  layers: 'ne:bangkok_district',
-  format: 'image/png',
-  transparent: true,
-  version: '1.1.1',
-  attribution: 'GeoServer',
-  opacity: 0.6
-  })
-
-  const wmsSubdis = L.tileLayer.wms('http://localhost:8080/geoserver/ows?', {
-  layers: 'ne:BKK_subdist',
-  format: 'image/png',
-  transparent: true,
-  version: '1.1.1',
-  attribution: 'GeoServer',
-  opacity: 0.5
-  })
-
-  
   const overlayMaps = {
-  "ขอบเขตกรุงเทพฯ": wmsProvice,
-  "ขอบเขตอำเภอ": wmsLayer,
-  "ขอบเขตอำตำบล": wmsSubdis
+    "ขอบเขตกรุงเทพฯ": wmsProvice,
+    "ขอบเขตอำเภอ": wmsLayer,
+    "ขอบเขตอำตำบล": wmsSubdis
   };
 
   baseMaps.OpenStreetMap.addTo(map);
-  L.control.layers(baseMaps, overlayMaps).addTo(map);
+  layersControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+  // Sync การเปิด/ปิด overlay ของประเภทกับ activeTypes
+  map.on('overlayadd', (e) => {
+    // หา key ที่ตรงกับ typeLayerGroups
+    Object.entries(typeLayerGroups).forEach(([type, grp]) => {
+      if (grp === e.layer) {
+        if (!activeTypes.value.includes(type)) activeTypes.value.push(type);
+      }
+    });
+  });
+  map.on('overlayremove', (e) => {
+    Object.entries(typeLayerGroups).forEach(([type, grp]) => {
+      if (grp === e.layer) {
+        activeTypes.value = activeTypes.value.filter(t => t !== type);
+      }
+    });
+  });
 
   const customIcon = L.icon({
     iconUrl: require('@/assets/my-icon.png'),
@@ -885,308 +859,262 @@ function initMap() {
   axios.get('http://localhost:3000/api/Point')
 
   drawnItems.addTo(map);
-  function loadGeoJSONFromServer() {
-  fetch('http://localhost:3000/api/Point')
-    .then(res => res.json())
-    .then(data => {
-      geojsonData.value = data
-      allFeatures.value = data.features
-
-      const geoLayer = L.geoJSON(data, {
-        pointToLayer: (feature, latlng) =>
-          L.marker(latlng, { icon: customIcon }),
-        onEachFeature: (feature, layer) => {
-          const id = feature.properties?.id
-          if (id) layerMap.set(id, layer)
-
-          layer.bindPopup(feature.properties.name || 'ไม่มีชื่อ')
-          layer.on('click', () => {
-            selectedFeature.value = feature;
-          })
-        }
-      })
-
-      geoLayer.addTo(map)
-      drawnItems.addLayer(geoLayer)
-      map.fitBounds(geoLayer.getBounds())
-    })
-}
-
-  loadGeoJSONFromServer();
+  
+  // เปิด/ปิดเครื่องมือตาม 
+  const isEditAllowed = userRole.value === 'admin' || userRole.value === 'editor';
   
   map.pm.addControls({
-        position: "topleft",
-        drawMarker: true,
-        drawCircle: true,
-        drawPolyline: true,
-        drawRectangle: true,
-        drawPolygon: true,
-        editMode: true,
-        dragMode: true,
-        cutPolygon: true,
-        removalMode: true,
-        drawText: false,
-        rotateMode: true,
-        oneBlock: true,
-        drawControls: true,
-        editControls: true,
-        customControls: true,
-        measurementMode: true,
-      });
+    position: "topleft",
+    drawMarker: isEditAllowed,
+    drawCircle: isEditAllowed,
+    drawPolyline: isEditAllowed,
+    drawRectangle: isEditAllowed,
+    drawPolygon: isEditAllowed,
+    editMode: isEditAllowed,
+    dragMode: isEditAllowed,
+    cutPolygon: isEditAllowed,
+    removalMode: isEditAllowed,
+    drawText: false,
+    rotateMode: isEditAllowed,
+    oneBlock: isEditAllowed,
+    drawControls: isEditAllowed,
+    editControls: isEditAllowed,
+    customControls: true,
+    measurementMode: true,
+  });
 
-      //  แก้ไข pm:create event ใหม่
-      map.on('pm:create', (e) => {
-        const layer = e.layer;
-        const shape = e.shape;
-        
-        //  กำหนดประเภท geometry
-        let geometryType = '';
-        switch(shape) {
-          case 'Marker':
-            geometryType = 'Point';
-            break;
-          case 'Line':
-            geometryType = 'LineString';
-            break;
-          case 'Polygon':
-            geometryType = 'Polygon';
-            break;
-          case 'Rectangle':
-            geometryType = 'Polygon';
-            break;
-          case 'Circle':
-            geometryType = 'Circle';
-            break;
-          default:
-            geometryType = 'Unknown';
+  // กำหนดข้อความภาษาไทยสำหรับปุ่มและ tooltip ของ Leaflet-Geoman
+  map.pm.setLang('th', {
+    tooltips: {
+      placeMarker: 'คลิกเพื่อวางจุด',
+      firstVertex: 'คลิกเพื่อเริ่มวาด',
+      continueLine: 'คลิกเพิ่มจุดต่อไป',
+      finishLine: 'ดับเบิลคลิกหรือคลิกจุดแรกเพื่อจบเส้น',
+      finishPoly: 'คลิกจุดแรกหรือดับเบิลคลิกเพื่อปิดรูป',
+      finishRect: 'คลิกเพื่อเสร็จสิ้นรูปสี่เหลี่ยม',
+      finishCircle: 'ปล่อยเมาส์เพื่อสิ้นสุดวงกลม',
+      placeCircleMarker: 'คลิกเพื่อวางวงกลม',
+      placeText: 'คลิกเพื่อวางข้อความ'
+    },
+    actions: {
+      finish: 'เสร็จสิ้น',
+      cancel: 'ยกเลิก',
+      removeLastVertex: 'ลบจุดล่าสุด'
+    },
+    buttons: {
+      drawMarker: 'เพิ่มจุด',
+      drawPolygon: 'วาดพื้นที่',
+      drawPolyline: 'วาดเส้น',
+      drawCircle: 'วาดวงกลม',
+      drawRectangle: 'วาดสี่เหลี่ยม',
+      editMode: 'แก้ไขรูป',
+      dragMode: 'ย้ายรูป',
+      cutPolygon: 'ตัดพื้นที่',
+      removalMode: 'ลบรูป',
+      rotateMode: 'หมุนรูป',
+      oneBlock: 'โหมดบล็อกเดียว',
+      measurementMode: 'วัดระยะ'
+    }
+  }, 'th');
+
+  // ปรับ title HTML ของไอคอน (สำรองกรณี browser เก็บ title เดิม)
+  setTimeout(() => {
+    const root = map.getContainer();
+    const setTitle = (sel, txt) => {
+      const el = root.querySelector(sel);
+      if (el && el.parentElement) el.parentElement.title = txt;
+    };
+    setTitle('.leaflet-pm-icon-marker', 'เพิ่มจุด');
+    setTitle('.leaflet-pm-icon-polyline', 'วาดเส้น');
+    setTitle('.leaflet-pm-icon-polygon', 'วาดพื้นที่');
+    setTitle('.leaflet-pm-icon-rectangle', 'วาดสี่เหลี่ยม');
+    setTitle('.leaflet-pm-icon-circle', 'วาดวงกลม');
+    setTitle('.leaflet-pm-icon-edit', 'แก้ไขรูป');
+    setTitle('.leaflet-pm-icon-drag', 'ย้ายรูป');
+    setTitle('.leaflet-pm-icon-cut', 'ตัดพื้นที่');
+    setTitle('.leaflet-pm-icon-delete', 'ลบรูป');
+    setTitle('.leaflet-pm-icon-rotate', 'หมุนรูป');
+    setTitle('.leaflet-pm-icon-measurement', 'วัดระยะ');
+  }, 0);
+
+  const coord = document.getElementById("coordinate-display");
+  map.on("mousemove", (e) => {
+    const lat = e.latlng.lat.toFixed(6);
+    const lng = e.latlng.lng.toFixed(6);
+    coord.innerHTML = `Lat: ${lat}, Lng: ${lng}`;
+  });
+
+  // find locatiom
+  map.pm.Toolbar.createCustomControl({
+    name: "get-location",
+    block: "custom",
+    title: "ตำแหน่งปัจจุบัน",
+    className: "custom-geolocation-btn",
+    onClick: () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            const marker = L.marker([lat, lng], { icon: customIcon }).addTo(map);
+            marker.bindPopup("You are here").openPopup();
+
+            map.setView([lat, lng], 13);
+          },
+          (error) => {
+            alert("Unable to retrieve location: " + error.message);
+          }
+        );
+      } else {
+        alert("Geolocation is not supported by your browser.");
+      }
+    },
+    toggle: false
+  });
+
+  // add Screenshot
+  map.pm.Toolbar.createCustomControl({
+    name: "screenshot",
+    block: "custom",
+    title: "ถ่ายภาพหน้าจอแผนที่",
+    className: "screenshot-btn",
+    onClick: () => {
+      const mapElement = document.getElementById("map");
+      html2canvas(mapElement).then((canvas) => {
+        const link = document.createElement("a");
+        link.download = "map-screenshot.png";
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    },
+    toggle: false
+  });
+
+  // edit text 
+  map.pm.Toolbar.createCustomControl({
+    name: "add-text",
+    block: "custom",
+    title: "เพิ่มข้อความ",
+    className: "add-text-btn",
+    onClick: () => {
+      map.once("click", (e) => {
+        const { latlng } = e;
+        const container = map.getContainer();
+        const point = map.latLngToContainerPoint(latlng);
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = "เพิ่มชื่อสถานที่";
+        input.style.position = "absolute";
+        input.style.left = `${point.x}px`;
+        input.style.top = `${point.y}px`;
+        input.style.zIndex = 1000;
+        input.style.fontSize = "14px";
+        input.style.padding = "2px 6px";
+        input.style.border = "1px solid #ccc";
+        input.style.borderRadius = "4px";
+        input.style.backgroundColor = "#fff";
+        container.appendChild(input);
+        input.focus();
+
+        let committed = false;
+
+        function commitText() {
+          if (committed) return;
+          committed = true;
+
+          const text = input.value;
+          if (text) {
+            const textIcon = L.divIcon({
+              html: `<div style="font-size: 14px; color: white; white-space: nowrap;">${text}</div>`,
+              className: "custom-text-label",
+            });
+
+            const marker = L.marker(latlng, { icon: textIcon }).addTo(map);
+            drawnItems.addLayer(marker);
+          }
+
+          if (input.parentNode) {
+            input.parentNode.removeChild(input);
+          }
         }
-        
-        console.log('Somebody drew :', {
-          shape: shape,
-          geometryType: geometryType,
-          layer: layer
+
+        input.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            commitText();
+          }
         });
 
-        // จัดการแต่ละประเภท layer
-        if (e.layer instanceof L.Marker) {
-          const latlng = e.layer.getLatLng();
-          map.removeLayer(e.layer);
-          const marker = L.marker(latlng, { icon: customIcon }).addTo(map);
-          drawnItems.addLayer(marker);
-          
-          //  แสดง Confirmation Dialog แทนการเปิดฟอร์มทันที
-          showConfirmation(marker, geometryType);
-        }
-
-        else if (e.layer instanceof L.Polyline && !(e.layer instanceof L.Polygon)) {
-          const latlngs = e.layer.getLatLngs();
-          let distance = 0;
-          for (let i = 0; i < latlngs.length - 1; i++) {
-            distance += latlngs[i].distanceTo(latlngs[i + 1]);
-          }
-          
-          // เพิ่ม popup ชั่วคราว
-          e.layer.bindPopup(`ระยะทาง: ${distance.toLocaleString()} เมตร`);
-          drawnItems.addLayer(e.layer);
-          
-          //  แสดง Confirmation Dialog
-          showConfirmation(e.layer, geometryType);
-        }
-
-        else if (e.layer instanceof L.Polygon) {
-          e.layer.pm.enable();
-          drawnItems.addLayer(e.layer);
-          
-          //  แสดง Confirmation Dialog
-          showConfirmation(e.layer, geometryType);
-        }
-
-        // สำหรับประเภทอื่นๆ
-        else {
-          drawnItems.addLayer(e.layer);
-          showConfirmation(e.layer, geometryType);
-        }
+        input.addEventListener("blur", () => {
+          commitText();
+        });
       });
+    },
+    toggle: false
+  });
 
-      const coord = document.getElementById("coordinate-display");
-      map.on("mousemove", (e) => {
-        const lat = e.latlng.lat.toFixed(6);
-        const lng = e.latlng.lng.toFixed(6);
-        coord.innerHTML = `Lat: ${lat}, Lng: ${lng}`;
-      });
+   // upload GeoJSON
+  map.pm.Toolbar.createCustomControl({
+  name: "load-data",
+  block: "custom",
+  title: "นำเข้าข้อมูล GeoJSON",
+  className: "load-data-btn",
+  onClick: () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json,application/json';
 
-      // find locatiom
-      map.pm.Toolbar.createCustomControl({
-        name: "get-location",
-        block: "custom",
-        title: "Find My Location",
-        className: "custom-geolocation-btn",
-        onClick: () => {
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-              (position) => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
 
-                const marker = L.marker([lat, lng], { icon: customIcon }).addTo(map);
-                marker.bindPopup("You are here").openPopup();
+        reader.onload = (event) => {
+          try {
+            drawnItems.clearLayers();
+            const geoJson = JSON.parse(event.target.result);
 
-                map.setView([lat, lng], 13);
-              },
-              (error) => {
-                alert("Unable to retrieve location: " + error.message);
-              }
-            );
-          } else {
-            alert("Geolocation is not supported by your browser.");
-          }
-        },
-        toggle: false
-      });
-
-      // add Screenshot
-      map.pm.Toolbar.createCustomControl({
-        name: "screenshot",
-        block: "custom",
-        title: "Screenshot",
-        className: "screenshot-btn",
-        onClick: () => {
-          const mapElement = document.getElementById("map");
-          html2canvas(mapElement).then((canvas) => {
-            const link = document.createElement("a");
-            link.download = "map-screenshot.png";
-            link.href = canvas.toDataURL();
-            link.click();
-          });
-        },
-        toggle: false
-      });
-
-      // edit text 
-      map.pm.Toolbar.createCustomControl({
-        name: "add-text",
-        block: "custom",
-        title: "Add Text",
-        className: "add-text-btn",
-        onClick: () => {
-          map.once("click", (e) => {
-            const { latlng } = e;
-            const container = map.getContainer();
-            const point = map.latLngToContainerPoint(latlng);
-            const input = document.createElement("input");
-            input.type = "text";
-            input.placeholder = "เพิ่มชื่อสถานที่";
-            input.style.position = "absolute";
-            input.style.left = `${point.x}px`;
-            input.style.top = `${point.y}px`;
-            input.style.zIndex = 1000;
-            input.style.fontSize = "14px";
-            input.style.padding = "2px 6px";
-            input.style.border = "1px solid #ccc";
-            input.style.borderRadius = "4px";
-            input.style.backgroundColor = "#fff";
-            container.appendChild(input);
-            input.focus();
-
-            let committed = false;
-
-            function commitText() {
-              if (committed) return;
-              committed = true;
-
-              const text = input.value;
-              if (text) {
-                const textIcon = L.divIcon({
-                  html: `<div style="font-size: 14px; color: white; white-space: nowrap;">${text}</div>`,
-                  className: "custom-text-label",
-                });
-
-                const marker = L.marker(latlng, { icon: textIcon }).addTo(map);
-                drawnItems.addLayer(marker);
-              }
-
-              if (input.parentNode) {
-                input.parentNode.removeChild(input);
-              }
-            }
-
-            input.addEventListener("keydown", (event) => {
-              if (event.key === "Enter") {
-                commitText();
-              }
-            });
-
-            input.addEventListener("blur", () => {
-              commitText();
-            });
-          });
-        },
-        toggle: false
-      });
-
-       // upload GeoJSON
-      map.pm.Toolbar.createCustomControl({
-      name: "load-data",
-      block: "custom",
-      title: "Load map data",
-      className: "load-data-btn",
-      onClick: () => {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.json,application/json';
-
-        input.onchange = (e) => {
-          const file = e.target.files[0];
-          if (file) {
-            const reader = new FileReader();
-
-            reader.onload = (event) => {
-              try {
-                drawnItems.clearLayers();
-                const geoJson = JSON.parse(event.target.result);
-
-                map.whenReady(() => {
-                  const layers = L.geoJSON(geoJson, {
-                    pointToLayer: function (feature, latlng) {
-                      return L.marker(latlng, { icon: customIcon });
-                    },
-                    onEachFeature: function (feature, layer) {
-                      if (feature.properties && feature.properties.popupContent) {
-                        layer.bindPopup(feature.properties.popupContent);
-                        addEditButton(layer);
-                      }
-                    }
-                  });
-
-                  layers.eachLayer(function (layer) {
-                    drawnItems.addLayer(layer);
-                  });
-
-                  if (layers.getLayers().length > 0) {
-                    map.fitBounds(layers.getBounds());
+            map.whenReady(() => {
+              const layers = L.geoJSON(geoJson, {
+                pointToLayer: function (feature, latlng) {
+                  return L.marker(latlng, { icon: customIcon });
+                },
+                onEachFeature: function (feature, layer) {
+                  if (feature.properties && feature.properties.popupContent) {
+                    layer.bindPopup(feature.properties.popupContent);
+                    addEditButton(layer);
                   }
-                });
+                }
+              });
 
-                alert('Data loaded successfully');
-              } catch (error) {
-                alert('Error loading file: ' + error.message);
+              layers.eachLayer(function (layer) {
+                drawnItems.addLayer(layer);
+              });
+
+              if (layers.getLayers().length > 0) {
+                map.fitBounds(layers.getBounds());
               }
-            };
+            });
 
-            reader.readAsText(file);
+            alert('Data loaded successfully');
+          } catch (error) {
+            alert('Error loading file: ' + error.message);
           }
         };
 
-        input.click();
-      },
-      toggle: false
-          });
+        reader.readAsText(file);
+      }
+    };
+
+    input.click();
+  },
+  toggle: false
+      });
     
           onMounted(async () => {
   initMap();
   await loadExistingData();
   
-
 })};
 
 
@@ -1308,7 +1236,6 @@ overflow: auto;
     background-color: #f1f3f4;
 }
 
-/* Custom text label styling */
 .custom-text-label {
   background: rgba(0, 0, 0, 0.7);
   color: white;
@@ -1319,7 +1246,6 @@ overflow: auto;
   box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
-/* Popup edit styling */
 .popup-edit {
   display: flex;
   align-items: center;
@@ -1358,7 +1284,6 @@ overflow: auto;
   backdrop-filter: blur(2px);
 }
 
-/* ⭐ Confirmation Dialog Styles */
 .confirm-container {
   background: white;
   padding: 2rem;
@@ -1407,7 +1332,6 @@ overflow: auto;
   min-width: 120px;
 }
 
-/* Form Container Styles */
 .form-container {
   background: white;
   padding: 2rem;
@@ -1538,14 +1462,35 @@ padding: 1rem 2rem;
 }
 
 .container.fullscreen-mode {
-  display: block !important; /* ปิด flex */
+  display: block !important;
 }
 
+:deep(.uniform-table.p-datatable) { font-size: 13px; }
+:deep(.uniform-table .p-datatable-scrollable-header-box table),
+:deep(.uniform-table .p-datatable-scrollable-body table) { table-layout: fixed; width:100%; }
+:deep(.uniform-table .p-datatable-thead > tr > th),
+:deep(.uniform-table .p-datatable-tbody > tr > td) {
+  padding: 6px 10px !important;
+  line-height: 1.3;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-
-
+:deep(.uniform-table.p-datatable-scrollable .p-datatable-scrollable-header) { margin-right: 0 !important; }
+:deep(.uniform-table .p-datatable-scrollable-body) { scrollbar-gutter: stable both-edges; }
+.action-buttons-row { display:flex; gap:4px; align-items:center; justify-content:center; flex-wrap:wrap; }
+.action-buttons-row.compact { gap:2px; }
+:deep(.action-buttons-row.compact .p-button.p-button-sm){ padding:2px 6px !important; font-size:11px; }
+:deep(.action-buttons-row.compact .p-button .p-button-label){ font-weight:400; }
+:deep(.uniform-table .p-datatable-tbody > tr:hover) { background:#e8f0fe; }
+:deep(.uniform-table .p-datatable-thead > tr > th) { white-space: nowrap; }
+:deep(.uniform-table .p-datatable-thead th[style*='min-width']) { min-width: auto !important; }
+:deep(.uniform-table .p-datatable-tbody > tr) { height: auto; }
 
 
 </style>
+
 
 

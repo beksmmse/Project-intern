@@ -12,12 +12,11 @@
               style="flex: 1;"
             />
             <Button @click="refreshData" severity="info" :loading="isLoading" class="refresh-btn" >
-              <i class="fas fa-sync-alt"></i> 
+              <i class="fas fa-sync-alt"></i>
             </Button>
           </div>
-
-          <DataTable 
-            :value="filteredFeatures" 
+          <DataTable
+            :value="filteredFeatures"
             class="striped-table"
             dataKey="properties.id"
             :rows="10"
@@ -26,26 +25,37 @@
             style="cursor: pointer;"
             tableStyle="min-width: 50rem"
           >
-            <Column field="properties.id" header="ID" sortable style="min-width: 5rem" />
+            <Column field="properties.id" header="ID" sortable style="min-width: 2rem" />
             <Column field="properties.name" header="Name" sortable style="min-width: 10rem" />
             <Column field="properties.description" header="Description" sortable style="min-width: 10rem" />
             <Column field="properties.address" header="Address" sortable style="min-width: 12rem" />
-            <Column header="Actions" style="min-width: 10rem"> 
+            <Column header="" style="min-width: 10rem">
               <template #body="slotProps">
-                <Button @click="showInfo(slotProps.data)" severity="info" size="small">
-                  <i class="pi pi-info-circle"></i> Info
-                </Button>
-                <Button @click="showEdit(slotProps.data)" severity="warning" size="small">
-                  <i class="pi pi-pencil"></i> Edit
-                </Button>
-                <Button 
-                  @click="deleteFeature(slotProps.data.properties.id, slotProps.data.properties.name)" 
-                  severity="danger" 
-                  size="small"
-                  style="margin-left: 5px;"
-                >
-                  <i class="pi pi-trash"></i> delete
-                </Button>
+                <div style="display: flex; gap: 5px; align-items: center; justify-content: center;" class="action-buttons">
+                  <Button
+                    @click="showInfo(slotProps.data)"
+                    severity="info"
+                    size="small"
+                  >
+                    ลายละเอียด
+                  </Button>
+                  <Button
+                    v-if="userRole === 'edit' || userRole === 'admin'"
+                    @click="showEdit(slotProps.data)"
+                    severity="warning"
+                    size="small"
+                  >
+                    <i class="pi pi-pencil action-edit" style="margin-top: 3px;"></i>
+                  </Button>
+                  <Button
+                    v-if="userRole === 'edit' || userRole === 'admin'"
+                    @click="deleteFeature(slotProps.data.properties.id, slotProps.data.properties.name)"
+                    severity="danger"
+                    size="small"
+                  >
+                    <i class="pi pi-trash action-delete" style="color: red; margin-top: 3px;"></i>
+                  </Button>
+                </div>
               </template>
             </Column>
           </DataTable>
@@ -53,30 +63,29 @@
 
         <div v-else class="info-box" style="margin-top: 1rem; border: 1px solid #ccc; padding: 1rem; border-radius: 6px;">
           <div class="button-container">
-            <Button @click="selectedFeature = null" class="btn-back">Back</Button>
-            <Button class="btn-exten" @click="toggleFullscreen">Extend</Button>
-            <Button @click="deleteCurrentFeature" severity="danger">
-              <i class="pi pi-trash"></i> Delete
+            <Button @click="exitFullscreenAndBack" class="btn-back">Back</Button>
+            <Button class="btn-exten" @click="toggleFullscreen">
+              {{ isLeftFullscreen ? 'Exit Fullscreen' : 'Extend' }}
             </Button>
-            <Button @click="showEdit(selectedFeature)" class="btn-edit">Edit</Button>
           </div>
-
           <h3>รายละเอียด</h3>
-          <p><strong>ID:</strong> {{ selectedFeature.properties.id }}</p>
-          <p><strong>Name:</strong> {{ selectedFeature.properties.name }}</p>
+           <p><strong>ID:</strong> {{ selectedFeature?.properties?.id }}</p>
+          <p><strong>Name:</strong> {{ selectedFeature?.properties?.name }}</p>
           <p><strong>Description:</strong> {{ selectedFeature.properties.description }}</p>
           <p><strong>Address:</strong> {{ selectedFeature.properties.address }}</p>
           <p><strong>create_at:</strong> {{ selectedFeature.properties.created_at }}</p>
+          <p><strong>update_at:</strong> {{ selectedFeature.properties.update_at }}</p>
           <p><strong>type:</strong> {{ selectedFeature.properties.type }}</p>
           <p><strong>coordinates:</strong> {{ selectedFeature.properties.coordinates }}</p>
+          <p><strong>SRID:</strong> {{ selectedFeature.properties.srid }}</p>
         </div>
       </div>
 
-      <div class="right-column" id="map">
+      <div class="right-column" id="cesiumContainer" ref="cesiumContainer">
         <div id="coordinate-display" class="coordinate-display"></div>
       </div>
     </div>
-    
+
     <!-- Confirmation Dialog -->
     <div v-if="showConfirmDialog" class="form-overlay">
       <div class="confirm-container">
@@ -95,7 +104,7 @@
         </div>
       </div>
     </div>
-    
+
     <!--  ฟอร์มกรอกข้อมูล (For create new data) -->
     <div v-if="showDataForm" class="form-overlay">
       <div class="form-container">
@@ -103,24 +112,22 @@
         <form @submit.prevent="saveDrawingData">
           <div class="form-group">
             <label>ชื่อ: <span class="required">*</span></label>
-            <input 
-              type="text" 
-              v-model="formData.name" 
-              required 
+            <input
+              type="text"
+              v-model="formData.name"
+              required
               placeholder="กรุณากรอกชื่อ"
             />
           </div>
-          
-        <div class="form-group">
+          <div class="form-group">
             <label>คำอธิบาย: <span class="required">*</span></label>
-            <textarea 
-              v-model="formData.description" 
+            <textarea
+              v-model="formData.description"
               required
               placeholder="กรุณากรอกคำอธิบาย"
               rows="3"
             ></textarea>
           </div>
-          
           <div class="form-group">
             <label>ประเภท: <span class="required">*</span></label>
             <select v-model="formData.type" required>
@@ -135,21 +142,18 @@
               <option value="other">อื่นๆ</option>
             </select>
           </div>
-          
           <div class="form-group">
             <label>ที่อยู่: <span class="required">*</span></label>
-            <input 
-              type="text" 
-              v-model="formData.address" 
+            <input
+              type="text"
+              v-model="formData.address"
               required
               placeholder="กรุณากรอกที่อยู่"
             />
           </div>
-          
           <div class="form-info">
             <p><strong> ประเภทของข้อมูล : <span class="required">*</span> </strong> {{ formData.geometryType }}</p>
           </div>
-          
           <div class="form-buttons">
             <Button type="submit" severity="success">
               <i class="pi pi-save"></i> บันทึก
@@ -178,23 +182,25 @@
           </div>
           <div class="form-group">
             <label>คำอธิบาย:</label>
-            <textarea 
+            <textarea
               v-model="editFormData.description"
+              required
               placeholder="กรุณากรอกคำอธิบาย"
               rows="3"
             ></textarea>
           </div>
           <div class="form-group">
             <label>ที่อยู่:</label>
-            <input 
+            <input
               type="text"
               v-model="editFormData.address"
+              required
               placeholder="กรุณากรอกที่อยู่"
             />
           </div>
           <div class="form-group">
             <label>ประเภท:</label>
-            <select v-model="editFormData.type">
+            <select v-model="editFormData.type" required>
               <option value="landmark">สถานที่สำคัญ</option>
               <option value="route">เส้นทาง</option>
               <option value="area">พื้นที่</option>
@@ -219,33 +225,34 @@
   </div>
 </template>
 
-
 <script setup>
-import { ref, onMounted, computed} from 'vue'
-import html2canvas from 'html2canvas'
-import L from 'leaflet'
-import '@geoman-io/leaflet-geoman-free'
-import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
-import "leaflet/dist/leaflet.css";
-import axios from 'axios';
 
+window.CESIUM_BASE_URL = '/cesium/'
+import { ref, onMounted, onUnmounted, computed } from 'vue';
+import axios from 'axios';
 
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
+import 'primeicons/primeicons.css';
 
-const drawnItems = L.featureGroup();
-const geojsonData = ref(null);
-const selectedFeature = ref(null);
+// CesiumJS
+import * as Cesium from 'cesium';
+import 'cesium/Build/Cesium/Widgets/widgets.css';
+
+const cesiumContainer = ref(null);
+let viewer = null;
+
 const allFeatures = ref([]);
 const searchText = ref('');
-const layerMap = new Map();
+const selectedFeature = ref(null);
 const isLoading = ref(false);
+const isLeftFullscreen = ref(false);
 
 const showConfirmDialog = ref(false);
 const showDataForm = ref(false);
-const currentDrawingLayer = ref(null);
 const currentGeometryType = ref('');
+const currentDrawingLayer = ref(null);
 const formData = ref({
   name: '',
   description: '',
@@ -254,97 +261,62 @@ const formData = ref({
   geometryType: ''
 });
 
-
-const showEditDialog = ref(false)
-const editFeature = ref(null)
+const showEditDialog = ref(false);
+const editFeature = ref(null);
 const editFormData = ref({
   name: '',
   description: '',
   address: '',
   type: ''
-})
+});
 
+const entityMap = new Map();
 
-//เก็บ layers ที่ยังไม่มีข้อมูล (สำหรับ double click)
-const pendingLayers = new Map();
-
-let map;
+const userRole = computed(() => {
+  const userStr = localStorage.getItem('user');
+  if (!userStr) return 'guest'; 
+  try {
+    const user = JSON.parse(userStr);
+    return user.role || 'guest';
+  } catch (e) {
+    return 'guest';
+  }
+});
 
 const filteredFeatures = computed(() => {
   if (!searchText.value.trim()) return allFeatures.value;
   const q = searchText.value.toLowerCase();
   return allFeatures.value.filter(f =>
-    f.properties.name?.toLowerCase().includes(q) ||
-    f.properties.description?.toLowerCase().includes(q) ||
-    f.properties.address?.toLowerCase().includes(q)
+    (f.properties?.id?.toString() ?? '').includes(q) ||
+    (f.properties?.name?.toLowerCase() ?? '').includes(q) ||
+    (f.properties?.description?.toLowerCase() ?? '').includes(q) ||
+    (f.properties?.address?.toLowerCase() ?? '').includes(q)
   );
 });
 
-function showConfirmation(layer, geometryType) {
-  currentDrawingLayer.value = layer;
+// --- Drawing and Form Functions ---
+function showConfirmation(entity, geometryType) {
+  currentDrawingLayer.value = entity;
   currentGeometryType.value = geometryType;
   showConfirmDialog.value = true;
 }
 
-
 function openFormFromConfirm() {
   showConfirmDialog.value = false;
-  openDataForm(currentDrawingLayer.value, currentGeometryType.value);
+  openDataForm(currentGeometryType.value);
 }
 
 function skipAddData() {
   showConfirmDialog.value = false;
-  
-  // เก็บ layer ไว้ใน pending เพื่อให้ double click ได้ทีหลัง
-  const layerId = Date.now(); // สร้าง ID unique
-  pendingLayers.set(layerId, {
-    layer: currentDrawingLayer.value,
-    geometryType: currentGeometryType.value
-  });
-  
-  // เพิ่ม popup พร้อมคำแนะนำ
-  currentDrawingLayer.value.bindPopup(`
-    <div style="text-align: center;">
-      <p><strong>ยังไม่มีข้อมูล</strong></p>
-      <p style="font-size: 12px; color: #666;">
-        Double-click เพื่อเพิ่มข้อมูล
-      </p>
-      <button onclick="window.openPendingForm(${layerId})" 
-              style="padding: 4px 8px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer;">
-        เพิ่มข้อมูล
-      </button>
-    </div>
-  `);
-  
-  //double-click event listener
-  currentDrawingLayer.value.on('dblclick', () => {
-    const pendingData = pendingLayers.get(layerId);
-    if (pendingData) {
-      openDataForm(pendingData.layer, pendingData.geometryType);
-      pendingLayers.delete(layerId); // ลบออกจาก pending
-    }
-  });
-  
-  //  เพิ่ม global function สำหรับปุ่มใน popup
-  window.openPendingForm = (id) => {
-    const pendingData = pendingLayers.get(id);
-    if (pendingData) {
-      openDataForm(pendingData.layer, pendingData.geometryType);
-      pendingLayers.delete(id);
-    }
-  };
-  
-  // รีเซ็ตตัวแปร
+  if (currentDrawingLayer.value && viewer) {
+    viewer.entities.remove(currentDrawingLayer.value);
+  }
   currentDrawingLayer.value = null;
   currentGeometryType.value = '';
 }
 
-//  ฟังก์ชันเปิดฟอร์ม
-function openDataForm(layer, geometryType) {
-  currentDrawingLayer.value = layer;
+function openDataForm(geometryType) {
   showDataForm.value = true;
-  
-  // รีเซ็ตข้อมูลฟอร์ม
   formData.value = {
     name: '',
     description: '',
@@ -354,12 +326,12 @@ function openDataForm(layer, geometryType) {
   };
 }
 
-//  ฟังก์ชันปิดฟอร์ม
 function closeDataForm() {
   showDataForm.value = false;
+  if (currentDrawingLayer.value && viewer) {
+    viewer.entities.remove(currentDrawingLayer.value);
+  }
   currentDrawingLayer.value = null;
-  
-  // รีเซ็ตฟอร์ม
   formData.value = {
     name: '',
     description: '',
@@ -369,362 +341,372 @@ function closeDataForm() {
   };
 }
 
-
-//บันทึกข้อมูล
+// --- Save Drawing Data ---
 async function saveDrawingData() {
   if (!currentDrawingLayer.value) return;
-  
+
   try {
-    // สร้าง GeoJSON จาก layer ที่วาด
-    const geoJsonData = currentDrawingLayer.value.toGeoJSON();
-    
-    // เตรียมข้อมูลสำหรับส่งไป API ตามโครงสร้าง table layers
-    const layerData = {
-      organization_id: 1, 
+    isLoading.value = true;
+
+    // Extract coordinates from Cesium entity
+    let coordinates;
+    const entity = currentDrawingLayer.value;
+
+    if (entity.position) {
+      // Point
+      const position = entity.position.getValue(viewer.clock.currentTime);
+      const cartographic = Cesium.Cartographic.fromCartesian(position);
+      coordinates = [
+        Cesium.Math.toDegrees(cartographic.longitude),
+        Cesium.Math.toDegrees(cartographic.latitude)
+      ];
+    } else if (entity.polygon) {
+      // Polygon
+      const hierarchy = entity.polygon.hierarchy.getValue(viewer.clock.currentTime);
+      const positions = hierarchy.positions;
+      coordinates = [positions.map(pos => {
+        const cartographic = Cesium.Cartographic.fromCartesian(pos);
+        return [
+          Cesium.Math.toDegrees(cartographic.longitude),
+          Cesium.Math.toDegrees(cartographic.latitude)
+        ];
+      })];
+    } else if (entity.polyline) {
+      // LineString
+      const positions = entity.polyline.positions.getValue(viewer.clock.currentTime);
+      coordinates = positions.map(pos => {
+        const cartographic = Cesium.Cartographic.fromCartesian(pos);
+        return [
+          Cesium.Math.toDegrees(cartographic.longitude),
+          Cesium.Math.toDegrees(cartographic.latitude)
+        ];
+      });
+    }
+
+    const response = await axios.post('http://localhost:3000/api/Point', {
       name: formData.value.name,
       description: formData.value.description,
-      geometry_type: geoJsonData.geometry.type, // Point, LineString, Polygon, etc.
-      srid: 4326, // EPSG:4326 (WGS84)
-      properties_schema: {
-        type: formData.value.type,
-        address: formData.value.address,
-        created_at: new Date().toISOString()
-      },
-      created_by_user_id: 1, // ปรับตาม user ที่ login
+      type: formData.value.type,
       address: formData.value.address,
-      geometry: geoJsonData.geometry // GeoJSON geometry object
-    };
-    
-    console.log('prepare DB', layerData);
-    
-    // ส่งข้อมูลไป API
-    const response = await axios.post('http://localhost:3000/api/geometries', layerData);
-    
-    console.log('Receive:', response.data);
-    
-    // เพิ่ม ID ที่ได้จากฐานข้อมูลเข้าไปใน properties
-    const savedData = response.data;
-    
-    //  สร้าง feature object ใหม่สำหรับแสดงใน DataTable
-    const newFeature = {
-      type: 'Feature',
-      geometry: geoJsonData.geometry,
-      properties: {
-        id: savedData.id,
-        name: formData.value.name,
-        description: formData.value.description,
-        type: formData.value.type,
-        address: formData.value.address,
-        created_at: savedData.created_at,
-        coordinates: JSON.stringify(geoJsonData.geometry.coordinates)
+      geometry: {
+        type: currentGeometryType.value,
+        coordinates: coordinates,
+        srid: 4326
       }
-    };
-    
-    // เพิ่มข้อมูลใหม่เข้าไปใน allFeatures array (ไว้ด้านบนสุด)
-    allFeatures.value.unshift(newFeature);
-    
-    // console.log('เพิ่มข้อมูลใหม่แล้ว:', newFeature);
-    // console.log('จำนวนข้อมูลทั้งหมด:', allFeatures.value.length);
-    
-    // เพิ่ม popup ให้กับ layer พร้อม ID ที่บันทึกแล้ว
-    currentDrawingLayer.value.bindPopup(`
-      <div>
-        <h4>${formData.value.name}</h4>
-        <p><strong>ID:</strong> ${savedData.id}</p>
-        <p><strong>คำอธิบาย:</strong> ${formData.value.description}</p>
-        <p><strong>ประเภท:</strong> ${formData.value.type}</p>
-        <p><strong>ที่อยู่:</strong> ${formData.value.address}</p>
-        <p><strong>วันที่สร้าง:</strong> ${new Date(savedData.created_at).toLocaleDateString('th-TH')}</p>
-      </div>
-    `);
-    
-    // เก็บ mapping ระหว่าง feature ID กับ layer สำหรับใช้ใน layerMap
-    layerMap.set(savedData.id, currentDrawingLayer.value);
-    
-    //  เพิ่ม click event สำหรับ layer ที่เพิ่งบันทึก
-    currentDrawingLayer.value.on('click', () => {
-      selectedFeature.value = newFeature;
-      console.log('คลิกที่ layer:', newFeature);
     });
+
+    console.log('Data saved successfully:', response.data);
     
-    alert('บันทึกข้อมูลสำเร็จ!');
-    closeDataForm();
+    // Update entity with saved data
+    entity.id = response.data.id;
+    entity.name = formData.value.name;
+    entity.description = formData.value.description;
+    entity.properties = response.data;
     
+    entityMap.set(response.data.id, entity);
+
+    // Reset form
+    showDataForm.value = false;
+    currentDrawingLayer.value = null;
+    formData.value = {
+      name: '',
+      description: '',
+      type: '',
+      address: '',
+      geometryType: ''
+    };
+
+    // Refresh data
+    await loadExistingData();
+
   } catch (error) {
-    console.error('เกิดข้อผิดพลาดในการบันทึก:', error);
-    
-    let errorMessage = 'เกิดข้อผิดพลาดในการบันทึกข้อมูล';
-    if (error.response) {
-      // Server ตอบกลับมาพร้อม error status
-      errorMessage += `: ${error.response.data.message || error.response.statusText}`;
-    } else if (error.request) {
-      // ไม่สามารถเชื่อมต่อกับ server ได้
-      errorMessage += ': ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้';
-    }
-    
-    alert(errorMessage);
+    console.error('Error saving data:', error);
+    alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + error.message);
+  } finally {
+    isLoading.value = false;
   }
 }
 
-//โหลดข้อมูลจาก API 
-async function loadExistingData() {
-  try {
-    // console.log('กำลังโหลดข้อมูลจาก API');
-    
-    const response = await axios.get('http://localhost:3000/api/point');
-    const data = response.data;
-    
-    // console.log('ข้อมูลจาก API:', data);
-    
-    // Handle both array and FeatureCollection responses
-    let features = [];
-    if (Array.isArray(data)) {
-      features = data;
-    } else if (data?.type === 'FeatureCollection' && Array.isArray(data?.features)) {
-      features = data.features;
-    } else {
-      console.error('Unexpected API response format:', data);
-      allFeatures.value = [];
-      return;
-    }
-    
-    // Convert API data to GeoJSON features
-    allFeatures.value = features.map(item => {
-      // Ensure required fields exist
-      if (!item || !item.geometry || !item.geometry.coordinates) {
-        console.warn('Invalid item in API response:', item);
-        return null;
-      }
-      
-      return {
-        type: 'Feature',
-        geometry: item.geometry,
-        properties: {
-          id: item.id,
-          name: item.name || '',
-          description: item.description || '',
-          type: item.properties_schema?.type || '',
-          address: item.address || '',
-          created_at: item.created_at || new Date().toISOString(),
-          coordinates: JSON.stringify(item.geometry.coordinates)
-        }
-      };
-    }) // Remove any null entries from invalid items
-    
+// --- Cesium Entity Helpers ---
+function flyToEntity(entity) {
+  if (!viewer || !entity) {
+    console.warn('Cannot fly to entity: viewer or entity not available');
+    return;
+  }
 
-    // เพิ่ม layers ลงในแผนที่
-    allFeatures.value.forEach(feature => {
-      const layer = L.geoJSON(feature, {
-        onEachFeature: function(feature, layer) {
-          // เพิ่ม popup
-          layer.bindPopup(`
-            <div>
-              <h4>${feature.properties.name}</h4>
-              <p><strong>ID:</strong> ${feature.properties.id}</p>
-              <p><strong>คำอธิบาย:</strong> ${feature.properties.description}</p>
-              <p><strong>ประเภท:</strong> ${feature.properties.type}</p>
-              <p><strong>ที่อยู่:</strong> ${feature.properties.address}</p>
-              <p><strong>วันที่สร้าง:</strong> ${new Date(feature.properties.created_at).toLocaleDateString('th-TH')}</p>
-            </div>
-          `);
+  try {
+    viewer.flyTo(entity, {
+      duration: 2.0,
+      offset: new Cesium.HeadingPitchRange(0, -Math.PI / 4, 1000)
+    });
+  } catch (error) {
+    console.error('Error flying to entity:', error);
+    // Fallback: try to set view to entity position
+    try {
+      if (entity.position) {
+        const position = entity.position.getValue(viewer.clock.currentTime);
+        if (position) {
+          const cartographic = Cesium.Cartographic.fromCartesian(position);
+          const longitude = Cesium.Math.toDegrees(cartographic.longitude);
+          const latitude = Cesium.Math.toDegrees(cartographic.latitude);
           
-          // เพิ่ม click event สำหรับแสดงข้อมูลใน info box
-          layer.on('click', () => {
-            selectedFeature.value = feature;
-            // console.log('คลิกที่ layer เก่า:', feature);
+          viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, 1000)
           });
         }
-      });
-      
-      // เพิ่มเข้าไปใน drawnItems และ layerMap
-      drawnItems.addLayer(layer);
-      layerMap.set(feature.properties.id, layer);
-    });
-    
-    // console.log(`โหลดข้อมูลสำเร็จ: ${allFeatures.value.length} รายการ`);
-    
-  } catch (error) {
-    console.error('เกิดข้อผิดพลาดในการโหลดข้อมูล:', error);
-    // ไม่แสดง alert เพราะอาจจะยังไม่มีข้อมูล
+      }
+    } catch (fallbackError) {
+      console.error('Fallback flyTo also failed:', fallbackError);
+    }
   }
-
 }
 
-// รีเฟรชข้อมูล
+function clearEntities() {
+  if (!viewer) return;
+  
+  try {
+    viewer.entities.removeAll();
+    entityMap.clear();
+    console.log('Cleared all entities');
+  } catch (error) {
+    console.error('Error clearing entities:', error);
+  }
+}
+
+function featureToEntity(feature) {
+  if (!viewer || !feature || !feature.geometry) {
+    console.warn('Invalid feature or viewer not ready:', feature);
+    return null;
+  }
+
+  try {
+    let entity;
+    const geom = feature.geometry;
+    const props = feature.properties || {};
+
+    if (geom.type === "Point") {
+      const [lon, lat] = geom.coordinates;
+      
+      // Validate coordinates
+      if (isNaN(lon) || isNaN(lat) || Math.abs(lat) > 90 || Math.abs(lon) > 180) {
+        console.warn('Invalid coordinates:', geom.coordinates);
+        return null;
+      }
+
+      entity = viewer.entities.add({
+        id: props.id || Cesium.createGuid(),
+        position: Cesium.Cartesian3.fromDegrees(lon, lat),
+        point: {
+          pixelSize: 12,
+          color: Cesium.Color.CYAN,
+          outlineColor: Cesium.Color.WHITE,
+          outlineWidth: 2,
+          heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+          disableDepthTestDistance: Number.POSITIVE_INFINITY
+        },
+        label: {
+          text: props.name || 'Point',
+          font: '12pt sans-serif',
+          fillColor: Cesium.Color.WHITE,
+          outlineColor: Cesium.Color.BLACK,
+          outlineWidth: 2,
+          style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+          verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+          pixelOffset: new Cesium.Cartesian2(0, -9),
+          heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+        },
+        properties: props,
+        description: props.description || '',
+        name: props.name || 'Unnamed Point'
+      });
+
+    } else if (geom.type === "Polygon") {
+      const coordinates = geom.coordinates[0];
+      if (!coordinates || coordinates.length < 3) {
+        console.warn('Invalid polygon coordinates:', geom.coordinates);
+        return null;
+      }
+
+      // Validate and flatten coordinates
+      const positions = [];
+      for (const coord of coordinates) {
+        const [lon, lat] = coord;
+        if (!isNaN(lon) && !isNaN(lat) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180) {
+          positions.push(lon, lat);
+        }
+      }
+
+      if (positions.length < 6) { // At least 3 points (6 values)
+        console.warn('Not enough valid coordinates for polygon');
+        return null;
+      }
+
+      entity = viewer.entities.add({
+        id: props.id || Cesium.createGuid(),
+        polygon: {
+          hierarchy: Cesium.Cartesian3.fromDegreesArray(positions),
+          material: Cesium.Color.BLUE.withAlpha(0.3),
+          outline: true,
+          outlineColor: Cesium.Color.BLUE,
+          heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+        },
+        properties: props,
+        description: props.description || '',
+        name: props.name || 'Unnamed Polygon'
+      });
+
+    } else if (geom.type === "LineString") {
+      const coordinates = geom.coordinates;
+      if (!coordinates || coordinates.length < 2) {
+        console.warn('Invalid linestring coordinates:', geom.coordinates);
+        return null;
+      }
+
+      // Validate and flatten coordinates
+      const positions = [];
+      for (const coord of coordinates) {
+        const [lon, lat] = coord;
+        if (!isNaN(lon) && !isNaN(lat) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180) {
+          positions.push(lon, lat);
+        }
+      }
+
+      if (positions.length < 4) { // At least 2 points (4 values)
+        console.warn('Not enough valid coordinates for linestring');
+        return null;
+      }
+
+      entity = viewer.entities.add({
+        id: props.id || Cesium.createGuid(),
+        polyline: {
+          positions: Cesium.Cartesian3.fromDegreesArray(positions),
+          width: 3,
+          material: Cesium.Color.RED,
+          clampToGround: true
+        },
+        properties: props,
+        description: props.description || '',
+        name: props.name || 'Unnamed Line'
+      });
+    }
+
+    if (entity && props.id) {
+      entityMap.set(props.id, entity);
+    }
+
+    return entity;
+
+  } catch (error) {
+    console.error('Error creating entity from feature:', error, feature);
+    return null;
+  }
+}
+
+// --- Data CRUD ---
+async function loadExistingData() {
+  try {
+    console.log('Loading existing data...');
+    const response = await axios.get('http://localhost:3000/api/Point');
+    const data = response.data;
+    
+    if (!data.features || !Array.isArray(data.features)) {
+      console.warn('Invalid data format received:', data);
+      return;
+    }
+
+    allFeatures.value = data.features.map(item => ({
+      type: 'Feature',
+      geometry: item.geometry,
+      properties: {
+        id: item.properties.id,
+        name: item.properties.name,
+        description: item.properties.description,
+        type: item.properties.type || '',
+        address: item.properties.address,
+        created_at: item.properties.created_at,
+        update_at: item.properties.update_at,
+        coordinates: JSON.stringify(item.geometry.coordinates),
+        srid: item.properties.srid || 4326
+      }
+    }));
+
+    console.log(`Loaded ${allFeatures.value.length} features`);
+
+    // Clear existing entities
+    clearEntities();
+
+    // Add features to map with delay to prevent render issues
+    let successCount = 0;
+    for (const feature of allFeatures.value) {
+      try {
+        const entity = featureToEntity(feature);
+        if (entity) {
+          successCount++;
+        }
+        // Small delay to prevent overwhelming the renderer
+        await new Promise(resolve => setTimeout(resolve, 10));
+      } catch (error) {
+        console.warn('Failed to add feature:', feature.properties?.id, error);
+      }
+    }
+
+    console.log(`Successfully added ${successCount}/${allFeatures.value.length} entities to map`);
+
+  } catch (error) {
+    console.error('Error loading existing data:', error);
+    alert('เกิดข้อผิดพลาดในการโหลดข้อมูล: ' + error.message);
+  }
+}
+
 async function refreshData() {
   isLoading.value = true;
   try {
-    // console.log('กำลังรีเฟรชข้อมูล');
-    
-    // เคลียร์ layers เก่าออกจากแผนที่
-    allFeatures.value.forEach(feature => {
-      const layer = layerMap.get(feature.properties.id);
-      if (layer) {
-        drawnItems.removeLayer(layer);
-      }
-    });
-    
-    layerMap.clear();
+    clearEntities();
     await loadExistingData();
-    // เอาไว้เช็คว่าโหลดเสร๋จมั้ย
-    // console.log('รีเฟรชข้อมูลสำเร็จ');
-    
   } catch (error) {
-    console.error('เกิดข้อผิดพลาดในการรีเฟรชข้อมูล:', error);
     alert('เกิดข้อผิดพลาดในการรีเฟรชข้อมูล');
   } finally {
     isLoading.value = false;
   }
 }
-// ลบข้อมูลตามที่เลือก
+
 async function deleteFeature(featureId, featureName) {
   const confirmDelete = confirm(`คุณต้องการลบ "${featureName}" หรือไม่?`);
-  
   if (!confirmDelete) return;
   
   try {
-    console.log('กำลังลบข้อมูล ID:', featureId);
+    await axios.delete(`http://localhost:3000/api/geometries/${featureId}`);
     
-    const response = await axios.delete(`http://localhost:3000/api/geometries/${featureId}`);
-    
-    console.log('ลบสำเร็จ:', response.data);
-    
-    // ลบออกจาก allFeatures array
+    // Remove from allFeatures array
     const featureIndex = allFeatures.value.findIndex(f => f.properties.id === featureId);
     if (featureIndex > -1) {
       allFeatures.value.splice(featureIndex, 1);
     }
     
-    // ลบ layer ออกจากแผนที่
-    const layer = layerMap.get(featureId);
-    if (layer) {
-      drawnItems.removeLayer(layer);
-      layerMap.delete(featureId);
+    // Remove from Cesium viewer
+    const entity = entityMap.get(featureId);
+    if (entity && viewer) {
+      viewer.entities.remove(entity);
+      entityMap.delete(featureId);
     }
     
-    // ปิด info box ถ้ากำลังแสดงข้อมูลที่ถูกลบ
+    // Clear selection if deleted feature was selected
     if (selectedFeature.value && selectedFeature.value.properties.id === featureId) {
       selectedFeature.value = null;
     }
     
     alert(`ลบ "${featureName}" สำเร็จ!`);
-    
   } catch (error) {
-    console.error('เกิดข้อผิดพลาดในการลบ:', error);
+    console.error('Error deleting feature:', error);
     alert('เกิดข้อผิดพลาดในการลบข้อมูล');
   }
 }
 
-// ลบข้อมูลหลายรายการ bulk delete 
-async function deleteMultipleFeatures(featureIds) {
-  const confirmDelete = confirm(`คุณต้องการลบข้อมูล ${featureIds.length} รายการหรือไม่?`);
-  
-  if (!confirmDelete) return;
-  
-  try {
-    console.log('กำลังลบข้อมูลหลายรายการ:', featureIds);
-    
-    const response = await axios.delete('http://localhost:3000/api/geometries', {
-      data: { ids: featureIds }
-    });
-    
-    console.log('ลบหลายรายการสำเร็จ:', response.data);
-    
-    // ลบออกจาก allFeatures array
-    allFeatures.value = allFeatures.value.filter(f => !featureIds.includes(f.properties.id));
-    
-    // ลบ layers ออกจากแผนที่
-    featureIds.forEach(id => {
-      const layer = layerMap.get(id);
-      if (layer) {
-        drawnItems.removeLayer(layer);
-        layerMap.delete(id);
-      }
-    });
-    
-    // ปิด info box ถ้ากำลังแสดงข้อมูลที่ถูกลบ
-    if (selectedFeature.value && featureIds.includes(selectedFeature.value.properties.id)) {
-      selectedFeature.value = null;
-    }
-    
-    alert(`ลบข้อมูลสำเร็จ ${featureIds.length} รายการ!`);
-    
-  } catch (error) {
-    console.error('เกิดข้อผิดพลาดในการลบหลายรายการ:', error);
-    
-    let errorMessage = 'เกิดข้อผิดพลาดในการลบข้อมูล';
-    if (error.response) {
-      errorMessage += `: ${error.response.data.message || error.response.statusText}`;
-    }
-    
-    alert(errorMessage);
-  }
-}
-
-// ลบข้อมูลจาก info box
-async function deleteCurrentFeature() {
-  if (!selectedFeature.value) return;
-  
-  const feature = selectedFeature.value;
-  await deleteFeature(feature.properties.id, feature.properties.name);
-}
-
-onMounted(async () => {  
-  initMap();
-  await loadExistingData(); // โหลดข้อมูลที่มีอยู่แล้ว
-});
-
-function createPopup(content = "Name") {
-  return `
-    <div class="popup-edit">
-      <span class="popup-text">${content}</span>
-      <button class="edit-btn" style="margin-left: 10px;">เเก้ไข</button>
-    </div>
-  `;
-}
-
-function bindEditablePopup(marker, initialText = "Name") {
-  marker.bindPopup(createPopup(initialText));
-
-  marker.on("popupopen", () => {
-    const container = marker.getPopup().getElement();
-    const span = container.querySelector(".popup-text");
-    const btn = container.querySelector(".edit-btn");
-
-    btn.addEventListener("click", () => {
-      const input = document.createElement("input");
-      input.type = "text";
-      input.value = span.textContent;
-      input.style.width = "120px";
-
-      span.replaceWith(input);
-      input.focus();
-
-      function save() {
-        const newText = input.value || "Name";
-        bindEditablePopup(marker, newText);
-        marker.openPopup();
-      }
-
-      input.addEventListener("blur", save);
-      input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") save();
-      });
-    });
-  });
-}
-
-function addEditButton(layer) {
-  console.log("Edit button logic here for layer", layer);
-}
-
+// --- UI Actions ---
 function showInfo(rowData) {
-  selectedFeature.value = rowData
-
-  if (map && rowData.geometry?.coordinates) {
-    const [lng, lat] = rowData.geometry.coordinates
-    map.setView([lat, lng]) 
-  }
+  selectedFeature.value = rowData;
+  const entity = entityMap.get(rowData.properties.id);
+  flyToEntity(entity);
 }
 
 function showEdit(feature) {
@@ -742,426 +724,389 @@ async function submitEdit() {
   try {
     const id = editFeature.value.properties.id;
     const payload = { ...editFormData.value };
+    
     await axios.put(`http://localhost:3000/api/geometries/${id}`, payload);
-
-    // อัปเดตข้อมูลบนจอ ไม่ต้อง reload ทั้งหมด
+    
+    // Update local data
     Object.assign(editFeature.value.properties, payload);
-
-    //  selectedFeature ใน info box ด้วย
+    
     if (selectedFeature.value && selectedFeature.value.properties.id === id) {
       Object.assign(selectedFeature.value.properties, payload);
     }
-
+    
+    // Update Cesium entity
+    const entity = entityMap.get(id);
+    if (entity) {
+      entity.name = payload.name;
+      entity.description = payload.description;
+      if (entity.label) {
+        entity.label.text = payload.name;
+      }
+      Object.assign(entity.properties, payload);
+    }
+    
     showEditDialog.value = false;
     alert('แก้ไขข้อมูลสำเร็จ');
   } catch (error) {
+    console.error('Error updating feature:', error);
     alert(error?.response?.data?.message || 'เกิดข้อผิดพลาดในการแก้ไขข้อมูล');
   }
 }
 
 function toggleFullscreen() {
-  // ฟังก์ชันสำหรับ fullscreen - ใช้ตามต้องการ
-  console.log('Toggle fullscreen');
+  const leftCol = document.querySelector(".left-column");
+  const rightCol = document.querySelector(".right-column");
+  const container = document.querySelector(".container");
+
+  if (!isLeftFullscreen.value) {
+    leftCol.classList.add("fullscreen-left");
+    container.classList.add("fullscreen-mode");
+    rightCol.classList.add("hide-map");
+  } else {
+    leftCol.classList.remove("fullscreen-left");
+    container.classList.remove("fullscreen-mode");
+    rightCol.classList.remove("hide-map");
+  }
+
+  isLeftFullscreen.value = !isLeftFullscreen.value;
+}
+
+function exitFullscreenAndBack() {
+  const leftCol = document.querySelector(".left-column");
+  const rightCol = document.querySelector(".right-column");
+  const container = document.querySelector(".container");
+
+  leftCol?.classList.remove("fullscreen-left");
+  container?.classList.remove("fullscreen-mode");
+  rightCol?.classList.remove("hide-map");
+
+  isLeftFullscreen.value = false;
+  selectedFeature.value = null;
 }
 
 function onRowClick(event) {
   const feature = event.data;
-  const id = feature.properties.id;
-  const layer = layerMap.get(id);
-  if (!layer) return;
+  const entity = entityMap.get(feature.properties.id);
+  flyToEntity(entity);
+}
 
-  if (layer.getBounds) {
-    map.fitBounds(layer.getBounds());
-  } else if (layer.getLatLng) {
-    map.setView(layer.getLatLng(), 16);
-  }
-
-  if (layer.openPopup) {
-    layer.openPopup();
+// --- Setup coordinate display with error handling ---
+function setupCoordinateDisplay() {
+  try {
+    const coordDiv = document.getElementById("coordinate-display");
+    if (coordDiv && viewer) {
+      viewer.screenSpaceEventHandler.setInputAction(function (movement) {
+        try {
+          const cartesian = viewer.camera.pickEllipsoid(movement.endPosition, viewer.scene.globe.ellipsoid);
+          if (cartesian) {
+            const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+            const lat = Cesium.Math.toDegrees(cartographic.latitude).toFixed(6);
+            const lon = Cesium.Math.toDegrees(cartographic.longitude).toFixed(6);
+            coordDiv.innerHTML = `Lat: ${lat}, Lng: ${lon}`;
+          }
+        } catch (error) {
+          console.warn('Error updating coordinates:', error);
+        }
+      }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+    }
+  } catch (error) {
+    console.error('Error setting up coordinate display:', error);
   }
 }
 
-//Load Basemap 
-function initMap() {
-  if (map) return;
-  map = L.map("map").setView([13.783278, 100.59288], 10);
+// --- Setup error handler for Cesium ---
+function setupErrorHandler() {
+  if (!viewer) {
+    console.warn('ไม่สามารถตั้งค่า error handler: viewer ไม่พร้อม');
+    return;
+  }
 
-  const baseMaps = {
-    OpenStreetMap: L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 20,
-      attribution: "© OpenStreetMap",
-    }),
-    Satellite: L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
-      maxZoom: 20,
-      attribution: "Esri",
-    }),
-    Topo: L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
-      maxZoom: 20,
-      attribution: "© OpenTopoMap",
-    }),
-    "Dark Mode": L.tileLayer("https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png", {
-      maxZoom: 20,
-      attribution: "© Stadia Maps, © OpenMapTiles, © OpenStreetMap contributors",
-    })
-  };
-
-  //Load Bounder from geoserver
-  const wmsProvice = L.tileLayer.wms('http://localhost:8080/geoserver/ows?', {
-  layers: 'ne:BKK_pro',
-  format: 'image/png',
-  transparent: true,
-  version: '1.1.1',
-  attribution: 'GeoServer',
-  opacity: 0.6
-  })
-
-  const wmsLayer = L.tileLayer.wms('http://localhost:8080/geoserver/ows?', {
-  layers: 'ne:bangkok_district',
-  format: 'image/png',
-  transparent: true,
-  version: '1.1.1',
-  attribution: 'GeoServer',
-  opacity: 0.6
-  })
-
-  const wmsSubdis = L.tileLayer.wms('http://localhost:8080/geoserver/ows?', {
-  layers: 'ne:BKK_subdist',
-  format: 'image/png',
-  transparent: true,
-  version: '1.1.1',
-  attribution: 'GeoServer',
-  opacity: 0.5
-  })
-
-  
-  const overlayMaps = {
-  "ขอบเขตกรุงเทพฯ": wmsProvice,
-  "ขอบเขตอำเภอ": wmsLayer,
-  "ขอบเขตอำตำบล": wmsSubdis
-  };
-
-  baseMaps.OpenStreetMap.addTo(map);
-  L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-  const customIcon = L.icon({
-    iconUrl: require('@/assets/my-icon.png'),
-    iconSize: [30, 30],
-    iconAnchor: [15, 30],
-    popupAnchor: [0, -30],
-  });
-
-  L.Marker.prototype.options.icon = customIcon
-
-
-  axios.get('http://localhost:3000/api/Point')
-
-  drawnItems.addTo(map);
-  function loadGeoJSONFromServer() {
-  fetch('http://localhost:3000/api/Point')
-    .then(res => res.json())
-    .then(data => {
-      geojsonData.value = data
-      allFeatures.value = data.features
-
-      const geoLayer = L.geoJSON(data, {
-        pointToLayer: (feature, latlng) =>
-          L.marker(latlng, { icon: customIcon }),
-        onEachFeature: (feature, layer) => {
-          const id = feature.properties?.id
-          if (id) layerMap.set(id, layer)
-
-          layer.bindPopup(feature.properties.name || 'ไม่มีชื่อ')
-          layer.on('click', () => {
-            selectedFeature.value = feature;
-          })
-        }
-      })
-
-      geoLayer.addTo(map)
-      drawnItems.addLayer(geoLayer)
-      map.fitBounds(geoLayer.getBounds())
-    })
-}
-
-  loadGeoJSONFromServer();
-  
-  map.pm.addControls({
-        position: "topleft",
-        drawMarker: true,
-        drawCircle: true,
-        drawPolyline: true,
-        drawRectangle: true,
-        drawPolygon: true,
-        editMode: true,
-        dragMode: true,
-        cutPolygon: true,
-        removalMode: true,
-        drawText: false,
-        rotateMode: true,
-        oneBlock: true,
-        drawControls: true,
-        editControls: true,
-        customControls: true,
-        measurementMode: true,
+  try {
+    // จัดการ render errors
+    viewer.scene.renderError.addEventListener(function(scene, error) {
+      console.error('Cesium render error:', error);
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
       });
-
-      //  แก้ไข pm:create event ใหม่
-      map.on('pm:create', (e) => {
-        const layer = e.layer;
-        const shape = e.shape;
-        
-        //  กำหนดประเภท geometry
-        let geometryType = '';
-        switch(shape) {
-          case 'Marker':
-            geometryType = 'Point';
-            break;
-          case 'Line':
-            geometryType = 'LineString';
-            break;
-          case 'Polygon':
-            geometryType = 'Polygon';
-            break;
-          case 'Rectangle':
-            geometryType = 'Polygon';
-            break;
-          case 'Circle':
-            geometryType = 'Circle';
-            break;
-          default:
-            geometryType = 'Unknown';
+      
+      try {
+        if (viewer.scene.globe.enableLighting) {
+          viewer.scene.globe.enableLighting = false;
+          console.log('ปิด lighting เนื่องจาก render error');
         }
         
-        console.log('Somebody drew :', {
-          shape: shape,
-          geometryType: geometryType,
-          layer: layer
-        });
+        // บังคับ render ใหม่
+        viewer.scene.requestRender();
+        console.log('พยายาม render ใหม่');
+        
+      } catch (recoveryError) {
+        console.error('การแก้ไข render error ล้มเหลว:', recoveryError);
+      }
+    });
 
-        // จัดการแต่ละประเภท layer
-        if (e.layer instanceof L.Marker) {
-          const latlng = e.layer.getLatLng();
-          map.removeLayer(e.layer);
-          const marker = L.marker(latlng, { icon: customIcon }).addTo(map);
-          drawnItems.addLayer(marker);
-          
-          //  แสดง Confirmation Dialog แทนการเปิดฟอร์มทันที
-          showConfirmation(marker, geometryType);
+    // จัดการ WebGL context errors
+    if (viewer.scene.context) {
+      viewer.scene.context.webglContextLost.addEventListener(function() {
+        console.error('WebGL context หายไป');
+        alert('WebGL context หายไป กรุณา refresh หน้า');
+      });
+
+      viewer.scene.context.webglContextRestored.addEventListener(function() {
+        console.log('WebGL context กลับมาแล้ว');
+      });
+    }
+
+    // จัดการ camera errors
+    viewer.camera.changed.addEventListener(function() {
+      try {
+        if (!viewer.isDestroyed()) {
+          viewer.scene.requestRender();
         }
+      } catch (error) {
+        console.warn('Camera change render error:', error);
+      }
+    });
 
-        else if (e.layer instanceof L.Polyline && !(e.layer instanceof L.Polygon)) {
-          const latlngs = e.layer.getLatLngs();
-          let distance = 0;
-          for (let i = 0; i < latlngs.length - 1; i++) {
-            distance += latlngs[i].distanceTo(latlngs[i + 1]);
-          }
-          
-          // เพิ่ม popup ชั่วคราว
-          e.layer.bindPopup(`ระยะทาง: ${distance.toLocaleString()} เมตร`);
-          drawnItems.addLayer(e.layer);
-          
-          //  แสดง Confirmation Dialog
-          showConfirmation(e.layer, geometryType);
-        }
-
-        else if (e.layer instanceof L.Polygon) {
-          e.layer.pm.enable();
-          drawnItems.addLayer(e.layer);
-          
-          //  แสดง Confirmation Dialog
-          showConfirmation(e.layer, geometryType);
-        }
-
-        // สำหรับประเภทอื่นๆ
-        else {
-          drawnItems.addLayer(e.layer);
-          showConfirmation(e.layer, geometryType);
-        }
-      });
-
-      const coord = document.getElementById("coordinate-display");
-      map.on("mousemove", (e) => {
-        const lat = e.latlng.lat.toFixed(6);
-        const lng = e.latlng.lng.toFixed(6);
-        coord.innerHTML = `Lat: ${lat}, Lng: ${lng}`;
-      });
-
-      // find locatiom
-      map.pm.Toolbar.createCustomControl({
-        name: "get-location",
-        block: "custom",
-        title: "Find My Location",
-        className: "custom-geolocation-btn",
-        onClick: () => {
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-              (position) => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-
-                const marker = L.marker([lat, lng], { icon: customIcon }).addTo(map);
-                marker.bindPopup("You are here").openPopup();
-
-                map.setView([lat, lng], 13);
-              },
-              (error) => {
-                alert("Unable to retrieve location: " + error.message);
-              }
-            );
-          } else {
-            alert("Geolocation is not supported by your browser.");
-          }
-        },
-        toggle: false
-      });
-
-      // add Screenshot
-      map.pm.Toolbar.createCustomControl({
-        name: "screenshot",
-        block: "custom",
-        title: "Screenshot",
-        className: "screenshot-btn",
-        onClick: () => {
-          const mapElement = document.getElementById("map");
-          html2canvas(mapElement).then((canvas) => {
-            const link = document.createElement("a");
-            link.download = "map-screenshot.png";
-            link.href = canvas.toDataURL();
-            link.click();
-          });
-        },
-        toggle: false
-      });
-
-      // edit text 
-      map.pm.Toolbar.createCustomControl({
-        name: "add-text",
-        block: "custom",
-        title: "Add Text",
-        className: "add-text-btn",
-        onClick: () => {
-          map.once("click", (e) => {
-            const { latlng } = e;
-            const container = map.getContainer();
-            const point = map.latLngToContainerPoint(latlng);
-            const input = document.createElement("input");
-            input.type = "text";
-            input.placeholder = "เพิ่มชื่อสถานที่";
-            input.style.position = "absolute";
-            input.style.left = `${point.x}px`;
-            input.style.top = `${point.y}px`;
-            input.style.zIndex = 1000;
-            input.style.fontSize = "14px";
-            input.style.padding = "2px 6px";
-            input.style.border = "1px solid #ccc";
-            input.style.borderRadius = "4px";
-            input.style.backgroundColor = "#fff";
-            container.appendChild(input);
-            input.focus();
-
-            let committed = false;
-
-            function commitText() {
-              if (committed) return;
-              committed = true;
-
-              const text = input.value;
-              if (text) {
-                const textIcon = L.divIcon({
-                  html: `<div style="font-size: 14px; color: white; white-space: nowrap;">${text}</div>`,
-                  className: "custom-text-label",
-                });
-
-                const marker = L.marker(latlng, { icon: textIcon }).addTo(map);
-                drawnItems.addLayer(marker);
-              }
-
-              if (input.parentNode) {
-                input.parentNode.removeChild(input);
-              }
-            }
-
-            input.addEventListener("keydown", (event) => {
-              if (event.key === "Enter") {
-                commitText();
-              }
-            });
-
-            input.addEventListener("blur", () => {
-              commitText();
-            });
-          });
-        },
-        toggle: false
-      });
-
-       // upload GeoJSON
-      map.pm.Toolbar.createCustomControl({
-      name: "load-data",
-      block: "custom",
-      title: "Load map data",
-      className: "load-data-btn",
-      onClick: () => {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.json,application/json';
-
-        input.onchange = (e) => {
-          const file = e.target.files[0];
-          if (file) {
-            const reader = new FileReader();
-
-            reader.onload = (event) => {
-              try {
-                drawnItems.clearLayers();
-                const geoJson = JSON.parse(event.target.result);
-
-                map.whenReady(() => {
-                  const layers = L.geoJSON(geoJson, {
-                    pointToLayer: function (feature, latlng) {
-                      return L.marker(latlng, { icon: customIcon });
-                    },
-                    onEachFeature: function (feature, layer) {
-                      if (feature.properties && feature.properties.popupContent) {
-                        layer.bindPopup(feature.properties.popupContent);
-                        addEditButton(layer);
-                      }
-                    }
-                  });
-
-                  layers.eachLayer(function (layer) {
-                    drawnItems.addLayer(layer);
-                  });
-
-                  if (layers.getLayers().length > 0) {
-                    map.fitBounds(layers.getBounds());
-                  }
-                });
-
-                alert('Data loaded successfully');
-              } catch (error) {
-                alert('Error loading file: ' + error.message);
-              }
-            };
-
-            reader.readAsText(file);
-          }
-        };
-
-        input.click();
-      },
-      toggle: false
-          });
+    console.log('Error handler ตั้งค่าเสร็จ');
     
-          onMounted(async () => {
-  initMap();
-  await loadExistingData();
+  } catch (error) {
+    console.error('Error setting up error handler:', error);
+  }
+}
+
+// --- Setup drawing tools ---
+function setupDrawingTools() {
+  if (!viewer) return;
+  // ตั้งค่าเครื่องมือวาดรูป
+  viewer.cesiumWidget.screenSpaceEventHandler.setInputAction(function(event) {
+    if (viewer.cesiumWidget.canvas.style.cursor === 'crosshair') {
+      const position = viewer.camera.pickEllipsoid(event.position, viewer.scene.globe.ellipsoid);
+      if (position) {
+        const entity = viewer.entities.add({
+          position: position,
+          point: {
+            pixelSize: 12,
+            color: Cesium.Color.YELLOW,
+            outlineColor: Cesium.Color.BLACK,
+            outlineWidth: 2,
+            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+          },
+          label: {
+            text: 'New Point',
+            font: '14pt monospace',
+            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+            outlineWidth: 2,
+            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+            pixelOffset: new Cesium.Cartesian2(0, -9),
+            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+          }
+        });
+        
+        showConfirmation(entity, 'Point');
+        viewer.cesiumWidget.canvas.style.cursor = 'auto';
+      }
+    }
+  }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+}
+
+// --- Cesium Initialization ---
+// --- Cesium Initialization ---
+onMounted(async () => {
+  console.log('เริ่มต้น Cesium initialization...');
   
+  try {
+    if (!cesiumContainer.value) {
+      console.error('ไม่พบ Cesium container');
+      return;
+    }
+    
+    console.log('ขนาด Container:', {
+      width: cesiumContainer.value.clientWidth,
+      height: cesiumContainer.value.clientHeight
+    });
 
-})};
+    // ตรวจสอบว่า Cesium โหลดเสร็จแล้ว
+    if (typeof Cesium === 'undefined') {
+      console.error('Cesium library ไม่ได้โหลด');
+      alert('ไม่สามารถโหลด Cesium library กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต');
+      return;
+    }
 
+    console.log('Cesium version:', Cesium.VERSION);
+    
+    if (!viewer) {
+      // Set Cesium Ion token
+      Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhMzVjNmZjNi1mMWJiLTQ5YjYtYTczMS0zY2FlNTVmMDdkZjIiLCJpZCI6MzIxOTE4LCJpYXQiOjE3NTI2NDgzMzd9.1soJyjBQ2bYa_-tFvHdXQG5amC6QTpjBa0XFJfHy8MY';
+      
+      console.log('Ion token ตั้งค่าเสร็จ');
+      console.log('กำลังสร้าง Cesium viewer...');
+      
+      viewer = new Cesium.Viewer(cesiumContainer.value, {
+        // toolbar และ widgets 
+        timeline: true,
+        animation: true,
+        geocoder: true,
+        homeButton: true,
+        sceneModePicker: true, 
+        navigationHelpButton: true,
+        infoBox: true,
+        selectionIndicator: true,
+        baseLayerPicker: true,
+        fullscreenButton: true,
+        vrButton: false,
+        
+        // ใช้ default imagery provider จาก Cesium Ion
+        // imageryProvider จะถูกตั้งค่าอัตโนมัติ
+        
+        // ใช้ default terrain provider จาก Cesium Ion
+        // terrainProvider จะถูกตั้งค่าอัตโนมัติ
+        
 
+        scene3DOnly: false, // อนุญาตให้เปลี่ยน scene mode
+        orderIndependentTranslucency: true,
+        requestRenderMode: false,
+        maximumRenderTimeChange: undefined
+      });
+
+      console.log('Cesium viewer สร้างสำเร็จ');
+      console.log('Scene mode:', viewer.scene.mode);
+      console.log('WebGL context:', !!viewer.scene.context._gl);
+      console.log('Available imagery providers:', viewer.baseLayerPicker ? 'BaseLayerPicker enabled' : 'BaseLayerPicker disabled');
+      console.log('Terrain provider:', viewer.terrainProvider.constructor.name);
+      console.log('Imagery layers:', viewer.imageryLayers.length);
+
+      // ตั้งค่าตำแหน่งกล้องเริ่มต้นที่กรุงเทพฯ
+      viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(100.5018, 13.7563, 15000),
+        orientation: {
+          heading: 0.0,
+          pitch: -Cesium.Math.PI_OVER_FOUR,
+          roll: 0.0
+        }
+      });
+
+      viewer.scene.globe.enableLighting = true;
+      viewer.scene.globe.atmosphereHueShift = 0;
+      viewer.scene.globe.atmosphereSaturationShift = 0;
+      viewer.scene.globe.atmosphereBrightnessShift = 0;
+      
+      // เปิด post-processing effects สำหรับคุณภาพที่ดีขึ้น
+      if (viewer.scene.postProcessStages) {
+        viewer.scene.postProcessStages.fxaa.enabled = true;
+        if (viewer.scene.postProcessStages.bloom) {
+          viewer.scene.postProcessStages.bloom.enabled = false;
+        }
+      }
+      
+      // เปิดการเอียงกล้อง
+      viewer.scene.screenSpaceCameraController.enableTilt = true;
+
+      // รอให้ viewer พร้อมแล้วค่อยตั้งค่าอื่นๆ
+      await new Promise(resolve => {
+        if (viewer.scene.globe.tilesLoaded) {
+          resolve();
+        } else {
+          const removeListener = viewer.scene.globe.tileLoadProgressEvent.addEventListener((queuedTileCount) => {
+            if (queuedTileCount === 0) {
+              removeListener();
+              resolve();
+            }
+          });
+        }
+        // timeout หากรอนานเกินไป
+        setTimeout(() => {
+          resolve();
+        }, 5000);
+      });
+
+      console.log('Globe tiles โหลดเสร็จ');
+
+      // เพิ่มการตั้งค่าเพื่อให้แน่ใจว่าทุกอย่างทำงานถูกต้อง
+      viewer.scene.globe.show = true;
+      viewer.scene.skyBox.show = true;
+      viewer.scene.sun.show = true;
+      viewer.scene.moon.show = true;
+      viewer.scene.skyAtmosphere.show = true;
+
+      // ตั้งค่าการแสดงพิกัดหลังจาก viewer พร้อม
+      setupCoordinateDisplay();
+
+      // ตั้งค่า error handler
+      setupErrorHandler();
+
+      // ตั้งค่า drawing tools
+      setupDrawingTools();
+
+      // บังคับให้ render
+      viewer.scene.requestRender();
+
+      console.log('Cesium viewer ตรวจสอบ:');
+      console.log('- Canvas size:', viewer.canvas.width, 'x', viewer.canvas.height);
+      console.log('- Imagery layers ready:', viewer.imageryLayers.length > 0);
+      console.log('- Globe visible:', viewer.scene.globe.show);
+      console.log('- Camera position:', viewer.camera.position);
+
+      console.log('Cesium viewer initialized สำเร็จ');
+      
+      // โหลดข้อมูลหลังจาก viewer พร้อมแล้ว
+      setTimeout(async () => {
+        try {
+          console.log('เริ่มโหลดข้อมูล...');
+          await loadExistingData();
+        } catch (error) {
+          console.error('Error loading initial data:', error);
+        }
+      }, 1000);
+
+      // เพิ่มการจัดการ resize
+      const resizeObserver = new ResizeObserver(() => {
+        if (viewer && !viewer.isDestroyed()) {
+          viewer.resize();
+          console.log('Cesium viewer resized');
+        }
+      });
+      resizeObserver.observe(cesiumContainer.value);
+      cesiumContainer.value._resizeObserver = resizeObserver;
+    }
+  } catch (error) {
+    console.error('Failed to initialize Cesium viewer:', error);
+    console.error('Error stack:', error.stack);
+    
+    let errorMessage = 'เกิดข้อผิดพลาดในการโหลด 3D Map: ';
+    if (error.message.includes('WebGL')) {
+      errorMessage += 'เบราว์เซอร์ไม่รองรับ WebGL หรือ WebGL ถูกปิดใช้งาน';
+    } else if (error.message.includes('Ion')) {
+      errorMessage += 'ปัญหาการเชื่อมต่อ Cesium Ion';
+    } else {
+      errorMessage += error.message;
+    }
+    
+    alert(errorMessage + '\nกรุณาลองใหม่อีกครั้งหรือใช้เบราว์เซอร์อื่น');
+  }
+});
+
+// Cleanup on unmount
+onUnmounted(() => {
+  try {
+    // ลบ ResizeObserver
+    if (cesiumContainer.value && cesiumContainer.value._resizeObserver) {
+      cesiumContainer.value._resizeObserver.disconnect();
+    }
+    
+    //  viewer
+    if (viewer) {
+      viewer.destroy();
+      viewer = null;
+      console.log('Cesium viewer destroyed');
+    }
+  } catch (error) {
+    console.error('Error destroying viewer:', error);
+  }
+});
 </script>
+
 
 <style scoped>
 html, body, #app {
@@ -1193,10 +1138,35 @@ overflow: auto;
 .right-column {
 flex: 3;
 background-color: #f9f9f9;
-padding: 20px;
 border-radius: 8px;
-overflow: auto;
+overflow: hidden; 
+position: relative; 
 }
+
+#cesiumContainer {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  position: relative;
+  background-color: #000; 
+}
+
+:deep(.cesium-viewer) {
+  width: 100% !important;
+  height: 100% !important;
+  font-family: sans-serif;
+}
+
+:deep(.cesium-viewer-cesiumWidgetContainer) {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+:deep(.cesium-widget-canvas) {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 
 .search-input {
   width: 100%;
@@ -1264,7 +1234,9 @@ overflow: auto;
 
 .info-box {
   position: relative;
+  box-sizing: border-box;
 }
+
 
 .button-container {
   display: flex;
@@ -1277,7 +1249,6 @@ overflow: auto;
     background-color: #f1f3f4;
 }
 
-/* Custom text label styling */
 .custom-text-label {
   background: rgba(0, 0, 0, 0.7);
   color: white;
@@ -1288,7 +1259,6 @@ overflow: auto;
   box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
-/* Popup edit styling */
 .popup-edit {
   display: flex;
   align-items: center;
@@ -1327,7 +1297,6 @@ overflow: auto;
   backdrop-filter: blur(2px);
 }
 
-/* ⭐ Confirmation Dialog Styles */
 .confirm-container {
   background: white;
   padding: 2rem;
@@ -1376,7 +1345,6 @@ overflow: auto;
   min-width: 120px;
 }
 
-/* Form Container Styles */
 .form-container {
   background: white;
   padding: 2rem;
@@ -1485,4 +1453,34 @@ overflow: auto;
   color: white;
 }
 
+.fullscreen-mode {
+  display: block !important;
+}
+
+
+.fullscreen-left {
+  position: fixed !important;
+  top: 70px; 
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 70px); 
+  z-index: 9999;
+  background: white;
+  overflow: auto;
+padding: 1rem 2rem;
+}
+
+.hide-map {
+  display: none !important;
+}
+
+.container.fullscreen-mode {
+  display: block !important;
+}
+
+
+
 </style>
+
+
+

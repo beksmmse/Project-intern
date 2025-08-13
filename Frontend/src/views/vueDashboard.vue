@@ -42,15 +42,17 @@
               แสดงผลลัพธ์ทั้งหมด {{ filteredFeatures.length }} รายการ
             </div> -->
           <div class="filter-buttons">
-            <Button @click="applyFilters" severity="primary" size="small" class="btn-apply">
-              <!-- <i class="pi pi-filter"></i>  --> ยืนยัน
-            </Button>
+            <!-- <Button @click="applyFilters" severity="primary" size="small" class="btn-apply">
+               <i class="pi pi-filter"></i> ยืนยัน
+            </Button> -->
             <Button @click="resetFilters" severity="secondary" size="small" class="btn-reset">
               <!-- <i class="pi pi-refresh"></i>  --> รีเช็ต
             </Button>
-            <Button @click="exportData" severity="success" size="small" class="btn-export">
-              <!-- <i class="pi pi-download"></i>  --> ดาวน์โหลด
-            </Button>
+            <template v-if="userRole === 'admin'">
+              <Button @click="exportData" severity="success" size="small" class="btn-export">
+                <!-- <i class="pi pi-download"></i>  --> ดาวน์โหลด
+              </Button>
+            </template>
           </div>
         </div>
       </div>
@@ -136,28 +138,12 @@
           </div>
         </div>
         
-        <!-- Quick Statistics -->
+        <!-- Map showing filtered features -->
         <div class="chart-card">
           <div class="chart-header">
-            <h3>สรุปสถิติข้อมูลล่าสุด</h3>
           </div>
-          <div class="stats-grid">
-            <div class="stat-item">
-              <span class="stat-label"> จำนวนข้อมูลใหม่เฉลี่ยต่อเดือน</span>
-              <span class="stat-value">{{ avgPerMonth }}</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">ประเภทข้อมูลที่พบบ่อยที่สุด</span>
-              <span class="stat-value">{{ mostCommonType }}</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label"> ข้อมูลถูกสร้างล่าสุดเมื่อ</span>
-              <span class="stat-value">{{ latestAddition }}</span>
-            </div>
-              <div class="stat-item">
-                <span class="stat-label">แก้ไขล่าสุด</span>
-                <span class="stat-value">{{ latestUpdate }}</span>
-              </div>
+          <div style="height:300px; width:100%;">
+            <div id="dashboard-map" style="height:100%; width:100%; border-radius:8px;"></div>
           </div>
         </div>
       </div>
@@ -183,12 +169,27 @@
   </template>
   
   <script setup>
-  import { ref, onMounted, computed, watch } from "vue";
+  import { ref, onMounted, computed, watch, nextTick } from "vue";
+  import L from 'leaflet';
+  import 'leaflet/dist/leaflet.css';
+  let dashboardMap = null;
+  let dashboardMarkers = [];
   import Chart from 'primevue/chart';
   import Button from 'primevue/button';
   import axios from 'axios';
   
   // Reactive data
+  // ตรวจสอบสถานะการ login และ role ของผู้ใช้
+  const userRole = computed(() => {
+    const userStr = localStorage.getItem('user');
+    if (!userStr) return 'guest'; 
+    try {
+      const user = JSON.parse(userStr);
+      return user.role || 'guest';
+    } catch (e) {
+      return 'guest';
+    }
+  });
   const allFeatures = ref([]);
   const geometryChartData = ref();
   const typeChartData = ref();
@@ -662,10 +663,54 @@
   });
   
   // Lifecycle
+  function renderDashboardMap() {
+    nextTick(() => {
+      if (!dashboardMap) {
+        dashboardMap = L.map('dashboard-map').setView([13.75, 100.5], 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors'
+        }).addTo(dashboardMap);
+      }
+      dashboardMarkers.forEach(m => dashboardMap.removeLayer(m));
+      dashboardMarkers = [];
+      const layers = [];
+      filteredFeatures.value.forEach(f => {
+        if (f.geometry.type === 'Point' && f.geometry.coordinates?.length === 2) {
+          const [lng, lat] = f.geometry.coordinates;
+          const marker = L.marker([lat, lng]).addTo(dashboardMap);
+          marker.bindPopup(`<b>${f.properties.name || ''}</b><br>${f.properties.type || ''}`);
+          dashboardMarkers.push(marker);
+          layers.push(marker);
+        }
+        if (f.geometry.type === 'LineString' && Array.isArray(f.geometry.coordinates)) {
+          const latlngs = f.geometry.coordinates.map(([lng, lat]) => [lat, lng]);
+          const polyline = L.polyline(latlngs, {color: '#ea580c', weight: 4}).addTo(dashboardMap);
+          polyline.bindPopup(`<b>${f.properties.name || ''}</b><br>${f.properties.type || ''}`);
+          layers.push(polyline);
+        }
+        if (f.geometry.type === 'Polygon' && Array.isArray(f.geometry.coordinates)) {
+          const rings = f.geometry.coordinates.map(ring => ring.map(([lng, lat]) => [lat, lng]));
+          const polygon = L.polygon(rings, {color: '#059669', fillOpacity: 0.3}).addTo(dashboardMap);
+          polygon.bindPopup(`<b>${f.properties.name || ''}</b><br>${f.properties.type || ''}`);
+          layers.push(polygon);
+        }
+      });
+      if (layers.length > 0) {
+        const group = L.featureGroup(layers);
+        dashboardMap.fitBounds(group.getBounds(), {padding: [20,20]});
+      }
+    });
+  }
+
+  watch(filteredFeatures, () => {
+    renderDashboardMap();
+  });
+
   onMounted(async () => {
     await loadData();
     chartOptions.value = setChartOptions();
     barChartOptions.value = setBarChartOptions();
+    renderDashboardMap();
   });
   </script>
   

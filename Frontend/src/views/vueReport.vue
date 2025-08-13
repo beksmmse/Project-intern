@@ -1,50 +1,95 @@
 <template>
   <div class="report-page">
     <form @submit.prevent="handleSubmit">
-      <h2>Report a Problem</h2>
+      <h2>รายงานปัญหา</h2>
 
       <div class="form-group">
-        <label for="problemType">Problem Type</label>
-        <select id="problemType" required>
-          <option value="">Select a problem type</option>
-          <option value="bug">Bug</option>
-          <option value="feature">Feature Request</option>
-          <option value="performance">Performance Issue</option>
+        <label for="problemType">ประเภทปัญหา</label>
+        <select id="problemType" v-model="form.problemType" required>
+          <option value="">เลือกประเภทปัญหา</option>
+          <option value="bug">ข้อผิดพลาด (Bug)</option>
+          <option value="feature">ขอเพิ่มฟีเจอร์</option>
+          <option value="performance">ปัญหาด้านประสิทธิภาพ</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="description">Description</label>
-        <textarea id="description" rows="4" required placeholder="Describe the problem in detail"></textarea>
+        <label for="description">รายละเอียด</label>
+        <textarea
+          id="description"
+          v-model="form.description"
+          rows="4"
+          required
+          placeholder="อธิบายปัญหาโดยละเอียด">
+        </textarea>
       </div>
 
       <div class="form-group">
-        <label for="attachments">Attach Files</label>
-        <input type="file" id="attachments" />
+        <label for="attachments">แนบไฟล์ (ถ้ามี)</label>
+        <input type="file" id="attachments" multiple @change="onFiles" />
       </div>
+
       <div class="form-actions">
-        <button type="submit" class="primary-btn">Submit</button>
-        <button type="button" class="cancel-btn">Cancel</button>
+        <button type="submit" class="primary-btn" :disabled="submitting">
+          {{ submitting ? 'กำลังส่ง...' : 'ส่งรายงาน' }}
+        </button>
+        <button type="button" class="cancel-btn" @click="resetForm">ยกเลิก</button>
       </div>
     </form>
   </div>
 </template>
 
-<style scoped>
-* {
-  box-sizing: border-box;
+<script>
+export default {
+  name: 'ReportPage',
+  data() {
+    return {
+      form: {
+        problemType: '',
+        description: '',
+        files: []
+      },
+      submitting: false
+    }
+  },
+  methods: {
+    onFiles(e) {
+      this.form.files = Array.from(e.target.files || [])
+    },
+    async handleSubmit() {
+      if (!this.form.problemType || !this.form.description) return
+      this.submitting = true
+      try {
+        // TODO: เรียก API ส่งข้อมูลไป backend
+        alert('ส่งรายงานแล้ว!')
+        this.resetForm()
+      } catch (e) {
+        alert('เกิดข้อผิดพลาด: ' + e.message)
+      } finally {
+        this.submitting = false
+      }
+    },
+    resetForm() {
+      this.form.problemType = ''
+      this.form.description = ''
+      this.form.files = []
+      const input = document.getElementById('attachments')
+      if (input) input.value = ''
+    }
+  }
 }
+</script>
 
+<style scoped>
+* { box-sizing: border-box; }
 
 .report-page {
   font-family: inherit;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* max-height: 100vh; */
   background-color: #f4f7fa;
-  height:100vh;
-  
+  height: 100vh;
   padding: 20px;
 }
 
@@ -54,7 +99,7 @@ form {
   padding: 40px;
   background-color: #fff;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
 h2 {
@@ -64,9 +109,7 @@ h2 {
   font-size: 24px;
 }
 
-.form-group {
-  margin-bottom: 20px;
-}
+.form-group { margin-bottom: 20px; }
 
 label {
   display: block;
@@ -84,7 +127,8 @@ input[type="file"] {
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
-  transition: border-color 0.3s;
+  transition: border-color .3s;
+  background: #fff;
 }
 
 select:focus,
@@ -96,7 +140,7 @@ input[type="file"]:focus {
 
 textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: 110px;
 }
 
 .form-actions {
@@ -112,17 +156,22 @@ button {
   border-radius: 6px;
   padding: 10px 20px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.1s ease;
+  transition: background-color .3s ease, transform .1s ease;
 }
 
 .primary-btn {
   background-color: #3498db;
-  color: white;
+  color: #fff;
 }
 
-.primary-btn:hover {
+.primary-btn:hover:not(:disabled) {
   background-color: #2980b9;
   transform: scale(1.02);
+}
+
+.primary-btn:disabled {
+  opacity: .6;
+  cursor: not-allowed;
 }
 
 .cancel-btn {
@@ -135,14 +184,3 @@ button {
   transform: scale(1.02);
 }
 </style>
-
-<script>
-export default {
-  name: 'ReportPage',
-  methods: {
-    handleSubmit() {
-      alert('Report submitted!');
-    }
-  }
-}
-</script>
