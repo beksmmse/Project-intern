@@ -226,7 +226,7 @@ const goToHome = () => {
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0 0 0.2rem 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #389af9 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -445,13 +445,11 @@ const goToHome = () => {
   }
 }
 
-/* Hover effects for inputs */
 .form-input:hover,
 .form-select:hover {
   border-color: #94a3b8;
 }
 
-/* Focus states for better accessibility */
 .form-input:focus,
 .form-select:focus,
 .btn:focus {

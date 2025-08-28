@@ -33,7 +33,6 @@
         <button type="submit" class="primary-btn" :disabled="submitting">
           {{ submitting ? 'กำลังส่ง...' : 'ส่งรายงาน' }}
         </button>
-        <button type="button" class="cancel-btn" @click="resetForm">ยกเลิก</button>
       </div>
     </form>
   </div>
@@ -60,9 +59,29 @@ export default {
       if (!this.form.problemType || !this.form.description) return
       this.submitting = true
       try {
-        // TODO: เรียก API ส่งข้อมูลไป backend
-        alert('ส่งรายงานแล้ว!')
-        this.resetForm()
+        // เตรียมข้อมูลไฟล์ (เฉพาะชื่อและขนาด ไม่อัปโหลดไฟล์จริง)
+        const filesMeta = (this.form.files || []).map(f => ({
+          name: f.name,
+          size: f.size,
+          type: f.type
+        }))
+        const payload = {
+          problem_type: this.form.problemType,
+          description: this.form.description,
+          files: filesMeta
+        }
+        const res = await fetch('http://localhost:3000/api/reports', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        })
+        const data = await res.json()
+        if (data.success) {
+          alert('ส่งรายงานแล้ว!')
+          this.resetForm()
+        } else {
+          alert('เกิดข้อผิดพลาด: ' + (data.message || 'ไม่สามารถส่งรายงานได้'))
+        }
       } catch (e) {
         alert('เกิดข้อผิดพลาด: ' + e.message)
       } finally {
@@ -174,13 +193,4 @@ button {
   cursor: not-allowed;
 }
 
-.cancel-btn {
-  background-color: #bdc3c7;
-  color: #2c3e50;
-}
-
-.cancel-btn:hover {
-  background-color: #95a5a6;
-  transform: scale(1.02);
-}
 </style>

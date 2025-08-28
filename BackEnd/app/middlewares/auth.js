@@ -5,7 +5,7 @@ const authenticateToken =  (req, res, next)=> {
     const token = authHeader && authHeader.split(' ')[1];
 
     if(!token){
-        return res,status(401).json({
+        return res.status(401).json({
             success: false,
             message: 'Access token required'
         });
@@ -32,7 +32,7 @@ const authorizeRole = (roles) => {
             });
         }
 
-        if (!roles.includes(req.uesr.role)){
+        if (!roles.includes(req.user.role)){
             return res.status(403).json({
                 success: false,
                 message: 'Insufficient permissions'

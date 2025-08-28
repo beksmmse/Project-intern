@@ -28,12 +28,14 @@ const validateGeoJSON = (geoJsonData) => {
 const formatGeometryResponse = (row) => {
   return {
     type: "Feature",
+    feature_type: row.feature_type, // เพิ่ม feature_type
     properties: {
       id: row.id,
       organization_id: row.organization_id,
       name: row.name,
       description: row.description,
       geometry_type: row.geometry_type,
+      feature_type: row.feature_type, // เพิ่ม feature_type ใน properties ด้วย
       srid: row.srid,
       properties_schema: row.properties_schema,
       created_by_user_id: row.created_by_user_id,
@@ -89,7 +91,7 @@ router.put('/geometries/:id', async (req, res) => {
     const { id } = req.params;
     const geoJsonData = req.body;
     
-    console.log(`📝 Updating geometry ID: ${id}`, geoJsonData);
+    console.log(` Updating geometry ID: ${id}`, geoJsonData);
     
     // ตรวจสอบว่า geometry มีอยู่หรือไม่
     const existingGeometry = await GeometryModel.findById(id);
@@ -142,7 +144,7 @@ router.delete('/geometries/:id', async (req, res) => {
   try {
     const { id } = req.params;
     
-    console.log(`🗑️ Deleting geometry ID: ${id}`);
+    console.log(` Deleting geometry ID: ${id}`);
     
     // ลบข้อมูล
     const result = await GeometryModel.delete(id);
@@ -170,7 +172,6 @@ router.delete('/geometries/:id', async (req, res) => {
   }
 });
 
-// ⭐ DELETE - ลบหลาย geometry พร้อมกัน
 router.delete('/geometries', async (req, res) => {
   try {
     const { ids, organization_id } = req.body;
@@ -182,7 +183,7 @@ router.delete('/geometries', async (req, res) => {
       });
     }
     
-    console.log(`🗑️Bulk deleting geometries:`, ids);
+    console.log(`Bulk deleting geometries:`, ids);
     
     const placeholders = ids.map((_, index) => `$${index + 1}`).join(',');
     let sql = `DELETE FROM geometries WHERE id IN (${placeholders})`;

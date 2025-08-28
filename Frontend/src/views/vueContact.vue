@@ -2,7 +2,7 @@
     <div class="contact-wrapper">
       <div class="contact-box">
         <div class="contact-left">
-          <h2>Contact Us</h2>
+          <h2>ติดต่อเราได้ที่</h2>
             <p>
                 63/4  ซอย สรรพาวุธ 2 แขวงบางนาเหนือ <br>
                 เขตบางนา กรุงเทพมหานคร 10260
@@ -27,6 +27,10 @@
             <li>
               <i class="fas fa-phone" style="color: #333;"></i>
               <a href="tel:+6620224994">02-022-4994 #2</a>
+            </li>
+            <li>
+              <i class="fa-solid fa-window-maximize" style="color: #333;"></i>
+              <a href="https://tdm.in.th/">tdm.in.th</a>
             </li>
           </ul>
         </div>

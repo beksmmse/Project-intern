@@ -3,37 +3,16 @@
     <header>
       <div class="container">
         <img src="@/assets/TDM-LOGO-03.png" alt="TDM Logo" class="logo" />
-        <nav>
-          <ul>
-            <li><router-link to="/" ><i class="fa-solid fa-house"></i> หน้าหลัก</router-link></li>
-            <li><router-link to="/dashboard"><i class="fa-solid fa-chart-simple"></i> แดชบอร์ด</router-link></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" @click.prevent>
-                <i class="fa-solid fa-map"></i>
-                {{ currentType }}
-                <i class="arrow-down"></i>
-              </a> 
-              <ul class="dropdown-menu">
-                <li><router-link to="/type/point" @click="setType('ตำแหน่ง')">ตำแหน่ง</router-link></li>
-                <li><router-link to="/type/line" @click="setType('เส้นทาง')">เส้นทาง</router-link></li>
-                <li><router-link to="/type/polygon" @click="setType('ขอบเขต')">ขอบเขต</router-link></li>
-              </ul>
-            </li>
-            <!-- <li><router-link to="/request">Request</router-link></li> -->
-            <li><router-link to="/report"><i class="fa-solid fa-flag"></i> รายงาน</router-link></li>
-            <li><router-link to="/contact"><i class="fa-solid fa-address-book"></i> ติดต่อ</router-link></li>
-            <li><router-link to="/help"><i class="fa-solid fa-circle-question"></i> คู่มือ</router-link></li>
-            <!-- <li><router-link to="/about">Test</router-link></li>   -->
-            <li v-if="userRole === 'admin'"><router-link to="/register"><i class="fa-solid fa-user-gear"></i> สร้างบัญชีผู้ใช้</router-link></li>
-          </ul>
-        </nav>
+        <div class="title-nav"> 
+          <h1 class="site-title">แพลตฟอร์มข้อมูลเมือง ( City Data Platform: CDP )</h1>
+        </div>
         <div class="buttons">
           <template v-if="!isLoggedIn">
             <router-link to="/login" class="auth-link">เข้าสู่ระบบ</router-link>
           </template>
           <template v-else>
-            <div class="user-section">
-              <div class="user-info">
+            <div class="user-section centered">
+              <div class="user-info centered">
                 <span class="username">{{ username }}</span>
                 <span class="user-role" :class="userRole.toLowerCase()">{{ userRole }}</span>
               </div>
@@ -43,6 +22,30 @@
         </div>
       </div>
     </header>
+    <nav class="main-nav">
+      <div class="tabbar">
+        <ul>
+          <li><router-link to="/"><i class="fa-solid fa-house"></i> หน้าหลัก</router-link></li>
+          <li><router-link to="/dashboard"><i class="fa-solid fa-chart-simple"></i> แดชบอร์ด</router-link></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" @click.prevent>
+              <i class="fa-solid fa-map"></i>
+              {{ currentType }}
+              <i class="arrow-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><router-link to="/type/point" @click="setType('ตำแหน่ง')">ตำแหน่ง</router-link></li>
+              <li><router-link to="/type/line" @click="setType('เส้นทาง')">เส้นทาง</router-link></li>
+              <li><router-link to="/type/polygon" @click="setType('ขอบเขต')">ขอบเขต</router-link></li>
+            </ul>
+          </li>
+          <li><router-link to="/report"><i class="fa-solid fa-flag"></i> รายงาน</router-link></li>
+          <li><router-link to="/contact"><i class="fa-solid fa-address-book"></i> ติดต่อ</router-link></li>
+          <li><router-link to="/help"><i class="fa-solid fa-circle-question"></i> คู่มือ</router-link></li>
+          <li v-if="userRole === 'admin'"><router-link to="/register"><i class="fa-solid fa-user-gear"></i> สร้างบัญชีผู้ใช้</router-link></li>
+        </ul>
+      </div>
+    </nav>
 
     <main>
       <router-view />
@@ -153,9 +156,26 @@ header .container {
   box-sizing: border-box;
 }
 
+.title-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-left: 15px;
+}
+
+.main-nav {
+  background-color: #237dee;
+  padding: 8px;
+  border-left:10px;
+}
+
 nav {
   display: flex;
   font-family: "Tahoma", "Segoe UI", Verdana, "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
 }
 
 nav ul {
@@ -163,10 +183,15 @@ nav ul {
   padding: 0;
   margin: 0;
   display: flex;
+  align-items: center;
 }
 
 nav ul li {
-  margin-left: 20px;
+  margin: 0; 
+}
+
+nav ul li + li {
+  margin-left: 20px; 
 }
 
 nav ul li a {
@@ -181,7 +206,7 @@ nav ul li a:hover {
 
 .dropdown {
   position: relative;
-  z-index: 1;
+  z-index: 12000;
 }
 
 .dropdown-menu {
@@ -202,6 +227,7 @@ nav ul li a:hover {
 .dropdown-menu li {
   padding: 5px 15px;
   color: #389af9;
+  z-index: 1000;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -265,7 +291,13 @@ nav ul li a:hover {
   gap: 10px;
 }
 
-.user-info{
+.user-section.centered {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-info {
   color: #ffffff;
   font-weight: bold;
   display: flex;
@@ -274,11 +306,42 @@ nav ul li a:hover {
   gap: 2px;
 }
 
+.user-info.centered {
+  align-items: center;
+}
+
 .user-role {
   font-size: 0.8em;
   padding: 2px 6px;
   border-radius: 12px;
   font-weight: normal;
+}
+
+.site-title {
+  margin: 0 0 4px 0;
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+}
+
+.site-title-inline {
+  font-size: 14px;
+  font-weight:600;
+  color:#fdfdfd;
+  margin-right:20px;
+  align-self:center;
+  white-space:nowrap;
+}
+
+main {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  height: calc(100vh - 120px); 
+  box-sizing: border-box;
 }
 
 /* .user-role.admin {
@@ -331,5 +394,15 @@ nav ul li a:hover {
   }
 }
 
+@media (max-width: 900px){
+  .title-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
 
+  nav ul {
+    flex-wrap: wrap;
+  }
+}
 </style>

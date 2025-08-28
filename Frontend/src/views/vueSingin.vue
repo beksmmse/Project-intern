@@ -1,8 +1,8 @@
 <template>
   <div class="login-page">
     <form @submit.prevent="handleLogin">
-      <input v-model="username" placeholder="Username" />
-      <input v-model="password" type="password" placeholder="Password" />
+      <input v-model="username" placeholder="Username" maxlength="15" />
+      <input v-model="password" type="password" placeholder="Password" maxlength="15" />
       <button type="submit" class="login-btn">Login</button>
       <p v-if="errorMessage" style="color:red">{{ errorMessage }}</p>
     </form>

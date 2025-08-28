@@ -9,8 +9,17 @@
       <img :src="category.image" alt="" />
       <ul>
         <li v-for="(item, i) in category.items" :key="i">
-          <RouterLink v-if="isRealLink(item.link)" :to="item.link" class="link">{{ item.name }}</RouterLink>
-          <span v-else class="no-link">{{ item.name }}</span>
+          <template v-if="isPlaceholder(item.link)">
+            <span class="no-link">{{ item.name }}</span>
+          </template>
+          <template v-else-if="isExternal(item.link)">
+            <a :href="sanitizeLink(item.link)" class="link" target="_blank" rel="noopener noreferrer">
+              {{ item.name }}
+            </a>
+          </template>
+          <template v-else>
+            <RouterLink :to="item.link" class="link">{{ item.name }}</RouterLink>
+          </template>
         </li>
       </ul>
     </div>
@@ -18,15 +27,17 @@
 </template>
 
 <script setup>
-const isRealLink = (link) => link && link !== '#';
+const isPlaceholder = (link) => !link || link === '#';
+const isExternal = (link) => /^https?:\/\//i.test(String(link).trim());
+const sanitizeLink = (link) => String(link).trim();
 
 const categories = [
   {
     title: 'โครงสร้างพื้นฐาน',
-    image: require('@/assets/BG.jpg'),
+    image: require('@/assets/Infrastructure.png'),
     items: [
-      { name: 'ถนน', link: '/type/Line' },
-      { name: 'ตํ่าแหน่ง', link: '/type/point' },
+      { name: 'เส้นทาง', link: '/type/Line' },
+      { name: 'ตำแหน่ง', link: '/type/point' },
       { name: 'ขอบเขต', link: '/type/Polygon' },
       { name: 'ไฟฟ้า', link: '#' },
       { name: 'จุดติดตั้งกล้องวงจรปิด (CCTV)', link: '#' }
@@ -34,18 +45,19 @@ const categories = [
   },
   {
     title: 'เศรษฐกิจ',
-    image: require('@/assets/BG.jpg'),
+    image: require('@/assets/1.svg'),
     items: [
+      { name: 'ตลาดสดและแผงลอย', link: 'http://bangsaothong.dtc.co.th:5000/login' },
       { name: 'ที่ดินและสิ่งปลูกสร้าง (ภ.ด.ส.1)', link: '#' },
       { name: 'อาคารชุด/ห้องชุด (ภ.ด.ส.2)', link: '#' },
       { name: 'การจดทะเบียนพาณิชย์', link: '#' },
       { name: 'การชำระภาษี', link: '#' },
-      { name: 'ป้าย', link: '#' }
+      { name: 'ป้าย', link: '#' },
     ]
   }, 
   {
     title: 'สังคม',
-    image: require('@/assets/BG.jpg'),
+    image: require('@/assets/4.svg'),
     items: [
       { name: 'ชุมนุม', link: '#' },
       { name: 'ผู้พิการ', link: '#' },
@@ -56,17 +68,18 @@ const categories = [
   }, 
     {
     title: 'สาธารณสุขและสิ่งแวดล้อม',
-    image: require('@/assets/BG.jpg'),
+    image: require('@/assets/5.svg'),
     items: [
       { name: 'สภาพอากาศ', link: '#' },
-      { name: 'การจัดเก็บขยะ', link: '#' },
+      { name: 'การจัดเก็บขยะ', link: 'http://203.150.210.93:9001/login' },
       { name: 'อ.ส.ม.', link: '#' },
       { name: 'การประกอบกิจการ', link: '#' },
+      { name: 'ผู่ป่วย', link: '#' },
     ]
   }, 
     {
     title: 'การศึกษา',
-    image: require('@/assets/BG.jpg'),
+    image: require('@/assets/2.svg'),
     items: [
       { name: 'โรงเรียนในสังกัดเทศบาลฯ', link: '#' },
       { name: 'นักเรียน', link: '#' },
@@ -74,16 +87,16 @@ const categories = [
   }, 
     {
     title: 'ศาสนา ประเพณี และวัฒนธรรม',
-    image: require('@/assets/BG.jpg'),
+    image: require('@/assets/3.svg'),
     items: [
-      { name: 'ศาสนสถาน', link: '#' },
+      { name: 'ศาสนสถาน', link: ' https://service.deemap.com/deevr/3dwaskrv2/' },
       { name: 'ประเพณีและวัฒนธรรม', link: '#' },
-      { name: 'แหล่งท่องเที่ยว', link: '#' },
+      { name: 'แหล่งท่องเที่ยว', link: 'https://service.deemap.com/deevr/3deevr/' },
     ]
   }, 
       {
     title: 'ข้อมูลอื่น ๆ',
-    image: require('@/assets/BG.jpg'),
+    image: require('@/assets/6.svg'),
     items: [
       { name: 'บุคลากร', link: '#' },
       { name: 'แผนพัฒนาเทศบาล', link: '#' },
@@ -91,6 +104,14 @@ const categories = [
       { name: 'ป้ายประชาสัมพันธ์', link: '#' },
       { name: 'จุดติดตั้งเสียงไร้สาย', link: '#' },
       { name: 'ข้อมูลเปิดภาครัฐ (Open Data)', link: '#' },
+    ]
+  }, 
+
+      {
+    title: 'ข้อเสนอแนะ',
+    image: require('@/assets/BG.jpg'),
+    items: [
+      { name: '', link: '#' },
     ]
   }, 
 
