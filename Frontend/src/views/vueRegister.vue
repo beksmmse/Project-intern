@@ -116,16 +116,14 @@ const handleRegister = async () => {
   errorMessage.value = ''
   successMessage.value = ''
   isLoading.value = true
-  
-  // Validation
-  // Username: 10-20 ตัวอักษร
+ 
   if (username.value.length < 10 || username.value.length > 20) {
     errorMessage.value = 'ชื่อผู้ใช้ต้องมีความยาว 10-20 ตัวอักษร'
     isLoading.value = false
     return
   }
 
-  // Password ต้องมีอักขระพิเศษ  ตัวพิมพ์ใหญ่/เล็ก 
+
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{10,20}$/;
   if (!passwordRegex.test(password.value)) {
     errorMessage.value = 'รหัสผ่านต้องมีความยาวอย่างน้อย 10 แต่ไม่เกิน 20 ตัวอักษร มีตัวพิมพ์ใหญ่ ตัวพิมพ์เล็ก ตัวเลข และอักขระพิเศษ'

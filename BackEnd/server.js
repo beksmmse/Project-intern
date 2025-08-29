@@ -4,8 +4,8 @@ const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const app = express();
-const { generateToken } = require('../Backend/app/config/jwt.js');
-const { authenticateToken, authorizeRole } = require('../Backend/app/middlewares/auth.js');
+const { generateToken } = require('./app/config/jwt.js');
+const { authenticateToken, authorizeRole } = require('./app/middlewares/auth.js');
 
 
 app.use(express.json());
@@ -53,12 +53,11 @@ app.get('/api/point', async (req, res) => {
       // FROM point
 
     const features = result.rows.map(row => {
-      // ใช้ feature_type field หลักก่อน
       const categoryType = row.feature_type || 'other';
 
       return {
         type: "Feature",
-        feature_type: row.feature_type, // เพิ่ม feature_type ใน response
+        feature_type: row.feature_type, 
         geometry: row.geometry,
         properties: {
           id: row.id,
@@ -160,97 +159,6 @@ app.get('/api/polygon', async (req, res) => {
 });
 
 // POST /api/register
-// app.post('/api/register', async (req, res) => {
-//   try {
-//     const { username, email, password, role = 'user', organize_id = 1 } = req.body;
-    
-//     const password_hash = await bcrypt.hash(password, 10);
-  
-//     const query = `
-//       INSERT INTO users (username, email, password_hash, role, organize_id) 
-//       VALUES ($1, $2, $3, $4, $5) 
-//       RETURNING id
-//     `;
-//     const values = [username, email, password_hash, role, organize_id];
-    
-//     const result = await pool.query(query, values);
-    
-//     res.json({
-//       message: 'User registered successfully',
-//       userId: result.rows[0].id,
-//       user: {
-//         id: result.rows[0].id,
-//         username,
-//         email,
-//         role,
-//         organize_id
-//       }
-//     });
-    
-//   } catch (error) {
-//     console.error('Registration error:', error);
-//     res.status(500).json({
-//       message: 'Registration failed',
-//       error: error.message
-//     });
-//   }
-// });
-
-// POST /api/login
-// app.post('/api/login', async (req, res) => {
-//   try {
-//     const { username, password } = req.body;
-    
-//     const query = `
-//       SELECT id, username, email, password_hash, role, organize_id 
-//       FROM users 
-//       WHERE username = $1
-//     `;
-//     const values = [username];
-    
-//     const result = await pool.query(query, values);
-    
-//     if (result.rows.length === 0) {
-//       return res.status(401).json({
-//         success: false,
-//         message: 'Invalid username or password'
-//       });
-//     }
-    
-//     const user = result.rows[0];
-    
-//     const isValidPassword = await bcrypt.compare(password, user.password_hash);
-    
-//     if (!isValidPassword) {
-//       return res.status(401).json({
-//         success: false,
-//         message: 'Invalid username or password'
-//       });
-//     }
-    
-//     res.json({
-//       success: true,
-//       message: 'Login successful',
-//       user: {
-//         id: user.id,
-//         username: user.username,
-//         email: user.email,
-//         role: user.role,
-//         organize_id: user.organize_id
-//       }
-//     });
-    
-//   } catch (error) {
-//     console.error('Login error:', error);
-//     res.status(500).json({
-//       success: false,
-//       message: 'Login failed',
-//       error: error.message
-//     });
-//   }
-// });
-
-// POST /api/register (แก้ไขเพื่อส่ง token กลับด้วย)
 app.post('/api/register', async (req, res) => {
   try {
     const { username, email, password, role = 'user', organize_id = 1 } = req.body;
@@ -303,8 +211,7 @@ app.post('/api/register', async (req, res) => {
 app.post('/api/login', async (req, res) => {
   try {
     const { username, password } = req.body;
-    
-    // Validate input
+
     if (!username || !password) {
       return res.status(400).json({
         success: false,
@@ -371,7 +278,7 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// GET /api/profile  token
+// GET /api/profile  
 app.get('/api/profile', authenticateToken, (req, res) => {
   res.json({
     success: true,
@@ -379,7 +286,7 @@ app.get('/api/profile', authenticateToken, (req, res) => {
   });
 });
 
-// GET /api/admin/users -
+// GET /api/admin/users 
 app.get('/api/admin/users', authenticateToken, authorizeRole(['admin']), async (req, res) => {
   try {
     const query = `
@@ -425,7 +332,6 @@ app.post('/api/geometries', async (req, res) => {
 
     let query, values, tableName;
 
-    // กำหนด table และ query ตาม geometry_type
     switch (geometry_type.toLowerCase()) {
       case 'point':
         tableName = 'point';
@@ -524,7 +430,6 @@ app.post('/api/geometries', async (req, res) => {
 // GET /api/geometries
 app.get('/api/geometries', async (req, res) => {
   try {
-    // ดึงข้อมูลจากทั้ง 3 tables และรวมกัน
     const [pointResult, lineResult, polygonResult] = await Promise.all([
       pool.query(`
         SELECT 
@@ -555,7 +460,6 @@ app.get('/api/geometries', async (req, res) => {
       `)
     ]);
 
-    // รวมผลลัพธ์จากทั้ง 3 tables
     const allRows = [
       ...pointResult.rows,
       ...lineResult.rows,
@@ -567,7 +471,6 @@ app.get('/api/geometries', async (req, res) => {
       geometry: JSON.parse(row.geometry)
     }));
 
-    // เรียงตาม created_at จากใหม่ไปเก่า
     features.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
     res.json(features);
@@ -587,7 +490,6 @@ app.get('/api/geometries/:id', async (req, res) => {
   try {
     const { id } = req.params;
     
-    // ค้นหาในทั้ง 3 tables
     const queries = [
       {
         table: 'point',
@@ -630,7 +532,6 @@ app.get('/api/geometries/:id', async (req, res) => {
     let feature = null;
     let foundTable = null;
 
-    // ค้นหาในแต่ละ table จนพบข้อมูล
     for (const { table, query } of queries) {
       const result = await pool.query(query, [id]);
       if (result.rows.length > 0) {
@@ -650,7 +551,7 @@ app.get('/api/geometries/:id', async (req, res) => {
     const responseFeature = {
       ...feature,
       geometry: JSON.parse(feature.geometry),
-      table: foundTable // เพิ่มข้อมูลว่าข้อมูลมาจาก table ไหน
+      table: foundTable 
     };
 
     res.json(responseFeature);
@@ -668,13 +569,10 @@ app.get('/api/geometries/:id', async (req, res) => {
 app.delete('/api/geometries/:id', async (req, res) => {
   try {
     const { id } = req.params;
-
-    // ค้นหาและลบจากทั้ง 3 tables
     const tables = ['point', 'line', 'polygon'];
     let dataToDelete = null;
     let deletedFromTable = null;
 
-    // ค้นหาข้อมูลที่จะลบ
     for (const table of tables) {
       const checkQuery = `SELECT id, name FROM ${table} WHERE id = $1`;
       const checkResult = await pool.query(checkQuery, [id]);
@@ -726,7 +624,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// POST /api/reports - บันทึก report ลง DB
+// POST /api/reports 
 app.post('/api/reports', async (req, res) => {
   try {
     const { problem_type, description, files = [] } = req.body;
@@ -763,7 +661,7 @@ app.put('/api/geometries/:id', async (req, res) => {
   try {
     const { id } = req.params;
     
-    // ค้นหาข้อมูลในทั้ง 3 tables เพื่อหา table ที่ถูกต้อง
+
     const tables = [
       { name: 'point', fields: ['name', 'descri', 'address', 'srid', 'remark', 'etc', 'feat_type', 'geometry', 'updated_at'] },
       { name: 'line', fields: ['name', 'descri', 'srid', 'remark', 'etc', 'feat_type', 'geometry', 'updated_at'] },
@@ -772,7 +670,7 @@ app.put('/api/geometries/:id', async (req, res) => {
 
     let targetTable = null;
     
-    // หา table ที่มีข้อมูล
+
     for (const table of tables) {
       const checkQuery = `SELECT id FROM ${table.name} WHERE id = $1`;
       const checkResult = await pool.query(checkQuery, [id]);
@@ -789,7 +687,6 @@ app.put('/api/geometries/:id', async (req, res) => {
       });
     }
 
-    // เตรียมข้อมูลสำหรับ update โดยแปลงชื่อ field ให้ตรงกับ table structure
     const fieldMapping = {
       'name': 'name',
       'description': 'descri',

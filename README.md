@@ -31,7 +31,6 @@
 - CRUD ข้อมูลเชิงพื้นที่ผ่าน API
 - Export/Import ข้อมูล
 - Dashboard สถิติและรายงาน
-- Bulk Delete
 - Search & Filter
 
 ---
@@ -116,23 +115,7 @@ npm run serve
 
 ---
 
-##  API Reference
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST   | /api/register      | สมัครสมาชิก         
-| POST   | /api/login         | เข้าสู่ระบบ         
-| GET    | /api/profile       | ข้อมูลผู้ใช้        
-| GET    | /api/geometries    | ดึงข้อมูลทั้งหมด    
-| POST   | /api/geometries    | เพิ่มข้อมูล        
-| PUT    | /api/geometries/:id| แก้ไขข้อมูล         
-| DELETE | /api/geometries/:id| ลบข้อมูล                   
-| GET    | /api/point         | ดึงข้อมูล Point     
-| GET    | /api/linestring    | ดึงข้อมูล LineString
-| GET    | /api/polygon       | ดึงข้อมูล Polygon   
-| GET    | /api/health        | ตรวจสอบระบบ         
-
----
 
 ##  User Roles & Permissions
 

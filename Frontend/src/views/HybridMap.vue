@@ -236,7 +236,6 @@ import Column from 'primevue/column';
 import Button from 'primevue/button';
 import 'primeicons/primeicons.css';
 
-// CesiumJS
 import * as Cesium from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 
@@ -353,7 +352,7 @@ async function saveDrawingData() {
     const entity = currentDrawingLayer.value;
 
     if (entity.position) {
-      // Point
+      
       const position = entity.position.getValue(viewer.clock.currentTime);
       const cartographic = Cesium.Cartographic.fromCartesian(position);
       coordinates = [
@@ -361,7 +360,7 @@ async function saveDrawingData() {
         Cesium.Math.toDegrees(cartographic.latitude)
       ];
     } else if (entity.polygon) {
-      // Polygon
+      
       const hierarchy = entity.polygon.hierarchy.getValue(viewer.clock.currentTime);
       const positions = hierarchy.positions;
       coordinates = [positions.map(pos => {
@@ -372,7 +371,7 @@ async function saveDrawingData() {
         ];
       })];
     } else if (entity.polyline) {
-      // LineString
+      
       const positions = entity.polyline.positions.getValue(viewer.clock.currentTime);
       coordinates = positions.map(pos => {
         const cartographic = Cesium.Cartographic.fromCartesian(pos);
@@ -441,7 +440,6 @@ function flyToEntity(entity) {
     });
   } catch (error) {
     console.error('Error flying to entity:', error);
-    // Fallback: try to set view to entity position
     try {
       if (entity.position) {
         const position = entity.position.getValue(viewer.clock.currentTime);
@@ -487,7 +485,7 @@ function featureToEntity(feature) {
     if (geom.type === "Point") {
       const [lon, lat] = geom.coordinates;
       
-      // Validate coordinates
+
       if (isNaN(lon) || isNaN(lat) || Math.abs(lat) > 90 || Math.abs(lon) > 180) {
         console.warn('Invalid coordinates:', geom.coordinates);
         return null;
@@ -527,7 +525,6 @@ function featureToEntity(feature) {
         return null;
       }
 
-      // Validate and flatten coordinates
       const positions = [];
       for (const coord of coordinates) {
         const [lon, lat] = coord;
@@ -536,7 +533,7 @@ function featureToEntity(feature) {
         }
       }
 
-      if (positions.length < 6) { // At least 3 points (6 values)
+      if (positions.length < 6) { 
         console.warn('Not enough valid coordinates for polygon');
         return null;
       }
@@ -562,7 +559,6 @@ function featureToEntity(feature) {
         return null;
       }
 
-      // Validate and flatten coordinates
       const positions = [];
       for (const coord of coordinates) {
         const [lon, lat] = coord;
@@ -571,7 +567,7 @@ function featureToEntity(feature) {
         }
       }
 
-      if (positions.length < 4) { // At least 2 points (4 values)
+      if (positions.length < 4) { 
         console.warn('Not enough valid coordinates for linestring');
         return null;
       }
@@ -602,7 +598,7 @@ function featureToEntity(feature) {
   }
 }
 
-// --- Data CRUD ---
+
 async function loadExistingData() {
   try {
     console.log('Loading existing data...');
@@ -631,10 +627,10 @@ async function loadExistingData() {
     }));
 
     console.log(`Loaded ${allFeatures.value.length} features`)
-    // Clear existing entities
+
     clearEntities();
 
-    // Add features to map with delay to prevent render issues
+
     let successCount = 0;
     for (const feature of allFeatures.value) {
       try {
@@ -642,7 +638,6 @@ async function loadExistingData() {
         if (entity) {
           successCount++;
         }
-        // Small delay to prevent overwhelming the renderer
         await new Promise(resolve => setTimeout(resolve, 10));
       } catch (error) {
         console.warn('Failed to add feature:', feature.properties?.id, error);
@@ -676,20 +671,18 @@ async function deleteFeature(featureId, featureName) {
   try {
     await axios.delete(`http://localhost:3000/api/geometries/${featureId}`);
     
-    // Remove from allFeatures array
     const featureIndex = allFeatures.value.findIndex(f => f.properties.id === featureId);
     if (featureIndex > -1) {
       allFeatures.value.splice(featureIndex, 1);
     }
     
-    // Remove from Cesium viewer
+
     const entity = entityMap.get(featureId);
     if (entity && viewer) {
       viewer.entities.remove(entity);
       entityMap.delete(featureId);
     }
     
-    // Clear selection if deleted feature was selected
     if (selectedFeature.value && selectedFeature.value.properties.id === featureId) {
       selectedFeature.value = null;
     }
@@ -733,7 +726,6 @@ async function submitEdit() {
       Object.assign(selectedFeature.value.properties, payload);
     }
     
-    // Update Cesium entity
     const entity = entityMap.get(id);
     if (entity) {
       entity.name = payload.name;
@@ -788,8 +780,6 @@ function onRowClick(event) {
   const entity = entityMap.get(feature.properties.id);
   flyToEntity(entity);
 }
-
-// --- Setup coordinate display with error handling ---
 function setupCoordinateDisplay() {
   try {
     const coordDiv = document.getElementById("coordinate-display");
@@ -813,7 +803,6 @@ function setupCoordinateDisplay() {
   }
 }
 
-// --- Setup error handler for Cesium ---
 function setupErrorHandler() {
   if (!viewer) {
     console.warn('ไม่สามารถตั้งค่า error handler: viewer ไม่พร้อม');
@@ -821,7 +810,6 @@ function setupErrorHandler() {
   }
 
   try {
-    // จัดการ render errors
     viewer.scene.renderError.addEventListener(function(scene, error) {
       console.error('Cesium render error:', error);
       console.error('Error details:', {
@@ -836,7 +824,7 @@ function setupErrorHandler() {
           console.log('ปิด lighting เนื่องจาก render error');
         }
         
-        // บังคับ render 
+      
         viewer.scene.requestRender();
         console.log('พยายาม render ใหม่');
         
@@ -856,7 +844,7 @@ function setupErrorHandler() {
       });
     }
 
-    // จัดการ camera errors
+   
     viewer.camera.changed.addEventListener(function() {
       try {
         if (!viewer.isDestroyed()) {
@@ -878,10 +866,6 @@ function setupErrorHandler() {
 function setupDrawingTools() {
   if (!viewer) return;
 
-  // Drawing toolbar in screen overlay would go here
-  // For now, we'll add click handlers for drawing
-  
-  // Point drawing (example)
   viewer.cesiumWidget.screenSpaceEventHandler.setInputAction(function(event) {
     if (viewer.cesiumWidget.canvas.style.cursor === 'crosshair') {
       const position = viewer.camera.pickEllipsoid(event.position, viewer.scene.globe.ellipsoid);
@@ -914,9 +898,9 @@ function setupDrawingTools() {
 }
 
 // --- Cesium Initialization ---
-// --- Cesium Initialization ---
+
 onMounted(async () => {
-  console.log('เริ่มต้น Cesium initialization...');
+  console.log('เริ่มต้น Cesium initialization');
   
   try {
     if (!cesiumContainer.value) {
@@ -924,11 +908,6 @@ onMounted(async () => {
       return;
     }
     
-    console.log('ขนาด Container:', {
-      width: cesiumContainer.value.clientWidth,
-      height: cesiumContainer.value.clientHeight
-    });
-
     if (typeof Cesium === 'undefined') {
       console.error('Cesium library ไม่ได้โหลด');
       alert('ไม่สามารถโหลด Cesium library กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต');
@@ -938,15 +917,13 @@ onMounted(async () => {
     console.log('Cesium version:', Cesium.VERSION);
     
     if (!viewer) {
-      // Set Cesium Ion token
       Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhMzVjNmZjNi1mMWJiLTQ5YjYtYTczMS0zY2FlNTVmMDdkZjIiLCJpZCI6MzIxOTE4LCJpYXQiOjE3NTI2NDgzMzd9.1soJyjBQ2bYa_-tFvHdXQG5amC6QTpjBa0XFJfHy8MY';
       
       console.log('Ion token ตั้งค่าเสร็จ');
       console.log('กำลังสร้าง Cesium viewer...');
       
-      // สร้าง viewer 
+  
       viewer = new Cesium.Viewer(cesiumContainer.value, {
-        // เปิด toolbar และ widgets ต่างๆ
         timeline: true,
         animation: true,
         geocoder: true,
@@ -973,7 +950,7 @@ onMounted(async () => {
       console.log('Terrain provider:', viewer.terrainProvider.constructor.name);
       console.log('Imagery layers:', viewer.imageryLayers.length);
 
-      // ตั้งค่าตำแหน่งกล้องเริ่มต้นที่กรุงเทพฯ
+
       viewer.camera.setView({
         destination: Cesium.Cartesian3.fromDegrees(100.5018, 13.7563, 15000),
         orientation: {
@@ -1071,7 +1048,6 @@ onMounted(async () => {
   }
 });
 
-// Cleanup on unmount
 onUnmounted(() => {
   try {
     if (cesiumContainer.value && cesiumContainer.value._resizeObserver) {

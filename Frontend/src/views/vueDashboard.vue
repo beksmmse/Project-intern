@@ -223,13 +223,10 @@ L.Icon.Default.mergeOptions({
   // Trend calculation
   const totalTrend = ref(0);
   
-  // Computed properties
+
   const totalFeatures = computed(() => filteredFeatures.value.length);
-  
-  // Define the relationship between geometry types and feature types
-  // ปรับ Point ให้รวม type ทุกชนิดที่มีจริงในข้อมูล
+
   const geometryFeatureMapping = computed(() => {
-    // ดึง type ทั้งหมดที่มีในข้อมูล point จริงๆ
     const allTypes = new Set();
     allFeatures.value.forEach(f => {
       if (f.geometry.type === 'Point') {
@@ -243,17 +240,17 @@ L.Icon.Default.mergeOptions({
     };
   });
 
-  // Computed property for available feature types based on selected geometry type
+  
   const availableFeatureTypes = computed(() => {
     let baseFiltered = allFeatures.value;
-    // Apply date filters
+    //  date filters
     if (dateFrom.value) {
       baseFiltered = baseFiltered.filter(f => new Date(f.properties.created_at) >= new Date(dateFrom.value));
     }
     if (dateTo.value) {
       baseFiltered = baseFiltered.filter(f => new Date(f.properties.created_at) <= new Date(dateTo.value));
     }
-    // Apply search filter
+    // search filter
     if (searchText.value) {
       baseFiltered = baseFiltered.filter(f => 
         f.properties.name?.toLowerCase().includes(searchText.value.toLowerCase()) ||
@@ -264,19 +261,16 @@ L.Icon.Default.mergeOptions({
     if (selectedGeometryType.value) {
       baseFiltered = baseFiltered.filter(f => f.geometry.type === selectedGeometryType.value);
     }
-    // allowedTypes: ถ้าเลือก Point ให้ใช้ type จริงทั้งหมด, อื่นๆ ใช้ mapping เดิม
     let allowedTypes = [];
     if (selectedGeometryType.value === 'Point') {
       allowedTypes = Array.from(new Set(allFeatures.value.filter(f => f.geometry.type === 'Point').map(f => f.properties.type || 'other')));
     } else if (selectedGeometryType.value) {
       allowedTypes = geometryFeatureMapping.value[selectedGeometryType.value] || [];
     } else {
-      // รวม type ทุก geometry
       const allTypes = new Set();
       allFeatures.value.forEach(f => allTypes.add(f.properties.type || 'other'));
       allowedTypes = Array.from(allTypes);
     }
-    // Count occurrences of each feature type
     const typeCounts = {};
     baseFiltered.forEach(feature => {
       const type = feature.properties.type || 'other';
@@ -284,7 +278,6 @@ L.Icon.Default.mergeOptions({
         typeCounts[type] = (typeCounts[type] || 0) + 1;
       }
     });
-    // Convert to array with labels and counts
     return allowedTypes
       .map(type => ({
         value: type,
@@ -294,8 +287,6 @@ L.Icon.Default.mergeOptions({
       .filter(item => item.count > 0)
       .sort((a, b) => b.count - a.count);
   });
-
-  // Updated geometry type counts
   const geometryTypeCounts = computed(() => {
     let baseFiltered = allFeatures.value;
     
@@ -326,7 +317,7 @@ L.Icon.Default.mergeOptions({
     };
   });
 
-  // Updated feature type counts
+  //  feature type counts
   const featureTypeCounts = computed(() => {
     let baseFiltered = allFeatures.value;
     
@@ -355,7 +346,7 @@ L.Icon.Default.mergeOptions({
     };
   });
 
-  // Check if any filters are active
+
   const hasActiveFilters = computed(() => {
     return !!(dateFrom.value || dateTo.value || selectedGeometryType.value || selectedFeatureType.value || searchText.value);
   });
@@ -415,12 +406,10 @@ L.Icon.Default.mergeOptions({
     return filtered;
   });
   
-  // Handler for geometry type change
+
   function onGeometryTypeChange() {
-    // Reset feature type when geometry type changes
     selectedFeatureType.value = '';
     
-    // Show notification about available options
     if (selectedGeometryType.value) {
       const availableCount = availableFeatureTypes.value.length;
       console.log(`มีชนิดข้อมูลที่เข้ากันได้ ${availableCount} ประเภท`);
@@ -492,11 +481,10 @@ L.Icon.Default.mergeOptions({
         axios.get('http://localhost:3000/api/polygon')
       ]);
 
-      // Normalize and merge all features
       const features = [];
 
 
-      // Point (ตำแหน่ง)
+      // Point 
       if (pointRes.data && Array.isArray(pointRes.data.features)) {
         features.push(...pointRes.data.features.map(item => ({
           type: 'Feature',
@@ -549,14 +537,12 @@ L.Icon.Default.mergeOptions({
       calculateTrend();
       updateCharts();
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error('Error loading data:', error);
     } finally {
       isLoading.value = false;
     }
   }
   
-  // Calculate trend
   function calculateTrend() {
     const thisMonth = new Date().getMonth();
     const lastMonth = thisMonth - 1;
@@ -576,14 +562,14 @@ L.Icon.Default.mergeOptions({
     }
   }
   
-  // Update all charts
+
   function updateCharts() {
     geometryChartData.value = setGeometryChartData();
     typeChartData.value = setTypeChartData();
     monthlyChartData.value = setMonthlyChartData();
   }
   
-  // Geometry distribution chart
+ 
   const setGeometryChartData = () => {
     const stats = geometryStats.value;
     
@@ -599,10 +585,8 @@ L.Icon.Default.mergeOptions({
     };
   };
   
-  // Feature type distribution chart (no label, only type, unique color per type)
   const setTypeChartData = () => {
     const stats = typeStats.value;
-    // Use Thai label for chart labels
     return {
       labels: Object.keys(stats).map(key => getTypeLabel(key)),
       datasets: [
@@ -616,7 +600,6 @@ L.Icon.Default.mergeOptions({
     };
   };
   
-  // Monthly creation chart
   const setMonthlyChartData = () => {
     const documentStyle = getComputedStyle(document.body);
     const monthlyStats = {};
@@ -702,7 +685,6 @@ L.Icon.Default.mergeOptions({
   }
 
   
-  // Chart options สำหรับแต่ละ chart
   const setGeometryChartOptions = () => {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--p-text-color');
@@ -1183,7 +1165,7 @@ L.Icon.Default.mergeOptions({
 
   
   
-  /* Summary Cards - Compact */
+
   .summary-cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -1460,7 +1442,7 @@ L.Icon.Default.mergeOptions({
   font-style: italic;
 }
 
-/* Enhanced styles for cascading filters */
+
 .filter-group select:disabled {
   background-color: var(--p-surface-100);
   color: var(--p-text-color-secondary);
@@ -1468,7 +1450,7 @@ L.Icon.Default.mergeOptions({
   opacity: 0.6;
 }
 
-/* Cascading filter animation */
+
 .filter-group select {
   transition: all 0.3s ease;
 }
@@ -1498,7 +1480,7 @@ L.Icon.Default.mergeOptions({
     margin-top: 0.5rem;
   }
   
-/* Responsive enhancements */
+
 @media (max-width: 1024px) {
   .charts-section {
     grid-template-columns: repeat(2, 1fr);

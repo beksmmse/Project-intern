@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { GeometryModel } = require('../models/model');
 
-// Validation helper
+
 const validateGeoJSON = (geoJsonData) => {
   if (!geoJsonData.type || geoJsonData.type !== 'Feature') {
     return 'Invalid GeoJSON: must be a Feature';
@@ -21,21 +21,21 @@ const validateGeoJSON = (geoJsonData) => {
     }
   }
   
-  return null; // Valid
+  return null; 
 };
 
 // Response formatter
 const formatGeometryResponse = (row) => {
   return {
     type: "Feature",
-    feature_type: row.feature_type, // เพิ่ม feature_type
+    feature_type: row.feature_type, 
     properties: {
       id: row.id,
       organization_id: row.organization_id,
       name: row.name,
       description: row.description,
       geometry_type: row.geometry_type,
-      feature_type: row.feature_type, // เพิ่ม feature_type ใน properties ด้วย
+      feature_type: row.feature_type, 
       srid: row.srid,
       properties_schema: row.properties_schema,
       created_by_user_id: row.created_by_user_id,
@@ -63,10 +63,8 @@ router.post('/geometries', async (req, res) => {
       });
     }
     
-    // บันทึกข้อมูล
     const result = await GeometryModel.create(geoJsonData);
     
-    // Format response
     const responseFeature = formatGeometryResponse(result);
     
     res.status(201).json({
@@ -93,7 +91,7 @@ router.put('/geometries/:id', async (req, res) => {
     
     console.log(` Updating geometry ID: ${id}`, geoJsonData);
     
-    // ตรวจสอบว่า geometry มีอยู่หรือไม่
+
     const existingGeometry = await GeometryModel.findById(id);
     if (!existingGeometry) {
       return res.status(404).json({
@@ -102,7 +100,7 @@ router.put('/geometries/:id', async (req, res) => {
       });
     }
     
-    // Validate GeoJSON (อาจจะเป็น partial update)
+
     if (geoJsonData.type && geoJsonData.type !== 'Feature') {
       return res.status(400).json({
         success: false,
@@ -119,8 +117,7 @@ router.put('/geometries/:id', async (req, res) => {
         message: 'Geometry not found or not updated'
       });
     }
-    
-    // Format response
+   
     const responseFeature = formatGeometryResponse(result);
     
     res.json({
@@ -189,7 +186,7 @@ router.delete('/geometries', async (req, res) => {
     let sql = `DELETE FROM geometries WHERE id IN (${placeholders})`;
     let params = [...ids];
     
-    // Filter by organization_id if provided
+
     if (organization_id) {
       sql += ` AND organization_id = $${params.length + 1}`;
       params.push(organization_id);

@@ -9,13 +9,11 @@ import DashbordPage from '../views/vueDashboard.vue'
 import TypePointPage from '../views/typePoint.vue'
 import TypeLinePage from '../views/typeLine.vue'
 import TypePolygonPage from '../views/typePolygon.vue'
-import infoPage from '../views/vueinfoGeomerty.vue'
 import Hybrid from '../views/HybridMap.vue'
 import About from '../views/vueAbout.vue' 
 import Help from '../views/Help.vue'
 
 
-// Auth Guard Functions
 function requireAuth(to, from, next) {
   const user = localStorage.getItem('user');
   if (!user) {
@@ -37,7 +35,6 @@ function requireAdmin(to, from, next) {
     if (user.role === 'admin') {
       next();
     } else {
-      // Redirect to home with error message
       alert('คุณไม่มีสิทธิ์เข้าถึงหน้านี้ (เฉพาะแอดมิน)');
       next('/');
     }
@@ -149,7 +146,7 @@ const routes = [
   // {
   //   path: '/cesium',
   //   name: 'Cesium',
-  //   component: () => import('../components/CesiumViewer.vue') // Lazy load Cesium component
+  //   component: () => import('../components/CesiumViewer.vue') 
   // }
 
 
@@ -189,7 +186,6 @@ router.beforeEach((to, from, next) => {
             localStorage.removeItem('user');
             localStorage.removeItem('token');
             
-            // หากไม่ใช่หน้า login หรือ home ให้ redirect ไป login
             if (to.path !== '/login' && to.path !== '/') {
               alert('เซสชันหมดอายุ กรุณาล็อกอินใหม่');
               next('/login');

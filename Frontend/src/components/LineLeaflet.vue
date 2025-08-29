@@ -370,20 +370,16 @@ const TYPE_COLORS = {
   road: '#2ecc71'
 };
 
-// Generate a unique color for each id (HSL)
 function getColorById(id) {
-  // Convert id to a number (if string)
   let num = 0;
   if (typeof id === 'number') {
     num = id;
   } else if (typeof id === 'string') {
-    // Simple hash
     for (let i = 0; i < id.length; i++) {
       num = (num * 31 + id.charCodeAt(i)) % 360;
     }
   }
-  // Use hue from 0-359, full saturation, 50% lightness
-  const hue = (num * 47) % 360; // 47 is a prime for better spread
+  const hue = (num * 47) % 360; 
   return `hsl(${hue}, 90%, 45%)`;
 }
 
@@ -450,13 +446,11 @@ function formatCoordinates(coordinates) {
   if (!coordinates) return 'ไม่ระบุ';
   
   try {
-    // ถ้าเป็น string ให้ parse เป็น array
     let coords = coordinates;
     if (typeof coordinates === 'string') {
       coords = JSON.parse(coordinates);
     }
     
-    // ถ้าเป็น array และมี 2 ค่า (lng, lat)
     if (Array.isArray(coords) && coords.length >= 2) {
       const lng = parseFloat(coords[0]).toFixed(6);
       const lat = parseFloat(coords[1]).toFixed(6);
@@ -480,7 +474,6 @@ function getIconByType(type) {
       className: 'type-marker-icon'
     });
   }
-  // เป็นจุดสีถ้าไม่มีไฟล์ไอคอน
   const color = TYPE_COLORS[key] || TYPE_COLORS.other;
   return L.divIcon({
     className: 'type-dot',
@@ -491,7 +484,6 @@ function getIconByType(type) {
   });
 }
 
-// For lines, use id-based color; for others, use type color
 function getStyleByType(type, id = null) {
   const key = normalizeType(type);
   let color = TYPE_COLORS[key] || TYPE_COLORS.other;
@@ -515,7 +507,6 @@ const userRole = computed(() => {
 });
 
 
-//เก็บ layers ที่ยังไม่มีข้อมูล (สำหรับ double click)
 const pendingLayers = new Map();
 
 let map;
@@ -554,7 +545,6 @@ function openFormFromConfirm() {
 function skipAddData() {
   showConfirmDialog.value = false;
   
-  // เก็บ layer ไว้ใน pending เพื่อให้ double click ได้ทีหลัง
   const layerId = Date.now(); 
   pendingLayers.set(layerId, {
     layer: currentDrawingLayer.value,
@@ -584,7 +574,7 @@ function skipAddData() {
     }
   });
   
-  //  เพิ่ม global function สำหรับปุ่มใน popup
+  //  เพิ่ม global function
   window.openPendingForm = (id) => {
     const pendingData = pendingLayers.get(id);
     if (pendingData) {
@@ -652,11 +642,10 @@ async function saveDrawingData() {
       geometry: geoJsonData.geometry 
     };
     
-    // ...
     
     const response = await axios.post('http://localhost:3000/api/geometries', layerData);
     
-    // ...
+
     
 
     const savedData = response.data;
@@ -678,10 +667,9 @@ async function saveDrawingData() {
       }
     };
     
-    // เพิ่มข้อมูลใหม่เข้าไปใน allFeatures array (ไว้ด้านบนสุด)
     allFeatures.value.unshift(newFeature);
     
-    // ...
+  
     
     // เพิ่ม popup ให้กับ layer พร้อม ID ที่บันทึกแล้ว
     currentDrawingLayer.value.bindPopup(`
@@ -703,11 +691,10 @@ async function saveDrawingData() {
       selectedFeature.value = newFeature;
     });
     
-    //จัด type group  ไอคอนตามประเภทที่เลือก
+
     const typeKey = normalizeType(newFeature.properties.type);
     if (currentDrawingLayer.value instanceof L.Marker) {
       currentDrawingLayer.value.setIcon(getIconByType(typeKey));
-      // เพิ่มข้อมูลประเภทใน marker options สำหรับ cluster
       currentDrawingLayer.value.options.markerType = typeKey;
       currentDrawingLayer.value.options.featureId = savedData.id;
     } else if (currentDrawingLayer.value.setStyle) {
@@ -746,14 +733,11 @@ async function saveDrawingData() {
     closeDataForm();
     
   } catch (error) {
-    // ...
     
     let errorMessage = 'เกิดข้อผิดพลาดในการบันทึกข้อมูล';
     if (error.response) {
-      // Server ตอบกลับมาพร้อม error status
       errorMessage += `: ${error.response.data.message || error.response.statusText}`;
     } else if (error.request) {
-      // ไม่สามารถเชื่อมต่อกับ server ได้
       errorMessage += ': ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้';
     }
     
@@ -787,7 +771,7 @@ async function loadExistingData() {
       };
     });
 
-    // เคลียร์ groups เดิมก่อนเพื่อไม่ให้ค้างค่าและชื่อ Overlay ซ้ำ
+
     Object.keys(typeLayerGroups).forEach(k => {
       try { if (layersControl) layersControl.removeLayer(typeLayerGroups[k]); } catch {}
       try { map.removeLayer(typeLayerGroups[k]); } catch {}
@@ -858,13 +842,11 @@ async function loadExistingData() {
           }
         });
         
-        // ใช้ประเภทที่มีมากที่สุดเสมอ (ลบเงื่อนไข mixed)
         
         const iconUrl = TYPE_ICON_URLS[dominantType];
         let clusterHtml;
         
         if (iconUrl) {
-          // มีรูปภาพให้แสดง
           clusterHtml = `
             <div class="cluster-icon-container">
               <img src="${iconUrl}" class="cluster-icon-image" alt="${displayTypeName(dominantType)}" title="${displayTypeName(dominantType)}: ${typeCounts[dominantType]} รายการ" />
@@ -872,7 +854,6 @@ async function loadExistingData() {
             </div>
           `;
         } else {
-          // ไม่มีรูปภาพ ใช้สีแทน
           const color = TYPE_COLORS[dominantType] || TYPE_COLORS.other;
           const title = displayTypeName(dominantType);
           clusterHtml = `
@@ -989,18 +970,14 @@ async function loadExistingData() {
       }
     });
 
-    // ...
-
-    // ไม่แสดง overlay ใด ๆ บนแผนที่โดยอัตโนมัติ ให้ผู้ใช้เลือกประเภทเองผ่าน overlay control
-    // ดังนั้นไม่ต้อง addTo(map) ที่นี่
-    // เมื่อผู้ใช้เลือกประเภท (activeTypes มีค่า) จะถูก addTo(map) ผ่าน overlayadd event
+    
 
     if (isClusterEnabled.value) {
       updateClusterByActiveTypes();
     }
 
   } catch (error) {
-    // ...
+    console.error('Error loading data:', error);
   }
 }
 
@@ -1051,7 +1028,6 @@ function updateClusterByActiveTypes() {
   });
 }
 
-// รีเฟรชข้อมูล: เคลียร์ overlays ของประเภทเดิมทั้งหมดก่อนโหลดใหม่
 async function refreshData() {
   isLoading.value = true;
   try {
@@ -1071,7 +1047,6 @@ async function refreshData() {
 
     await loadExistingData();
   } catch (error) {
-    // ...
     alert('เกิดข้อผิดพลาดในการรีเฟรชข้อมูล');
   } finally {
     isLoading.value = false;
@@ -1084,26 +1059,22 @@ async function deleteFeature(featureId, featureName) {
   if (!confirmDelete) return;
   
   try {
-    // ...
+
     
     const response = await axios.delete(`http://localhost:3000/api/geometries/${featureId}`);
     
-    // ...
     
-    // ลบออกจาก allFeatures array
     const featureIndex = allFeatures.value.findIndex(f => f.properties.id === featureId);
     if (featureIndex > -1) {
       allFeatures.value.splice(featureIndex, 1);
     }
     
-    // ลบ layer ออกจากแผนที่
     const layer = layerMap.get(featureId);
     if (layer) {
-      map.removeLayer(layer); // จะถูกถอดออกจาก LayerGroup ด้วย
+      map.removeLayer(layer); 
       layerMap.delete(featureId);
     }
     
-    // ปิด info box ถ้ากำลังแสดงข้อมูลที่ถูกลบ
     if (selectedFeature.value && selectedFeature.value.properties.id === featureId) {
       selectedFeature.value = null;
     }
@@ -1111,30 +1082,27 @@ async function deleteFeature(featureId, featureName) {
     alert(`ลบ "${featureName}" สำเร็จ!`);
     
   } catch (error) {
-    // ...
+
     alert('เกิดข้อผิดพลาดในการลบข้อมูล');
   }
 }
 
-// ลบข้อมูลหลายรายการ bulk delete 
 async function deleteMultipleFeatures(featureIds) {
   const confirmDelete = confirm(`คุณต้องการลบข้อมูล ${featureIds.length} รายการหรือไม่?`);
   
   if (!confirmDelete) return;
   
   try {
-    // ...
+  
     
     const response = await axios.delete('http://localhost:3000/api/geometries', {
       data: { ids: featureIds }
     });
     
-    // ...
     
-    // ลบออกจาก allFeatures array
+    
     allFeatures.value = allFeatures.value.filter(f => !featureIds.includes(f.properties.id));
     
-    // ลบ layers ออกจากแผนที่
     featureIds.forEach(id => {
       const layer = layerMap.get(id);
       if (layer) {
@@ -1151,7 +1119,7 @@ async function deleteMultipleFeatures(featureIds) {
     alert(`ลบข้อมูลสำเร็จ ${featureIds.length} รายการ!`);
     
   } catch (error) {
-    // ...
+  
     
     let errorMessage = 'เกิดข้อผิดพลาดในการลบข้อมูล';
     if (error.response) {
@@ -1216,7 +1184,6 @@ function bindEditablePopup(marker, initialText = "Name") {
 }
 
 function addEditButton(layer) {
-  // ...
 }
 
 function showInfo(rowData) {
@@ -1227,7 +1194,6 @@ if (map && rowData.geometry?.type && rowData.geometry?.coordinates) {
     const [lng, lat] = rowData.geometry.coordinates;
     map.setView([lat, lng], 16);
   } else {
-    // For LineString or MultiLineString, fit to bounds
     const layers = layerMap.get(rowData.properties.id);
     if (layers && layers.length > 0) {
       let groupBounds = null;
@@ -1253,13 +1219,11 @@ if (map && rowData.geometry?.type && rowData.geometry?.coordinates) {
 
 function showEdit(feature) {
   if (!feature) {
-    // ...
     alert('ไม่พบข้อมูลที่ต้องการแก้ไข - feature is null');
     return;
   }
   
   if (!feature.properties) {
-    // ...
     alert('ไม่พบข้อมูลที่ต้องการแก้ไข - properties is null');
     return;
   }
@@ -1277,24 +1241,18 @@ function showEdit(feature) {
     
     showEditDialog.value = true;
   } catch (error) {
-    // ...
     alert('เกิดข้อผิดพลาดในการเปิดฟอร์มแก้ไข: ' + error.message);
   }
 }
 
 async function submitEdit() {
   try {
-    // ตรวจสอบข้อมูลก่อนส่ง
     if (!editFeature.value) {
-      // ...
       throw new Error('ไม่พบข้อมูลที่ต้องการแก้ไข - editFeature is null');
     }
-    
     if (!editFeature.value.properties) {
-      // ...
       throw new Error('ไม่พบข้อมูลที่ต้องการแก้ไข - properties is null');
     }
-    
     if (!editFeature.value.properties.id) {
       console.error('editFeature.value.properties.id is null or undefined');
       throw new Error('ไม่พบ ID ของข้อมูลที่ต้องการแก้ไข');
@@ -1310,7 +1268,6 @@ async function submitEdit() {
       etc: editFormData.value.etc
     };
     
-    // ตรวจสอบว่าข้อมูลที่จำเป็นครบหรือไม่
     if (!payload.name || !payload.description || !payload.address || !payload.type) {
       throw new Error('กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน');
     }
@@ -1364,23 +1321,19 @@ async function submitEdit() {
 
     showEditDialog.value = false;
     
-    // บังคับให้ Vue อัปเดต UI
     await nextTick();
     
     alert('แก้ไขข้อมูลสำเร็จ');
   } catch (error) {
     console.error('Error updating feature:', error);
     
-    // แสดงข้อผิดพลาดที่ละเอียดมากขึ้น
     let errorMessage = 'เกิดข้อผิดพลาดในการแก้ไขข้อมูล';
     
     if (error.response) {
-      // Server ตอบกลับมาแต่มี error status
       errorMessage = error.response.data?.message || 
                     error.response.data?.error || 
                     `Server Error: ${error.response.status}`;
     } else if (error.request) {
-      // Request ถูกส่งแต่ไม่ได้รับ response
       errorMessage = 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้';
     } else if (error.message) {
       errorMessage = error.message;
@@ -1429,7 +1382,6 @@ function onRowClick(event) {
   const id = feature.properties.id;
   const layers = layerMap.get(id);
   if (!layers || layers.length === 0) return;
-  // If only one layer, zoom to it
   if (layers.length === 1) {
     const layer = layers[0];
     if (layer.getBounds) {
@@ -1442,7 +1394,6 @@ function onRowClick(event) {
     }
     return;
   }
-  // If multiple layers (MultiLineString), fit bounds to all
   let groupBounds = null;
   layers.forEach(layer => {
     if (layer.getBounds) {
@@ -1455,7 +1406,6 @@ function onRowClick(event) {
   });
   if (groupBounds) {
     map.fitBounds(groupBounds);
-    // Open popup for the first line
     if (layers[0].openPopup) {
       layers[0].openPopup();
     }
@@ -1686,7 +1636,6 @@ function initMap() {
         const layer = e.layer;
         const shape = e.shape;
         
-        //  กำหนดประเภท geometry
         let geometryType = '';
         switch(shape) {
           case 'Marker':
@@ -1708,11 +1657,11 @@ function initMap() {
             geometryType = 'Unknown';
         }
         
-        console.log('Somebody drew :', {
-          shape: shape,
-          geometryType: geometryType,
-          layer: layer
-        });
+        // console.log('Somebody drew :', {
+        //   shape: shape,
+        //   geometryType: geometryType,
+        //   layer: layer
+        // });
 
         // จัดการแต่ละประเภท layer
         if (e.layer instanceof L.Marker) {
@@ -1732,11 +1681,9 @@ function initMap() {
             distance += latlngs[i].distanceTo(latlngs[i + 1]);
           }
           
-          // เพิ่ม popup ชั่วคราว
           e.layer.bindPopup(`ระยะทาง: ${distance.toLocaleString()} เมตร`);
           drawnItems.addLayer(e.layer);
           
-          //  แสดง Confirmation Dialog
           showConfirmation(e.layer, geometryType);
         }
 
@@ -1744,11 +1691,9 @@ function initMap() {
           e.layer.pm.enable();
           drawnItems.addLayer(e.layer);
           
-          //  แสดง Confirmation Dialog
           showConfirmation(e.layer, geometryType);
         }
 
-        // สำหรับประเภทอื่นๆ
         else {
           drawnItems.addLayer(e.layer);
           showConfirmation(e.layer, geometryType);
@@ -1938,7 +1883,6 @@ function initMapWithGroupedControl() {
     }
   });
 
-  // เรียก grouped layer control
   initGroupedLayerControl();
 }
 
@@ -1994,7 +1938,7 @@ background-color: #f9f9f9;
 padding: 20px;
 border-radius: 8px;
 overflow: auto;
-position: relative; /* allow absolute children like expand button & coord box */
+position: relative;
 }
 
 .search-input {
@@ -2642,7 +2586,6 @@ padding: 1rem 2rem;
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
-/* สไตล์สำหรับ cluster ที่มีรูปภาพประเภท */
 ::v-deep(.cluster-with-type) {
   background: none !important;
   border: none !important;

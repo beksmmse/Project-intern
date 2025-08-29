@@ -59,7 +59,7 @@ export default {
       if (!this.form.problemType || !this.form.description) return
       this.submitting = true
       try {
-        // เตรียมข้อมูลไฟล์ (เฉพาะชื่อและขนาด ไม่อัปโหลดไฟล์จริง)
+        
         const filesMeta = (this.form.files || []).map(f => ({
           name: f.name,
           size: f.size,

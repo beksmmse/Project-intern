@@ -222,8 +222,6 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import 'primeicons/primeicons.css';
-
-// CesiumJS
 import * as Cesium from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 
@@ -292,7 +290,6 @@ function toggleMapExpand(){
   });
 }
 
-// --- Drawing and Form Functions ---
 function showConfirmation(entity, geometryType) {
   currentDrawingLayer.value = entity;
   currentGeometryType.value = geometryType;
@@ -351,7 +348,6 @@ async function saveDrawingData() {
     const entity = currentDrawingLayer.value;
 
     if (entity.position) {
-      // Point
       const position = entity.position.getValue(viewer.clock.currentTime);
       const cartographic = Cesium.Cartographic.fromCartesian(position);
       coordinates = [
@@ -359,7 +355,6 @@ async function saveDrawingData() {
         Cesium.Math.toDegrees(cartographic.latitude)
       ];
     } else if (entity.polygon) {
-      // Polygon
       const hierarchy = entity.polygon.hierarchy.getValue(viewer.clock.currentTime);
       const positions = hierarchy.positions;
       coordinates = [positions.map(pos => {
@@ -370,7 +365,6 @@ async function saveDrawingData() {
         ];
       })];
     } else if (entity.polyline) {
-      // LineString
       const positions = entity.polyline.positions.getValue(viewer.clock.currentTime);
       coordinates = positions.map(pos => {
         const cartographic = Cesium.Cartographic.fromCartesian(pos);
@@ -393,7 +387,7 @@ async function saveDrawingData() {
       }
     });
 
-    console.log('Data saved successfully:', response.data);
+    // console.log('Data saved successfully:', response.data);
     
     // Update entity with saved data
     entity.id = response.data.id;
@@ -425,7 +419,6 @@ async function saveDrawingData() {
   }
 }
 
-// --- Cesium Entity Helpers ---
 function flyToEntity(entity) {
   if (!viewer || !entity) {
     console.warn('Cannot fly to entity: viewer or entity not available');
@@ -439,7 +432,6 @@ function flyToEntity(entity) {
     });
   } catch (error) {
     console.error('Error flying to entity:', error);
-    // Fallback: try to set view to entity position
     try {
       if (entity.position) {
         const position = entity.position.getValue(viewer.clock.currentTime);
@@ -465,9 +457,9 @@ function clearEntities() {
   try {
     viewer.entities.removeAll();
     entityMap.clear();
-    console.log('Cleared all entities');
+    // console.log('Cleared all entities');
   } catch (error) {
-    console.error('Error clearing entities:', error);
+    // console.error('Error clearing entities:', error);
   }
 }
 
@@ -485,7 +477,6 @@ function featureToEntity(feature) {
     if (geom.type === "Point") {
       const [lon, lat] = geom.coordinates;
       
-      // Validate coordinates
       if (isNaN(lon) || isNaN(lat) || Math.abs(lat) > 90 || Math.abs(lon) > 180) {
         console.warn('Invalid coordinates:', geom.coordinates);
         return null;
@@ -525,7 +516,6 @@ function featureToEntity(feature) {
         return null;
       }
 
-      // Validate and flatten coordinates
       const positions = [];
       for (const coord of coordinates) {
         const [lon, lat] = coord;
@@ -534,7 +524,7 @@ function featureToEntity(feature) {
         }
       }
 
-      if (positions.length < 6) { // At least 3 points (6 values)
+      if (positions.length < 6) {
         console.warn('Not enough valid coordinates for polygon');
         return null;
       }
@@ -560,7 +550,6 @@ function featureToEntity(feature) {
         return null;
       }
 
-      // Validate and flatten coordinates
       const positions = [];
       for (const coord of coordinates) {
         const [lon, lat] = coord;
@@ -569,7 +558,7 @@ function featureToEntity(feature) {
         }
       }
 
-      if (positions.length < 4) { // At least 2 points (4 values)
+      if (positions.length < 4) { 
         console.warn('Not enough valid coordinates for linestring');
         return null;
       }
@@ -628,12 +617,8 @@ async function loadExistingData() {
       }
     }));
 
-    console.log(`Loaded ${allFeatures.value.length} features`);
-
-    // Clear existing entities
+    // console.log(`Loaded ${allFeatures.value.length} features`);
     clearEntities();
-
-    // Add features to map with delay to prevent render issues
     let successCount = 0;
     for (const feature of allFeatures.value) {
       try {
@@ -641,17 +626,16 @@ async function loadExistingData() {
         if (entity) {
           successCount++;
         }
-        // Small delay to prevent overwhelming the renderer
         await new Promise(resolve => setTimeout(resolve, 10));
       } catch (error) {
         console.warn('Failed to add feature:', feature.properties?.id, error);
       }
     }
 
-    console.log(`Successfully added ${successCount}/${allFeatures.value.length} entities to map`);
+    // console.log(`Successfully added ${successCount}/${allFeatures.value.length} entities to map`);
 
   } catch (error) {
-    console.error('Error loading existing data:', error);
+    // console.error('Error loading existing data:', error);
     alert('เกิดข้อผิดพลาดในการโหลดข้อมูล: ' + error.message);
   }
 }
@@ -675,20 +659,16 @@ async function deleteFeature(featureId, featureName) {
   try {
     await axios.delete(`http://localhost:3000/api/geometries/${featureId}`);
     
-    // Remove from allFeatures array
     const featureIndex = allFeatures.value.findIndex(f => f.properties.id === featureId);
     if (featureIndex > -1) {
       allFeatures.value.splice(featureIndex, 1);
     }
-    
-    // Remove from Cesium viewer
-    const entity = entityMap.get(featureId);
+        const entity = entityMap.get(featureId);
     if (entity && viewer) {
       viewer.entities.remove(entity);
       entityMap.delete(featureId);
     }
     
-    // Clear selection if deleted feature was selected
     if (selectedFeature.value && selectedFeature.value.properties.id === featureId) {
       selectedFeature.value = null;
     }
@@ -725,14 +705,12 @@ async function submitEdit() {
     
     await axios.put(`http://localhost:3000/api/geometries/${id}`, payload);
     
-    // Update local data
     Object.assign(editFeature.value.properties, payload);
     
     if (selectedFeature.value && selectedFeature.value.properties.id === id) {
       Object.assign(selectedFeature.value.properties, payload);
     }
     
-    // Update Cesium entity
     const entity = entityMap.get(id);
     if (entity) {
       entity.name = payload.name;
@@ -788,7 +766,6 @@ function onRowClick(event) {
   flyToEntity(entity);
 }
 
-// --- Setup coordinate display with error handling ---
 function setupCoordinateDisplay() {
   try {
     const coordDiv = document.getElementById("coordinate-display");
@@ -812,7 +789,6 @@ function setupCoordinateDisplay() {
   }
 }
 
-// --- Setup error handler for Cesium ---
 function setupErrorHandler() {
   if (!viewer) {
     console.warn('ไม่สามารถตั้งค่า error handler: viewer ไม่พร้อม');
@@ -820,7 +796,6 @@ function setupErrorHandler() {
   }
 
   try {
-    // จัดการ render errors
     viewer.scene.renderError.addEventListener(function(scene, error) {
       console.error('Cesium render error:', error);
       console.error('Error details:', {
@@ -832,18 +807,17 @@ function setupErrorHandler() {
       try {
         if (viewer.scene.globe.enableLighting) {
           viewer.scene.globe.enableLighting = false;
-          console.log('ปิด lighting เนื่องจาก render error');
+          // console.log('lighting');
         }
 
         viewer.scene.requestRender();
-        console.log('พยายาม render ใหม่');
+        // console.log('render ใหม่');
         
       } catch (recoveryError) {
         console.error('การแก้ไข render error ล้มเหลว:', recoveryError);
       }
     });
 
-    // จัดการ WebGL context errors
     if (viewer.scene.context) {
       viewer.scene.context.webglContextLost.addEventListener(function() {
         console.error('WebGL context หายไป');
@@ -851,11 +825,10 @@ function setupErrorHandler() {
       });
 
       viewer.scene.context.webglContextRestored.addEventListener(function() {
-        console.log('WebGL context กลับมาแล้ว');
+        // console.log('WebGL context กลับมาแล้ว');
       });
     }
 
-    // จัดการ camera errors
     viewer.camera.changed.addEventListener(function() {
       try {
         if (!viewer.isDestroyed()) {
@@ -866,7 +839,7 @@ function setupErrorHandler() {
       }
     });
 
-    console.log('Error handler ตั้งค่าเสร็จ');
+    // console.log('Error handler ');
     
   } catch (error) {
     console.error('Error setting up error handler:', error);
@@ -877,11 +850,7 @@ function setupErrorHandler() {
 function setupDrawingTools() {
   if (!viewer) return;
 
-  // Drawing toolbar in screen overlay would go here
-  // For now, we'll add click handlers for drawing
-  
-  // Point drawing (example)
-  viewer.cesiumWidget.screenSpaceEventHandler.setInputAction(function(event) {
+    viewer.cesiumWidget.screenSpaceEventHandler.setInputAction(function(event) {
     if (viewer.cesiumWidget.canvas.style.cursor === 'crosshair') {
       const position = viewer.camera.pickEllipsoid(event.position, viewer.scene.globe.ellipsoid);
       if (position) {
@@ -912,10 +881,8 @@ function setupDrawingTools() {
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 }
 
-// --- Cesium Initialization ---
-// --- Cesium Initialization ---
 onMounted(async () => {
-  // console.log('เริ่มต้น Cesium initialization...');
+  // console.log('Cesium initialization');
   
   try {
     if (!cesiumContainer.value) {
@@ -928,7 +895,6 @@ onMounted(async () => {
     //   height: cesiumContainer.value.clientHeight
     // });
 
-    // ตรวจสอบว่า Cesium โหลดเสร็จแล้วหรือยัง
     if (typeof Cesium === 'undefined') {
       console.error('Cesium library ไม่ได้โหลด');
       alert('ไม่สามารถโหลด Cesium library กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต');
@@ -941,12 +907,11 @@ onMounted(async () => {
       // Set Cesium Ion token
       Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhMzVjNmZjNi1mMWJiLTQ5YjYtYTczMS0zY2FlNTVmMDdkZjIiLCJpZCI6MzIxOTE4LCJpYXQiOjE3NTI2NDgzMzd9.1soJyjBQ2bYa_-tFvHdXQG5amC6QTpjBa0XFJfHy8MY';
       
-      // console.log('Ion token ตั้งค่าเสร็จ');
-      // console.log('กำลังสร้าง Cesium viewer...');
+      // console.log('Ion token');
+      // console.log('กำลังสร้าง Cesium viewer');
       
-      // สร้าง viewer ด้วยการตั้งค่าที่สมบูรณ์
+   
       viewer = new Cesium.Viewer(cesiumContainer.value, {
-        // เปิด toolbar และ widgets ต่างๆ
         timeline: false,
         animation: false,
         geocoder: true,
@@ -959,27 +924,20 @@ onMounted(async () => {
         fullscreenButton: false,
         vrButton: false,
         
-        // ใช้ default imagery provider จาก Cesium Ion
-        // imageryProvider จะถูกตั้งค่าอัตโนมัติ
-        
-        // ใช้ default terrain provider จาก Cesium Ion
-        // terrainProvider จะถูกตั้งค่าอัตโนมัติ
-        
-        // ตั้งค่าประสิทธิภาพ
-        scene3DOnly: false, // อนุญาตให้เปลี่ยน scene mode
+
+        scene3DOnly: false, 
         orderIndependentTranslucency: true,
         requestRenderMode: false,
         maximumRenderTimeChange: undefined
       });
 
       // console.log('Cesium viewer สร้างสำเร็จ');
-      console.log('Scene mode:', viewer.scene.mode);
-      console.log('WebGL context:', !!viewer.scene.context._gl);
-      console.log('Available imagery providers:', viewer.baseLayerPicker ? 'BaseLayerPicker enabled' : 'BaseLayerPicker disabled');
-      console.log('Terrain provider:', viewer.terrainProvider.constructor.name);
-      console.log('Imagery layers:', viewer.imageryLayers.length);
+      // console.log('Scene mode:', viewer.scene.mode);
+      // console.log('WebGL context:', !!viewer.scene.context._gl);
+      // console.log('Available imagery providers:', viewer.baseLayerPicker ? 'BaseLayerPicker enabled' : 'BaseLayerPicker disabled');
+      // console.log('Terrain provider:', viewer.terrainProvider.constructor.name);
+      // console.log('Imagery layers:', viewer.imageryLayers.length);
 
-      // ตั้งค่าตำแหน่งกล้องเริ่มต้นที่กรุงเทพฯ
       viewer.camera.setView({
         destination: Cesium.Cartesian3.fromDegrees(100.5018, 13.7563, 15000),
         orientation: {
@@ -989,24 +947,20 @@ onMounted(async () => {
         }
       });
 
-      // เปิดการแสดงแสงและ atmosphere เพื่อให้โลกดูสวยงาม
       viewer.scene.globe.enableLighting = true;
       viewer.scene.globe.atmosphereHueShift = 0;
       viewer.scene.globe.atmosphereSaturationShift = 0;
       viewer.scene.globe.atmosphereBrightnessShift = 0;
       
-      // เปิด post-processing effects สำหรับคุณภาพที่ดีขึ้น
       if (viewer.scene.postProcessStages) {
         viewer.scene.postProcessStages.fxaa.enabled = true;
         if (viewer.scene.postProcessStages.bloom) {
-          viewer.scene.postProcessStages.bloom.enabled = false; // ปิด bloom เพื่อประสิทธิภาพ
+          viewer.scene.postProcessStages.bloom.enabled = false; 
         }
       }
-      
-      // เปิดการเอียงกล้อง
+    
       viewer.scene.screenSpaceCameraController.enableTilt = true;
 
-      // รอให้ viewer พร้อมแล้วค่อยตั้งค่าอื่นๆ
       await new Promise(resolve => {
         if (viewer.scene.globe.tilesLoaded) {
           resolve();
@@ -1018,39 +972,33 @@ onMounted(async () => {
             }
           });
         }
-        // timeout หากรอนานเกินไป
         setTimeout(() => {
           resolve();
         }, 5000);
       });
 
-      // console.log('Globe tiles โหลดเสร็จ');
+      // console.log('Globe tiles');
 
-      // เพิ่มการตั้งค่าเพื่อให้แน่ใจว่าทุกอย่างทำงานถูกต้อง
       viewer.scene.globe.show = true;
       viewer.scene.skyBox.show = true;
       viewer.scene.sun.show = true;
       viewer.scene.moon.show = true;
       viewer.scene.skyAtmosphere.show = true;
 
-      // ตั้งค่าการแสดงพิกัดหลังจาก viewer พร้อม
       setupCoordinateDisplay();
 
-      // ตั้งค่า error handler
       setupErrorHandler();
 
-      // ตั้งค่า drawing tools
       setupDrawingTools();
 
-      // บังคับให้ render
       viewer.scene.requestRender();
 
       // ตรวจสอบว่า viewer ทำงานได้ถูกต้อง
       // console.log('Cesium viewer ตรวจสอบ:');
-      console.log('- Canvas size:', viewer.canvas.width, 'x', viewer.canvas.height);
-      console.log('- Imagery layers ready:', viewer.imageryLayers.length > 0);
-      console.log('- Globe visible:', viewer.scene.globe.show);
-      console.log('- Camera position:', viewer.camera.position);
+      // console.log('- Canvas size:', viewer.canvas.width, 'x', viewer.canvas.height);
+      // console.log('- Imagery layers ready:', viewer.imageryLayers.length > 0);
+      // console.log('- Globe visible:', viewer.scene.globe.show);
+      // console.log('- Camera position:', viewer.camera.position);
 
       // console.log('Cesium viewer initialized สำเร็จ');
       
@@ -1068,19 +1016,17 @@ onMounted(async () => {
       const resizeObserver = new ResizeObserver(() => {
         if (viewer && !viewer.isDestroyed()) {
           viewer.resize();
-          console.log('Cesium viewer resized');
+          // console.log('Cesium viewer resized');
         }
       });
       resizeObserver.observe(cesiumContainer.value);
 
-      // เก็บ reference สำหรับการล้าง
       cesiumContainer.value._resizeObserver = resizeObserver;
     }
   } catch (error) {
     console.error('Failed to initialize Cesium viewer:', error);
     console.error('Error stack:', error.stack);
-    
-    // แสดงข้อมูล error ที่ละเอียดขึ้น
+
     let errorMessage = 'เกิดข้อผิดพลาดในการโหลด 3D Map: ';
     if (error.message.includes('WebGL')) {
       errorMessage += 'เบราว์เซอร์ไม่รองรับ WebGL หรือ WebGL ถูกปิดใช้งาน';
@@ -1097,16 +1043,14 @@ onMounted(async () => {
 // Cleanup on unmount
 onUnmounted(() => {
   try {
-    // ลบ ResizeObserver
     if (cesiumContainer.value && cesiumContainer.value._resizeObserver) {
       cesiumContainer.value._resizeObserver.disconnect();
     }
     
-    // ทำลาย viewer
     if (viewer) {
       viewer.destroy();
       viewer = null;
-      console.log('Cesium viewer destroyed');
+      // console.log('Cesium viewer destroyed');
     }
   } catch (error) {
     console.error('Error destroying viewer:', error);
@@ -1146,20 +1090,18 @@ overflow: auto;
 flex: 3;
 background-color: #f9f9f9;
 border-radius: 8px;
-overflow: hidden; /* เปลี่ยนจาก auto เป็น hidden เพื่อให้ Cesium แสดงผลได้ถูกต้อง */
-position: relative; /* เพิ่มเพื่อให้ coordinate display แสดงได้ถูกต้อง */
+overflow: hidden; 
+position: relative; 
 }
 
-/* เพิ่ม CSS สำหรับ Cesium container */
 #cesiumContainer {
   width: 100%;
   height: 100%;
   min-height: 400px;
   position: relative;
-  background-color: #000; /* สีพื้นหลังสีดำขณะกำลังโหลด */
+  background-color: #000; 
 }
 
-/* แก้ไข Cesium widgets เพื่อให้แสดงผลได้ดี */
 :deep(.cesium-viewer) {
   width: 100% !important;
   height: 100% !important;
@@ -1487,7 +1429,6 @@ padding: 1rem 2rem;
   display: block !important;
 }
 
-/* Added to match Leaflet table look-and-feel in left-column */
 :deep(.uniform-table.p-datatable) { font-size: 13px; }
 :deep(.uniform-table .p-datatable-scrollable-header-box table),
 :deep(.uniform-table .p-datatable-scrollable-body table) { table-layout: fixed; width:100%; }
@@ -1512,7 +1453,6 @@ padding: 1rem 2rem;
 :deep(.uniform-table .p-datatable-thead th[style*='min-width']) { min-width: auto !important; }
 :deep(.uniform-table .p-datatable-tbody > tr) { height: auto; }
 
-/* Expand Cesium map under fixed header without moving header */
 #cesiumContainer.map-expanded {
   width: 100vw !important;
   height: calc(100vh - 60px) !important;
@@ -1520,7 +1460,7 @@ padding: 1rem 2rem;
 
 .map-expanded {
   position: fixed !important;
-  top: 60px; /* header height */
+  top: 60px; 
   left: 0;
   z-index: 3000;
   background: #000;
@@ -1545,9 +1485,7 @@ padding: 1rem 2rem;
 
 .map-expand-btn:hover { background: #f1f3f4; }
 
-/* keep coordinate box on top as well */
 .coordinate-display { z-index: 3500; }
 
-/* Hide left panel while map is expanded */
 .hide-when-map-expanded { display: none !important; }
 </style>

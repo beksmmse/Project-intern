@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  backend:
+    build: ./Backend
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./Backend/.env
+    volumes:
+      - ./Backend:/app
+    restart: unless-stopped
+  frontend:
+    build: ./Frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Frontend:/app
+    restart: unless-stopped

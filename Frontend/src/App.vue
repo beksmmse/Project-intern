@@ -76,24 +76,21 @@ export default {
   },
   methods: {
     logout() {
-      // ล้างข้อมูล user และ token
       localStorage.removeItem('user');
       localStorage.removeItem('token');
-      
-      // Reset currentType
+    
       this.currentType = 'Type';
       
-      // Redirect to login
       this.$router.push('/login');
       
-      // Reload เพื่อให้แน่ใจว่า state ถูกรีเซ็ต
+  
       window.location.reload();
     },
     setType(type) {
       this.currentType = type;
     },
     
-    // เพิ่มฟังก์ชันตรวจสอบสิทธิ์
+
     checkAdminAccess() {
       const userStr = localStorage.getItem('user');
       if (!userStr) return false;
